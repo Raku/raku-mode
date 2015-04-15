@@ -58,6 +58,7 @@
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.p[lm]?6\\'" . perl6-mode))
 
+;;;###autoload
 (defvar perl6-magic-pattern
   (rx line-start
       (0+ space)
@@ -65,6 +66,7 @@
           (and (opt (and (or "my" "our") (0+ space)))
                (or "module" "class" "role" "grammar")))))
 
+;;;###autoload
 (defun perl6-magic-matcher ()
   "Return non-nil if the current buffer is probably a Perl 6 file."
   (and (and (stringp buffer-file-name)
