@@ -58,8 +58,15 @@
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.p[lm]?6\\'" . perl6-mode))
 
+(defvar perl6--content-pattern
+  "^ *\\(?:use +v6\\|\\(?:\\(?:my\\|our\\) +\\)?\\(?:module\\|class\\|role\\|grammar\\)\\)")
+
 ;;;###autoload
-(add-to-list 'magic-mode-alist '("^ *\\(?:use *v6\\|\\(?:\\(?:my\\|our\\) +\\)?\\(?:module\\|class\\|role\\|grammar\\)\\)" . perl6-mode))
+(add-to-list 'magic-mode-alist '((lambda ()
+                                   (and
+                                     (and (stringp buffer-file-name)
+                                          (string-match "\\.\\(?:t\\|p[lm]\\)\\'" buffer-file-name))
+                                     (re-search-forward perl6--content-pattern 4096 t))) . perl6-mode))
 
 (provide 'perl6-mode)
 
