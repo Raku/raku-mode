@@ -48,8 +48,12 @@ Or in your [`Cask`][cask] file:
 Usage
 -----
 
-Just visit Perl 6 files. The major mode is enabled automatically for
-files which contain Perl 6 code or have the relevant file extension.
+Just visit Perl 6 files.
+
+The major mode will be autoloaded whenever a Perl 6 file is visited.
+This includes any file with `perl6` in the shebang, as well as any file
+with a `.p6`, `pm6`, or `pl6` extension. It also applies to any `.pm`,
+`.pl`, and `.t` files whose first line of code looks like Perl 6.
 
 Use <kbd>M-x customize-group RET perl6</kbd> to customize Perl 6 Mode.
 
