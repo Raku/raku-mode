@@ -33,7 +33,8 @@ With [`use-package`][use-package] in your init file:
 
 ```el
 (use-package perl6-mode
-  :ensure t)
+  :ensure t
+  :defer t)
 ```
 
 Or in your [`Cask`][cask] file:
