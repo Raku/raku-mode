@@ -58,15 +58,31 @@
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.p[lm]?6\\'" . perl6-mode))
 
-(defvar perl6--content-pattern
-  "^ *\\(?:use +v6\\|\\(?:\\(?:my\\|our\\) +\\)?\\(?:module\\|class\\|role\\|grammar\\)\\)")
+(defvar perl6-magic-pattern
+  (rx line-start
+      (0+ space)
+      (or (and "use" (0+ space) "v6")
+          (and (opt (and (or "my" "our") (0+ space)))
+               (or "module" "class" "role" "grammar")))))
+
+(defun perl6-magic-matcher ()
+  "Return non-nil if the current buffer is probably a Perl 6 file."
+  (let ((case-fold-search nil)
+        (keep-going t)
+        (found-perl6 nil))
+    (while keep-going
+      (cond ((looking-at "^ *\\(?:#.*\\)?$")
+             nil)
+            ((looking-at perl6-magic-pattern)
+             (setq keep-going nil
+                   found-perl6 t))
+            (t
+             (setq keep-going nil)))
+      (beginning-of-line 2))
+    found-perl6))
 
 ;;;###autoload
-(add-to-list 'magic-mode-alist '((lambda ()
-                                   (and
-                                     (and (stringp buffer-file-name)
-                                          (string-match "\\.\\(?:t\\|p[lm]\\)\\'" buffer-file-name))
-                                     (re-search-forward perl6--content-pattern 4096 t))) . perl6-mode))
+(add-to-list 'magic-mode-alist '(perl6-magic-matcher . perl6-mode))
 
 (provide 'perl6-mode)
 
