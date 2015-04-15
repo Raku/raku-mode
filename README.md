@@ -1,0 +1,88 @@
+Perl 6 Mode
+===========
+
+[![License GPL 3][badge-license]][copying]
+
+Perl 6 mode lets you edit Perl 6 code with [GNU Emacs][] 24.
+
+This mode needs GNU Emacs 24.3.
+
+Features
+--------
+
+* Syntax highlighting (very much a work in progress)
+
+### Planned
+
+* Indentation
+* Help system
+* REPL interaction
+* imenu support
+* ETags support
+
+### Not planned
+
+* Syntax checking (use [flycheck-perl6][])
+
+Installation
+------------
+
+From [MELPA][] with <kbd>M-x package-install RET perl6-mode</kbd>.
+
+With [`use-package`][use-package] in your init file:
+
+```el
+(use-package perl6-mode
+  :ensure t)
+```
+
+Or in your [`Cask`][cask] file:
+
+```el
+(source melpa)
+
+(depends-on "perl6-mode")
+```
+
+Usage
+-----
+
+Just visit Perl 6 files. The major mode is enabled automatically for
+files which contain Perl 6 code or have the relevant file extension.
+
+Use <kbd>M-x customize-group RET perl6</kbd> to customize Perl 6 Mode.
+
+Support
+-------
+
+You can ask a question in the [issue tracker][], or email me at
+hinrik.sig@gmail.com.
+
+Contribute
+----------
+
+Pull requests are welcome.
+
+License
+-------
+
+Perl 6 Mode is free software: you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation, either version 3 of the License, or (at your
+option) any later version.
+
+Perl 6 Mode is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
+Public License for more details.
+
+See [`COPYING`][copying] for the complete license.
+
+[badge-license]: https://img.shields.io/badge/license-GPL_3-green.svg
+[COPYING]: https://github.com/hinrik/perl6-mode/blob/master/COPYING
+[GNU Emacs]: https://www.gnu.org/software/emacs/
+[flycheck-perl6]: https://github.com/hinrik/flycheck-perl6
+[MELPA]: http://melpa.milkbox.net/
+[use-package]: https://github.com/jwiegley/use-package
+[Cask]: http://cask.github.io/
+[Issue tracker]: https://github.com/hinrik/perl6-mode/issues
