@@ -75,7 +75,9 @@
          (let ((keep-going t)
                (found-perl6 nil))
            (while keep-going
-             (cond ((looking-at "^ *\\(?:#.*\\)?$")
+             (cond ((eq (point) (point-max))
+                    (setq keep-going nil))
+                   ((looking-at "^ *\\(?:#.*\\)?$")
                     nil)
                    ((looking-at perl6-magic-pattern)
                     (setq keep-going nil
