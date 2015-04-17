@@ -77,14 +77,14 @@
            (while keep-going
              (cond ((eq (point) (point-max))
                     (setq keep-going nil))
-                   ((looking-at "^ *\\(?:#.*\\)?$")
+                   ((re-search-forward "^ *\\(?:#.*\\)?$" 4096 'noerror)
                     nil)
-                   ((looking-at perl6-magic-pattern)
+                   ((re-search-forward perl6-magic-pattern 4096 'noerror)
                     (setq keep-going nil
                           found-perl6 t))
                    (t
                     (setq keep-going nil)))
-             (beginning-of-line 2))
+             (search-forward "\n" 4096 'noerror))
            found-perl6))))
 
 ;;;###autoload
