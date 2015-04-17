@@ -38,6 +38,7 @@
   :prefix "perl6-"
   :group 'language)
 
+(require 'perl6-detect)
 (require 'perl6-font-lock)
 
 ;;;###autoload
@@ -51,40 +52,6 @@
   (setq-local comment-start "#")
   (setq-local comment-use-syntax t)
   (setq-local comment-end ""))
-
-;;;###autoload
-(add-to-list 'interpreter-mode-alist '("perl6" . perl6-mode))
-
-;;;###autoload
-(add-to-list 'auto-mode-alist '("\\.p[lm]?6\\'" . perl6-mode))
-
-;;;###autoload
-(defvar perl6-magic-pattern
-  (rx line-start
-      (0+ space)
-      (or (and "use" (0+ space) "v6")
-          (and (opt (and (or "my" "our") (1+ space)))
-               (or "module" "class" "role" "grammar" "enum" "slang" "subset")))))
-
-;;;###autoload
-(defun perl6-magic-matcher ()
-  "Return non-nil if the current buffer is probably a Perl 6 file."
-  (let ((case-fold-search nil))
-    (when (and (stringp buffer-file-name)
-               (string-match "\\.\\(?:t\\|p[lm]\\)\\'" buffer-file-name))
-      (let ((keep-going t)
-            (found-perl6 nil)
-            (max-pos (min 4096 (point-max))))
-        (while (and (< (point) max-pos)
-                    keep-going)
-          (if (looking-at "^ *\\(?:#.*\\)?$")
-              (beginning-of-line 2)
-            (setq keep-going nil
-                  found-perl6 (looking-at perl6-magic-pattern))))
-        found-perl6))))
-
-;;;###autoload
-(add-to-list 'magic-mode-alist '(perl6-magic-matcher . perl6-mode))
 
 (provide 'perl6-mode)
 
