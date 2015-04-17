@@ -180,12 +180,12 @@
 (defun perl6-syntax-propertize (start end)
   "Add context-specific syntax properties to code.
 
-Takes arguments START and END which delimited the region to propertize."
+Takes arguments START and END which delimit the region to propertize."
   (let ((case-fold-search nil))
     (goto-char start)
     (funcall
      (syntax-propertize-rules
-      ;; [-'] inside identifiers are symbol chars
+      ;; [-'] between identifiers are symbol chars
       ((rx (any "A-Za-z") (group (any "-'")) (any "A-Za-z"))
        (1 "_"))
       ;; multiline comments
