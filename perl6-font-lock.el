@@ -177,6 +177,53 @@
     table)
   "The top level syntax table for Perl 6.")
 
+(defvar perl6-comment-syntax-table
+  (let ((table (make-syntax-table perl6-mode-syntax-table)))
+    (modify-syntax-entry ?< "(>" table)
+    (modify-syntax-entry ?> ")<" table)
+    table)
+  "Syntax table for comments.")
+
+(defun perl6-forward-embedded-comment (open close length)
+  "Move point past the end of an embedded comment.
+
+Skips over any nested balanced delimiters.
+
+OPEN and CLOSE are the delimiting characters (e.g. ?< and ?>).
+LENGTH is the length of the delimiters (e.g. 2 for a #`<<foo>> comment)."
+  (let ((pattern (rx-to-string `(or (group (= ,length ,open))
+                                    (group (= ,length ,close)))))
+        (found-closing nil)
+        (depth 1))
+    (while (and (not found-closing)
+                (< (point) (point-max)))
+      (re-search-forward pattern (point-max) 'noerror)
+      (cond ((match-string 1)
+             (if (looking-at (rx-to-string open))
+                 (re-search-forward (rx-to-string `(1+ ,open)))
+               (setq depth (1+ depth))))
+            ((match-string 2)
+             (setq depth (1- depth))
+             (when (eq depth 0)
+               (setq found-closing t)))))))
+
+(defun perl6-syntax-propertize-embedded-comment ()
+  "Add syntax properties to embedded comments."
+  (with-syntax-table perl6-comment-syntax-table
+    (when (and (following-char)
+               (eq ?\( (char-syntax (following-char))))
+      (let* ((comment-beg (- (point) 2))
+             (open-delim (following-char))
+             (close-delim (matching-paren open-delim)))
+        (put-text-property comment-beg (1+ comment-beg)
+                             'syntax-table (string-to-syntax "!"))
+        (re-search-forward (rx-to-string `(1+ ,open-delim)))
+        (let ((delim-length (length (match-string 0))))
+          (perl6-forward-embedded-comment open-delim close-delim delim-length)
+          (put-text-property comment-beg (point) 'syntax-multiline t)
+          (put-text-property (- (point) 1) (point)
+                             'syntax-table (string-to-syntax "!")))))))
+
 (defun perl6-syntax-propertize (start end)
   "Add context-specific syntax properties to code.
 
@@ -188,10 +235,9 @@ Takes arguments START and END which delimit the region to propertize."
       ;; [-'] between identifiers are symbol chars
       ((rx (any "A-Za-z") (group (any "-'")) (any "A-Za-z"))
        (1 "_"))
-      ;; multiline comments
-      ((rx (group "#`<") (*? anything) (group ">"))
-       (1 "< b")
-       (2 "> b")))
+      ; multiline comments
+      ((rx "#`")
+       (0 (ignore (perl6-syntax-propertize-embedded-comment)))))
       start end)))
 
 (defun perl6-font-lock-syntactic-face (state)

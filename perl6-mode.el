@@ -6,7 +6,7 @@
 ;; URL: https://github.com/hinrik/perl6-mode
 ;; Keywords: languages
 ;; Version: 0.1-git
-;; Package-Requires: ((emacs "24.3") (pkg-info "0.1"))
+;; Package-Requires: ((emacs "24.4") (pkg-info "0.1"))
 
 ;; This file is not part of GNU Emacs.
 
@@ -46,6 +46,7 @@
   "Major mode for editing Perl 6 code."
   ;; Syntaxification and font locking
   (setq-local syntax-propertize-function 'perl6-syntax-propertize)
+  (add-hook 'syntax-propertize-extend-region-functions 'syntax-propertize-multiline nil 'local)
   (setq-local font-lock-syntactic-face-function 'perl6-font-lock-syntactic-face)
   (setq-local font-lock-defaults '(perl6-font-lock-keywords nil nil))
   ;; Comments

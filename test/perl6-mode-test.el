@@ -64,12 +64,13 @@ POS."
 (ert-deftest perl6-mode-syntax-table/fontify-line-comment ()
   :tags '(fontification syntax-table)
   (perl6-test-with-temp-buffer "# class
-bar"
-    ;(should (eq (perl6-test-face-at 1) 'font-lock-comment-delimiter-face))
+bar #`<foo> baz"
     (should (eq (perl6-test-face-at 3) 'perl6-comment))
     (should (eq (perl6-test-face-at 7) 'perl6-comment))
     (should (eq (perl6-test-face-at 8) 'perl6-comment))
-    (should (eq (perl6-test-face-at 9) 'perl6-identifier))))
+    (should (eq (perl6-test-face-at 9) 'perl6-identifier))
+    (should (eq (perl6-test-face-at 16) 'perl6-comment))
+    (should (eq (perl6-test-face-at 21) 'perl6-identifier))))
 
 (ert-deftest perl6-font-lock-keywords/phaser ()
   :tags '(fontification font-lock-keywords)
