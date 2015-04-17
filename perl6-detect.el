@@ -25,7 +25,13 @@
 
 ;;;###autoload
 (defun perl6-magic-matcher ()
-  "Return non-nil if the current buffer is probably a Perl 6 file."
+  "Check if the current buffer is a Perl 6 file.
+
+Only looks at a buffer if it has a file extension of .t, .pl, or .pm.
+
+Scans the buffer (to a maximum of 4096 chars) for the first non-comment,
+non-whitespace line.  Returns t if that line looks like Perl 6 code,
+nil otherwise."
   (let ((case-fold-search nil))
     (when (and (stringp buffer-file-name)
                (string-match "\\.\\(?:t\\|p[lm]\\)\\'" buffer-file-name))
