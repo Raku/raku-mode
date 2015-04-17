@@ -73,18 +73,19 @@
     (and (and (stringp buffer-file-name)
               (string-match "\\.\\(?:t\\|p[lm]\\)\\'" buffer-file-name))
          (let ((keep-going t)
-               (found-perl6 nil))
+               (found-perl6 nil)
+               (max-pos (min 4096 (point-max))))
            (while keep-going
-             (cond ((eq (point) (point-max))
+             (cond ((>= (point) max-pos)
                     (setq keep-going nil))
-                   ((re-search-forward "^ *\\(?:#.*\\)?$" 4096 'noerror)
+                   ((looking-at "^ *\\(?:#.*\\)?$")
                     nil)
-                   ((re-search-forward perl6-magic-pattern 4096 'noerror)
+                   ((looking-at perl6-magic-pattern)
                     (setq keep-going nil
                           found-perl6 t))
                    (t
                     (setq keep-going nil)))
-             (search-forward "\n" 4096 'noerror))
+             (beginning-of-line 2))
            found-perl6))))
 
 ;;;###autoload
