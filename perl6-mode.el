@@ -70,23 +70,18 @@
 (defun perl6-magic-matcher ()
   "Return non-nil if the current buffer is probably a Perl 6 file."
   (let ((case-fold-search nil))
-    (and (and (stringp buffer-file-name)
-              (string-match "\\.\\(?:t\\|p[lm]\\)\\'" buffer-file-name))
-         (let ((keep-going t)
-               (found-perl6 nil)
-               (max-pos (min 4096 (point-max))))
-           (while keep-going
-             (cond ((>= (point) max-pos)
-                    (setq keep-going nil))
-                   ((looking-at "^ *\\(?:#.*\\)?$")
-                    nil)
-                   ((looking-at perl6-magic-pattern)
-                    (setq keep-going nil
-                          found-perl6 t))
-                   (t
-                    (setq keep-going nil)))
-             (beginning-of-line 2))
-           found-perl6))))
+    (when (and (stringp buffer-file-name)
+               (string-match "\\.\\(?:t\\|p[lm]\\)\\'" buffer-file-name))
+      (let ((keep-going t)
+            (found-perl6 nil)
+            (max-pos (min 4096 (point-max))))
+        (while (and (< (point) max-pos)
+                    keep-going)
+          (if (looking-at "^ *\\(?:#.*\\)?$")
+              (beginning-of-line 2)
+            (setq keep-going nil
+                  found-perl6 (looking-at perl6-magic-pattern))))
+        found-perl6))))
 
 ;;;###autoload
 (add-to-list 'magic-mode-alist '(perl6-magic-matcher . perl6-mode))
