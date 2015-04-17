@@ -63,7 +63,7 @@
   (rx line-start
       (0+ space)
       (or (and "use" (0+ space) "v6")
-          (and (opt (and (or "my" "our") (0+ space)))
+          (and (opt (and (or "my" "our") (1+ space)))
                (or "module" "class" "role" "grammar" "enum" "slang" "subset")))))
 
 ;;;###autoload
