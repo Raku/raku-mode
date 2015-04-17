@@ -235,6 +235,10 @@ Takes arguments START and END which delimit the region to propertize."
       ;; [-'] between identifiers are symbol chars
       ((rx (any "A-Za-z") (group (any "-'")) (any "A-Za-z"))
        (1 "_"))
+      ;; same for "::" around identifiers
+      ((rx (or (and "::" symbol-start)
+               (and symbol-end "::")))
+       (0 "_"))
       ; multiline comments
       ((rx "#`")
        (0 (ignore (perl6-syntax-propertize-embedded-comment)))))

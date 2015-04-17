@@ -52,6 +52,11 @@ POS."
 
 
 ;;;; Font locking
+(ert-deftest perl6-syntax-propertize/colons-identifier ()
+  :tags '(syntax-table syntax-properties)
+  (perl6-test-with-temp-buffer "class Foo::Bar"
+                                (should (eq (perl6-test-syntax-at 10) 'symbol))
+                                (should (eq (perl6-test-syntax-at 11) 'symbol))))
 
 (ert-deftest perl6-mode-syntax-table/fontify-dq-string ()
   :tags '(fontification syntax-table)
