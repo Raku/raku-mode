@@ -5,7 +5,7 @@ Perl 6 Mode
 
 Perl 6 mode lets you edit Perl 6 code with [GNU Emacs][] 24.
 
-This mode needs GNU Emacs 24.3.
+This mode needs GNU Emacs 24.4.
 
 Features
 --------
