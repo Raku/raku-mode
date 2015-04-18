@@ -184,13 +184,13 @@
     table)
   "Syntax table for comments.")
 
-(defun perl6-forward-embedded-comment (open close length)
-  "Move point past the end of an embedded comment.
+(defun perl6-forward-brackets (open close length)
+  "Move point past the end of a bracketed structure.
 
-Skips over any nested balanced delimiters.
+Skips over any nested balanced brackets.
 
-OPEN and CLOSE are the delimiting characters (e.g. ?< and ?>).
-LENGTH is the length of the delimiters (e.g. 2 for a #`<<foo>> comment)."
+OPEN and CLOSE are the bracketing characters (e.g. ?< and ?>).
+LENGTH is the length of the brackets (e.g. 2 for a <<foo>>)."
   (let ((pattern (rx-to-string `(or (group (= ,length ,open))
                                     (group (= ,length ,close)))))
         (found-closing nil)
@@ -208,7 +208,7 @@ LENGTH is the length of the delimiters (e.g. 2 for a #`<<foo>> comment)."
                (setq found-closing t)))))))
 
 (defun perl6-syntax-propertize-embedded-comment ()
-  "Add syntax properties to embedded comments."
+  "Add syntax properties to embedded comments \(#`<<foo>>\)."
   (with-syntax-table perl6-comment-syntax-table
     (when (and (following-char)
                (eq ?\( (char-syntax (following-char))))
@@ -219,10 +219,11 @@ LENGTH is the length of the delimiters (e.g. 2 for a #`<<foo>> comment)."
                              'syntax-table (string-to-syntax "!"))
         (re-search-forward (rx-to-string `(1+ ,open-delim)))
         (let ((delim-length (length (match-string 0))))
-          (perl6-forward-embedded-comment open-delim close-delim delim-length)
-          (put-text-property comment-beg (point) 'syntax-multiline t)
-          (put-text-property (- (point) 1) (point)
-                             'syntax-table (string-to-syntax "!")))))))
+          (perl6-forward-brackets open-delim close-delim delim-length)
+          (let ((comment-end (point)))
+            (put-text-property comment-beg comment-end 'syntax-multiline t)
+            (put-text-property (- comment-end 1) comment-end
+                               'syntax-table (string-to-syntax "!"))))))))
 
 (defun perl6-syntax-propertize (start end)
   "Add context-specific syntax properties to code.
