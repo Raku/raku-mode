@@ -58,6 +58,17 @@ POS."
                                 (should (eq (perl6-test-syntax-at 10) 'symbol))
                                 (should (eq (perl6-test-syntax-at 11) 'symbol))))
 
+(ert-deftest perl6-syntax-propertize/dq-words ()
+  :tags '(syntax-table syntax-properties)
+  (perl6-test-with-temp-buffer "foo «bar» bla <<baz>> quux"
+                               (should (eq (perl6-test-syntax-at 1) 'word))
+                               (should (eq (perl6-test-syntax-at 5) 'generic-string))
+                               (should (eq (perl6-test-syntax-at 9) 'generic-string))
+                               (should (eq (perl6-test-syntax-at 15) 'generic-string))
+                               (should (eq (perl6-test-syntax-at 16) 'punctuation))
+                               (should (eq (perl6-test-syntax-at 20) 'punctuation))
+                               (should (eq (perl6-test-syntax-at 21) 'generic-string))))
+
 (ert-deftest perl6-mode-syntax-table/fontify-dq-string ()
   :tags '(fontification syntax-table)
   (should (eq (perl6-test-face-at 8 "$foo = \"bar\"") 'perl6-string)))

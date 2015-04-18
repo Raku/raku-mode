@@ -177,12 +177,14 @@
     table)
   "The top level syntax table for Perl 6.")
 
-(defvar perl6-comment-syntax-table
+(defvar perl6-bracket-syntax-table
   (let ((table (make-syntax-table perl6-mode-syntax-table)))
     (modify-syntax-entry ?< "(>" table)
     (modify-syntax-entry ?> ")<" table)
+    (modify-syntax-entry ?« "(»" table)
+    (modify-syntax-entry ?» ")«" table)
     table)
-  "Syntax table for comments.")
+  "Syntax table for bracketing constructs.")
 
 (defun perl6-forward-brackets (open close length)
   "Move point past the end of a bracketed structure.
@@ -209,7 +211,7 @@ LENGTH is the length of the brackets (e.g. 2 for a <<foo>>)."
 
 (defun perl6-syntax-propertize-embedded-comment ()
   "Add syntax properties to embedded comments \(#`<<foo>>\)."
-  (with-syntax-table perl6-comment-syntax-table
+  (with-syntax-table perl6-bracket-syntax-table
     (when (and (following-char)
                (eq ?\( (char-syntax (following-char))))
       (let* ((comment-beg (- (point) 2))
@@ -224,6 +226,21 @@ LENGTH is the length of the brackets (e.g. 2 for a <<foo>>)."
             (put-text-property comment-beg comment-end 'syntax-multiline t)
             (put-text-property (- comment-end 1) comment-end
                                'syntax-table (string-to-syntax "!"))))))))
+
+(defun perl6-syntax-propertize-dq-words ()
+  "Add syntax properties to double-quoted word lists \(«foo $bar baz»\)."
+  (with-syntax-table perl6-bracket-syntax-table
+    (let* ((quote-beg (match-beginning 0))
+           (quote-chars (match-string 0))
+           (quote-length (length quote-chars))
+           (open-quote (string-to-char (car (split-string quote-chars "" t))))
+           (close-quote (matching-paren open-quote)))
+      (put-text-property quote-beg (1+ quote-beg) 'syntax-table (string-to-syntax "|"))
+      (perl6-forward-brackets open-quote close-quote quote-length)
+      (let ((quote-end (point)))
+        (put-text-property quote-beg quote-end 'syntax-multiline t)
+        (put-text-property (- quote-end 1) quote-end
+                           'syntax-table (string-to-syntax "|"))))))
 
 (defun perl6-syntax-propertize (start end)
   "Add context-specific syntax properties to code.
@@ -240,9 +257,10 @@ Takes arguments START and END which delimit the region to propertize."
       ((rx (or (and "::" symbol-start)
                (and symbol-end "::")))
        (0 "_"))
-      ; multiline comments
       ((rx "#`")
-       (0 (ignore (perl6-syntax-propertize-embedded-comment)))))
+       (0 (ignore (perl6-syntax-propertize-embedded-comment))))
+      ((rx (or "«" "<<"))
+       (0 (ignore (perl6-syntax-propertize-dq-words)))))
       start end)))
 
 (defun perl6-font-lock-syntactic-face (state)
