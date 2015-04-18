@@ -227,6 +227,27 @@ LENGTH is the length of the brackets (e.g. 2 for a <<foo>>)."
             (put-text-property (- comment-end 1) comment-end
                                'syntax-table (string-to-syntax "!"))))))))
 
+(defun perl6-syntax-propertize-angle ()
+  "Add syntax properties to angle-bracketed quotes (<foo bar>)."
+  (unless (or (looking-at "[-=]")
+              (looking-back "[+~=!]<" 2))
+    (when (or (or (not (looking-at "[\s\n]"))
+                  (not (looking-back "[\s\n]<" 1)))
+              (looking-at "<\s+>")
+              (looking-back "=\s+<")
+              (looking-back "\(\s*<")
+              (or (looking-at "\s*$") (looking-back "^\s*<"))
+              (looking-back (perl6-rx (symbol (or "enum" "for" "any" "all" "none"))
+                                (0+ space) (opt "\)") (0+ space) "<")))
+      (let ((quote-beg (- (point) 1)))
+        (put-text-property quote-beg (1+ quote-beg)
+                           'syntax-table (string-to-syntax "|"))
+        (search-forward ">")
+        (let ((quote-end (- (point) 1)))
+          (put-text-property quote-beg quote-end 'syntax-multiline t)
+          (put-text-property quote-end (1+ quote-end)
+                             'syntax-table (string-to-syntax "|")))))))
+
 (defun perl6-syntax-propertize (start end)
   "Add context-specific syntax properties to code.
 
@@ -251,7 +272,9 @@ Takes arguments START and END which delimit the region to propertize."
       ((rx (group "<") "<" (0+ (not-char ">")) (opt (and ">" (group ">"))))
        (0 (ignore (put-text-property (match-beginning 0) (match-end 0) 'syntax-multiline t)))
        (1 "|")
-       (2 "|")))
+       (2 "|"))
+      ((rx "<")
+       (0 (ignore (perl6-syntax-propertize-angle)))))
       start end)))
 
 (defun perl6-font-lock-syntactic-face (state)

@@ -58,6 +58,14 @@ POS."
                                 (should (eq (perl6-test-syntax-at 10) 'symbol))
                                 (should (eq (perl6-test-syntax-at 11) 'symbol))))
 
+(ert-deftest perl6-syntax-propertize/angles ()
+  :tags '(syntax-table syntax-properties)
+  (perl6-test-with-temp-buffer "my @foo = <bar>; for @foo <-> $bar {}"
+                                (should (eq (perl6-test-syntax-at 11) 'generic-string))
+                                (should (eq (perl6-test-syntax-at 15) 'generic-string))
+                                (should (eq (perl6-test-syntax-at 27) 'punctuation))
+                                (should (eq (perl6-test-syntax-at 29) 'punctuation))))
+
 (ert-deftest perl6-syntax-propertize/dq-words ()
   :tags '(syntax-table syntax-properties)
   (perl6-test-with-temp-buffer "foo «bar» bla <<baz>> quux"
