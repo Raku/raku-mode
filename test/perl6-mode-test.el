@@ -81,6 +81,10 @@ POS."
   :tags '(fontification syntax-table)
   (should (eq (perl6-test-face-at 8 "$foo = \"bar\"") 'perl6-string)))
 
+(ert-deftest perl6-mode-syntax-table/fontify-set-operator ()
+  :tags '(fontification syntax-table)
+  (should (eq (perl6-test-face-at 6 "$mh (<+) $m") 'perl6-operator)))
+
 (ert-deftest perl6-mode-syntax-table/fontify-sq-string ()
   :tags '(fontification syntax-table)
   (should (eq (perl6-test-face-at 8 "$foo = 'bar'") 'perl6-string)))
