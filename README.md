@@ -19,6 +19,7 @@ Features
 * REPL interaction
 * imenu support
 * ETags support
+* Electricity (`electric-pair-mode` needs some context-sensitive help)
 
 ### Not planned
 
