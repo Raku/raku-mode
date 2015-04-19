@@ -81,6 +81,26 @@
   "Face for pragmas in Perl 6."
   :group 'perl6)
 
+(defface perl6-sigil
+  '((t :inherit font-lock-variable-name-face))
+  "Face for variable sigils in Perl 6."
+  :group 'perl6)
+
+(defface perl6-twigil
+  '((t :inherit font-lock-type-face))
+  "Face for variable twigils in Perl 6."
+  :group 'perl6)
+
+(defface perl6-var-package
+  '((t :inherit font-lock-variable-name-face))
+  "Face for variable names in Perl 6."
+  :group 'perl6)
+
+(defface perl6-var-name
+  '((t :inherit font-lock-variable-name-face))
+  "Face for variable names in Perl 6."
+  :group 'perl6)
+
 (eval-when-compile
   (require 'rx)
 
@@ -142,9 +162,8 @@
                             "KitchenSink" "Role" "Int" "Rat" "Buf" "UInt"
                             "Abstraction" "Numeric" "Real" "Nil"
                             "Mu")))
-      (identifier . ,(rx (and (any "A-Za-z")
-                              (1+ (or (any "A-Za-z0-9")
-                                      (and (any "-'") (any "A-Za-z")))))))))
+      (identifier . ,(rx (any "A-Za-z") (0+ (any "A-Za-z0-9"))
+                         (0+ (any "-'") (any "A-Za-z") (0+ (any "A-Za-z0-9")))))))
   (defmacro perl6-rx (&rest sexps)
     "Specialized `rx' variant for perl6-mode."
     (let ((rx-constituents (append perl6-rx-constituents rx-constituents)))
@@ -264,7 +283,7 @@ Takes arguments START and END which delimit the region to propertize."
     (funcall
      (syntax-propertize-rules
       ;; [-'] between identifiers are symbol chars
-      ((rx (any "A-Za-z") (group (any "-'")) (any "A-Za-z"))
+      ((rx (any "A-Za-z0-9") (group (any "-'")) (any "A-Za-z"))
        (1 "_"))
       ;; same for "::" around identifiers
       ((rx (or (and "::" symbol-start)
@@ -292,6 +311,15 @@ Takes STATE, the parse state."
 
 (defvar perl6-font-lock-keywords
   `(
+    (,(perl6-rx (group (1+ (char "@$%&")))
+                (group (opt (char ".^*?=!~")))
+                (group (opt (or (and "::" (0+ (and identifier "::")))
+                                (1+ identifier "::"))))
+                (group identifier symbol-end))
+     (1 'perl6-sigil)
+     (2 'perl6-twigil)
+     (3 'perl6-var-package)
+     (4 'perl6-var-name))
     (,(perl6-rx (group (any ".^")) (group identifier symbol-end))
      (1 'perl6-operator)
      (2 'perl6-identifier))

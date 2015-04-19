@@ -105,6 +105,15 @@ bar #`<foo> baz"
   (perl6-test-with-temp-buffer "BEGIN {"
     (should (eq (perl6-test-face-at 1) 'perl6-phaser))))
 
+(ert-deftest perl5-font-lock-keywords/variable ()
+  :tags '(fontification syntax-table)
+  (perl6-test-with-temp-buffer "$::foo @!bar"
+    (should (eq (perl6-test-face-at 3) 'perl6-var-package))
+    (should (eq (perl6-test-face-at 4) 'perl6-var-name))
+    (should (eq (perl6-test-face-at 8) 'perl6-sigil))
+    (should (eq (perl6-test-face-at 9) 'perl6-twigil))
+    (should (eq (perl6-test-face-at 10) 'perl6-var-name))))
+
 (provide 'perl6-mode-test)
 
 ;; Local Variables:
