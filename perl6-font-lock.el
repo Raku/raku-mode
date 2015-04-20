@@ -135,6 +135,11 @@
                            "gt" "eqv" "ff" "fff" "and" "andthen" "or"
                            "xor" "orelse" "extra" "lcm" "gcd")))
       (operator-char . ,(rx (any "-+/*~?|=^!%&,<>».;\\∈∉∋∌∩∪≼≽⊂⊃⊄⊅⊆⊇⊈⊉⊍⊎⊖∅")))
+      (set-operator . ,(rx (opt "R") "\(" (or (char "-^.+|&")
+                                              (and (char "<>")
+                                                   (opt (char "=+")))
+                                              "cont"
+                                              "elem") "\)"))
       (low-type . ,(rx (or "int" "int1" "int2" "int4" "int8" "int16"
                            "int32" "int64" "rat" "rat1" "rat2" "rat4"
                            "rat8" "rat16" "rat32" "rat64" "buf" "buf1"
@@ -292,7 +297,7 @@ Takes arguments START and END which delimit the region to propertize."
       ((rx "#`")
        (0 (ignore (perl6-syntax-propertize-embedded-comment))))
       ;; set operators
-      ((rx (opt "R") "\(" (or (char "-^.+|&") (and (char "<>") (opt (char "=+"))) "cont" "elem") "\)")
+      ((perl6-rx set-operator)
        (0 (prog1 "." (put-text-property (match-beginning 0) (match-end 0)
                                         'font-lock-face 'perl6-operator))))
       ((rx (1+ (char "<«")))
