@@ -37,7 +37,7 @@
   :group 'perl6)
 
 (defface perl6-exception
-  '((t :inherit font-lock-exit-face))
+  '((t :inherit font-lock-keyword-face))
   "Face for exception keywords in Perl 6."
   :group 'perl6)
 
