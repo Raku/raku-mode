@@ -92,7 +92,7 @@
   :group 'perl6)
 
 (defface perl6-var-package
-  '((t :inherit font-lock-variable-name-face))
+  '((t :inherit font-lock-constant-face))
   "Face for variable names in Perl 6."
   :group 'perl6)
 
