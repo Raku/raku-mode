@@ -114,7 +114,8 @@
       (routine . ,(rx (or "macro" "sub" "submethod" "method"
                                   "multi" "proto" "only" "category")))
       (module . ,(rx (or "module" "class" "role" "package"
-                                 "enum" "grammar" "slang" "subset")))
+                         "enum" "grammar" "slang" "subset")))
+      (rule . ,(rx (or "regex" "rule" "token")))
       (include . ,(rx (or "use" "require")))
       (conditional . ,(rx (or "if" "else" "elsif" "unless")))
       (scope . ,(rx (or "let" "my" "our" "state" "temp" "has"
@@ -327,6 +328,9 @@ Takes STATE, the parse state."
      (4 'perl6-var-name))
     (,(perl6-rx (group (any ".^")) (group identifier symbol-end))
      (1 'perl6-operator)
+     (2 'perl6-identifier))
+    (,(perl6-rx (group symbol-start rule) (1+ space) (group identifier))
+     (1 'perl6-routine)
      (2 'perl6-identifier))
     (,(perl6-rx (group symbol-start high-type) "(") 1 'perl6-type)
     (,(perl6-rx (group symbol-start identifier) "(") 1 'perl6-identifier)
