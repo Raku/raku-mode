@@ -12,7 +12,7 @@ Features
 
 * Syntax highlighting (very much a work in progress)
 
-### Planned
+#### Planned
 
 * Indentation
 * Help system
@@ -21,7 +21,7 @@ Features
 * ETags support
 * Electricity (`electric-pair-mode` needs some context-sensitive help)
 
-### Not planned
+#### Not planned
 
 * Syntax checking (use [flycheck-perl6][])
 
