@@ -2,7 +2,7 @@ Perl 6 Mode
 ===========
 
 [![License GPL 3][badge-license]][copying]
-[![MELPA release][badge-melpa]][http://melpa.org/#/perl6-mode]
+[![MELPA Status](http://melpa.org/packages/perl6-mode-badge.svg)](http://melpa.org/#/perl6-mode)
 
 Perl 6 mode lets you edit Perl 6 code with [GNU Emacs][] 24.
 
@@ -86,7 +86,6 @@ Public License for more details.
 See [`COPYING`][copying] for the complete license.
 
 [badge-license]: https://img.shields.io/badge/license-GPL_3-green.svg
-[badge-melpa]: http://melpa.org/packages/perl6-mode-badge.svg
 [COPYING]: https://github.com/hinrik/perl6-mode/blob/master/COPYING
 [GNU Emacs]: https://www.gnu.org/software/emacs/
 [flycheck-perl6]: https://github.com/hinrik/flycheck-perl6
