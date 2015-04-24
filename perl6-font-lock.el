@@ -6,100 +6,85 @@
 
 ;;; Code:
 
-(defface perl6-identifier
-  '((t :inherit default))
+(defface perl6-identifier '((t :inherit default))
   "Face for identifiers in Perl 6."
-  :group 'perl6)
+  :group 'perl6-faces)
 
-(defface perl6-string
-  '((t :inherit font-lock-string-face))
+(defface perl6-string '((t :inherit font-lock-string-face))
   "Face for strings in Perl 6."
-  :group 'perl6)
+  :group 'perl6-faces)
 
-(defface perl6-comment
-  '((t :inherit font-lock-comment-face))
+(defface perl6-comment '((t :inherit font-lock-comment-face))
   "Face for comments in Perl 6."
-  :group 'perl6)
+  :group 'perl6-faces)
 
-(defface perl6-operator
-  '((t :inherit font-lock-builtin-face))
+(defface perl6-operator '((t :inherit font-lock-builtin-face))
   "Face for operators in Perl 6."
-  :group 'perl6)
+  :group 'perl6-faces)
 
-(defface perl6-type
-  '((t :inherit font-lock-type-face))
+(defface perl6-type '((t :inherit font-lock-type-face))
   "Face for types in Perl 6."
-  :group 'perl6)
+  :group 'perl6-faces)
 
-(defface perl6-phaser
-  '((t :inherit font-lock-preprocessor-face))
+(defface perl6-phaser '((t :inherit font-lock-preprocessor-face))
   "Face for phasers in Perl 6."
-  :group 'perl6)
+  :group 'perl6-faces)
 
-(defface perl6-exception
-  '((t :inherit font-lock-keyword-face))
+(defface perl6-exception '((t :inherit font-lock-keyword-face))
   "Face for exception keywords in Perl 6."
-  :group 'perl6)
+  :group 'perl6-faces)
 
-(defface perl6-module
-  '((t :inherit font-lock-keyword-face))
+(defface perl6-module '((t :inherit font-lock-keyword-face))
   "Face for module keywords in Perl 6."
-  :group 'perl6)
+  :group 'perl6-faces)
 
-(defface perl6-routine
-  '((t :inherit font-lock-keyword-face))
+(defface perl6-routine '((t :inherit font-lock-keyword-face))
   "Face for routine keywords in Perl 6."
-  :group 'perl6)
+  :group 'perl6-faces)
 
-(defface perl6-include
-  '((t :inherit font-lock-keyword-face))
+(defface perl6-include '((t :inherit font-lock-keyword-face))
   "Face for include keywords in Perl 6."
-  :group 'perl6)
+  :group 'perl6-faces)
 
-(defface perl6-conditional
-  '((t :inherit font-lock-keyword-face))
+(defface perl6-conditional '((t :inherit font-lock-keyword-face))
   "Face for conditional keywords in Perl 6."
-  :group 'perl6)
+  :group 'perl6-faces)
 
-(defface perl6-scope
-  '((t :inherit font-lock-keyword-face))
+(defface perl6-scope '((t :inherit font-lock-keyword-face))
   "Face for scope keywords in Perl 6."
-  :group 'perl6)
+  :group 'perl6-faces)
 
-(defface perl6-loop
-  '((t :inherit font-lock-keyword-face))
+(defface perl6-loop '((t :inherit font-lock-keyword-face))
   "Face for loop keywords in Perl 6."
-  :group 'perl6)
+  :group 'perl6-faces)
 
-(defface perl6-flow-control
-  '((t :inherit font-lock-keyword-face))
+(defface perl6-flow-control '((t :inherit font-lock-keyword-face))
   "Face for flow control keywords in Perl 6."
-  :group 'perl6)
+  :group 'perl6-faces)
 
-(defface perl6-pragma
-  '((t :inherit font-lock-keyword-face))
+(defface perl6-pragma '((t :inherit font-lock-keyword-face))
   "Face for pragmas in Perl 6."
-  :group 'perl6)
+  :group 'perl6-faces)
 
-(defface perl6-sigil
-  '((t :inherit font-lock-variable-name-face))
+(defface perl6-type-constraint '((t :inherit font-lock-keyword-face))
+  "Face for type constraint keywords in Perl 6."
+  :group 'perl6-faces)
+
+(defface perl6-sigil '((t :inherit font-lock-variable-name-face))
   "Face for variable sigils in Perl 6."
-  :group 'perl6)
+  :group 'perl6-faces)
 
-(defface perl6-twigil
-  '((t :inherit font-lock-type-face))
+(defface perl6-twigil '((t :inherit font-lock-type-face))
   "Face for variable twigils in Perl 6."
-  :group 'perl6)
+  :group 'perl6-faces)
 
-(defface perl6-var-package
-  '((t :inherit font-lock-constant-face))
+(defface perl6-var-package '((t :inherit font-lock-constant-face))
   "Face for variable names in Perl 6."
-  :group 'perl6)
+  :group 'perl6-faces)
 
-(defface perl6-var-name
-  '((t :inherit font-lock-variable-name-face))
+(defface perl6-var-name '((t :inherit font-lock-variable-name-face))
   "Face for variable names in Perl 6."
-  :group 'perl6)
+  :group 'perl6-faces)
 
 (eval-when-compile
   (require 'rx)
@@ -170,6 +155,7 @@
                             "Mu")))
       (identifier . ,(rx (any "A-Za-z") (0+ (any "A-Za-z0-9"))
                          (0+ (any "-'") (any "A-Za-z") (0+ (any "A-Za-z0-9")))))))
+
   (defmacro perl6-rx (&rest sexps)
     "Specialized `rx' variant for perl6-mode."
     (let ((rx-constituents (append perl6-rx-constituents rx-constituents)))
