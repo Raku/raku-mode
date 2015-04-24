@@ -153,8 +153,7 @@
                             "KitchenSink" "Role" "Int" "Rat" "Buf" "UInt"
                             "Abstraction" "Numeric" "Real" "Nil"
                             "Mu")))
-      (identifier . ,(rx (any "A-Za-z") (0+ (any "A-Za-z0-9"))
-                         (0+ (any "-'") (any "A-Za-z") (0+ (any "A-Za-z0-9")))))))
+      (identifier . ,(rx alpha (0+ alnum) (0+ (any "-'") alpha (0+ alnum))))))
 
   (defmacro perl6-rx (&rest sexps)
     "Specialized `rx' variant for perl6-mode."
