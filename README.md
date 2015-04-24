@@ -29,8 +29,6 @@ Features
 Installation
 ------------
 
-From [MELPA][] with <kbd>M-x package-install RET perl6-mode</kbd>.
-
 With [`use-package`][use-package] in your init file:
 
 ```el
@@ -46,6 +44,8 @@ Or in your [`Cask`][cask] file:
 
 (depends-on "perl6-mode")
 ```
+
+Or manually with <kbd>M-x package-install RET perl6-mode</kbd>.
 
 Usage
 -----
