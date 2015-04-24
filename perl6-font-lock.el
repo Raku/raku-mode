@@ -238,7 +238,7 @@ LENGTH is the length of the brackets (e.g. 2 for a <<foo>>)."
                                'syntax-table (string-to-syntax "!"))))))))
 
 (defun perl6-syntax-propertize-angles (open-angles)
-  "Add syntax properties to angle-bracketed quotes (e.g. <foo > and «bar»).
+  "Add syntax properties to angle-bracketed quotes (e.g. <foo> and «bar»).
 
 OPEN-ANGLES is the opening delimiter (e.g. \"«\" or \"<<\")."
   (with-syntax-table perl6-bracket-syntax-table
