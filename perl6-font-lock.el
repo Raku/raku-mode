@@ -165,7 +165,7 @@
             (t
              (rx-to-string (car sexps) t))))))
 
-(defvar perl6-mode-syntax-table
+(defconst perl6-mode-syntax-table
   (let ((table (make-syntax-table)))
     ;; single-line comments
     (modify-syntax-entry ?# "<" table)
@@ -187,7 +187,7 @@
     table)
   "The top level syntax table for Perl 6.")
 
-(defvar perl6-bracket-syntax-table
+(defconst perl6-bracket-syntax-table
   (let ((table (make-syntax-table perl6-mode-syntax-table)))
     (modify-syntax-entry ?< "(>" table)
     (modify-syntax-entry ?> ")<" table)
@@ -300,7 +300,7 @@ Takes STATE, the parse state."
      (in-string 'perl6-string)
      (in-comment 'perl6-comment))))
 
-(defvar perl6-font-lock-keywords
+(defconst perl6-font-lock-keywords
   `(
     (,(perl6-rx (group (1+ (char "@$%&")))
                 (group (opt (char ".^*?=!~")))

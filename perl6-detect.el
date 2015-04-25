@@ -16,7 +16,7 @@
 (add-to-list 'auto-mode-alist '("\\.p[lm]?6\\'" . perl6-mode))
 
 ;;;###autoload
-(defvar perl6-magic-pattern
+(defconst perl6-magic-pattern
   (rx line-start
       (0+ space)
       (or (and "use" (0+ space) "v6")
