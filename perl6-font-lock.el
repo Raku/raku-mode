@@ -86,6 +86,10 @@
   "Face for variable names in Perl 6."
   :group 'perl6-faces)
 
+(defface perl6-version '((t :inherit font-lock-constant-face))
+  "Face for version literals in Perl 6."
+  :group 'perl6-faces)
+
 (eval-when-compile
   (require 'rx)
 
@@ -153,7 +157,8 @@
                             "KitchenSink" "Role" "Int" "Rat" "Buf" "UInt"
                             "Abstraction" "Numeric" "Real" "Nil"
                             "Mu")))
-      (identifier . ,(rx alpha (0+ alnum) (0+ (any "-'") alpha (0+ alnum))))))
+      (identifier . ,(rx alpha (0+ alnum) (0+ (any "-'") alpha (0+ alnum))))
+      (version . ,(rx "v" (1+ digit) (0+ "." (or "*" (1+ digit))) (opt "+")))))
 
   (defmacro perl6-rx (&rest sexps)
     "Specialized `rx' variant for perl6-mode."
@@ -331,6 +336,7 @@ Takes STATE, the parse state."
     (,(perl6-rx (symbol loop)) 0 'perl6-loop)
     (,(perl6-rx (symbol flow-control)) 0 'perl6-flow-control)
     (,(perl6-rx (symbol pragma)) 0 'perl6-pragma)
+    (,(perl6-rx symbol-start version) 0 'perl6-version)
     (,(perl6-rx (symbol identifier)) 0 'perl6-identifier)
     (,(perl6-rx operator-char) 0 'perl6-operator))
   "Font lock keywords for Perl 6.")
