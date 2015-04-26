@@ -51,6 +51,7 @@
   (setq-local font-lock-defaults '(perl6-font-lock-keywords nil nil))
   ;; Comments
   (setq-local comment-start "#")
+  (setq-local comment-start-skip "#+ *")
   (setq-local comment-use-syntax t)
   (setq-local comment-end ""))
 
