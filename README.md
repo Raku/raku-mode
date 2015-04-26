@@ -46,8 +46,7 @@ Or in your [`Cask`][cask] file:
 
 (depends-on "perl6-mode")
 ```
-
-Or manually with <kbd>M-x package-install RET perl6-mode</kbd>.
+Or manually from [MELPA][] with <kbd>M-x package-install RET perl6-mode</kbd>.
 
 Usage
 -----
