@@ -1,5 +1,4 @@
-Perl 6 Mode
-===========
+# Perl 6 Mode
 
 [![License GPL 3][badge-license]][copying]
 [![MELPA Status](http://melpa.org/packages/perl6-mode-badge.svg)](http://melpa.org/#/perl6-mode)
@@ -9,8 +8,7 @@ Perl 6 mode lets you edit Perl 6 code with [GNU Emacs][] 24.
 
 This mode needs GNU Emacs 24.4.
 
-Features
---------
+## Features
 
 * Syntax highlighting (very much a work in progress)
 
@@ -28,8 +26,7 @@ Features
 
 * Syntax checking (use [flycheck-perl6][])
 
-Installation
-------------
+## Installation
 
 With [`use-package`][use-package] in your init file:
 
@@ -48,8 +45,7 @@ Or in your [`Cask`][cask] file:
 ```
 Or manually from [MELPA][] with <kbd>M-x package-install RET perl6-mode</kbd>.
 
-Usage
------
+## Usage
 
 Just visit Perl 6 files.
 
@@ -60,19 +56,16 @@ with a `.p6`, `.pm6`, or `.pl6` extension. It also applies to any `.pm`,
 
 Use <kbd>M-x customize-group RET perl6</kbd> to customize Perl 6 Mode.
 
-Support
--------
+## Support
 
 You can ask a question in the [issue tracker][], or email me at
 hinrik.sig@gmail.com.
 
-Contribute
-----------
+## Contribute
 
 Pull requests are welcome.
 
-License
--------
+## License
 
 Perl 6 Mode is free software: you can redistribute it and/or modify it
 under the terms of the GNU General Public License as published by the
