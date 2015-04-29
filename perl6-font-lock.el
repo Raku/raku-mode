@@ -286,7 +286,7 @@ Takes arguments START and END which delimit the region to propertize."
       ((rx (or (and "::" symbol-start)
                (and symbol-end "::")))
        (0 "_"))
-      ((rx "#`")
+      ((rx "#" (any "`|="))
        (0 (ignore (perl6-syntax-propertize-embedded-comment))))
       ;; set operators
       ((perl6-rx set-operator)
