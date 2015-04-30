@@ -7,7 +7,7 @@ export EMACS
 
 PKGDIR := $(shell EMACS=$(EMACS) $(CASK) package-directory)
 
-SRCS = perl6-mode.el perl6-font-lock.el perl6-detect.el
+SRCS := $(wildcard *.el)
 OBJS = $(SRCS:.el=.elc)
 
 .PHONY: compile test clean

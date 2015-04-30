@@ -10,11 +10,13 @@ This mode needs GNU Emacs 24.4.
 
 ## Features
 
-* Syntax highlighting (very much a work in progress)
+* Basic syntax highlighting
+* Basic indentation
 
 #### Planned
 
-* Indentation
+* Complete syntax highlighting
+* Better indentation support
 * Help system
 * REPL interaction
 * imenu support
