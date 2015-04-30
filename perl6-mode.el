@@ -41,6 +41,65 @@
 (require 'perl6-detect)
 (require 'perl6-font-lock)
 
+
+(require 'smie)
+
+(defconst perl6-smie-grammar
+  (smie-prec2->grammar
+   (smie-precs->prec2 '((assoc ";") (assoc ",") (left ":")))))
+
+(defun perl6-smie--not-interpolation-p ()
+  (save-excursion
+    (forward-char -1)
+    (or (zerop (skip-chars-backward "-[:alnum:]"))
+        (not (looking-back "#{\\$" (- (point) 3))))))
+
+
+
+(defun perl6-smie--forward-token ()
+  (cond
+   ((and (eq (char-before) ?\})
+	    (perl6-smie--not-interpolation-p)
+	    ;; FIXME: If the next char is not whitespace, what should we do?
+	    (or (memq (char-after) '(?\s ?\t ?\n))
+		(looking-at comment-start-skip)))
+       (if (memq (char-after) '(?\s ?\t ?\n))
+	   (forward-char 1) (forward-comment 1))
+       ";")
+   ((progn (forward-comment (point-max))
+           (looking-at "[;,:]"))
+    (forward-char 1) (match-string 0))
+   (t (smie-default-forward-token))))
+
+(defun perl6-smie--backward-token ()
+  (let ((pos (point)))
+    (forward-comment (- (point)))
+    (cond
+     ;; FIXME: If the next char is not whitespace, what should we do?
+     ((and (eq (char-before) ?\}) (perl6-smie--not-interpolation-p)
+           (> pos (point))) ";")
+     ((memq (char-before) '(?\; ?\, ?\:))
+      (forward-char -1) (string (char-after)))
+     (t (smie-default-backward-token)))))
+
+(defun perl6-smie-rules (kind token)
+  (pcase (cons kind token)
+    (`(:elem . basic) perl6-indent-offset)
+    (`(:elem . arg) 0)
+    (`(:list-intro . ,(or `";" `"")) t) ;"" stands for BOB (bug#15467).
+    (`(:before . "{")
+     (when (smie-rule-hanging-p)
+       (smie-backward-sexp ";")
+       (smie-indent-virtual)))
+    (`(:before . ,(or "{" "("))
+     (if (smie-rule-hanging-p) (smie-rule-parent 0)))))
+
+(defcustom perl6-indent-offset 4
+  "Basic size of one indentation step."
+  :version "22.2"
+  :type 'integer)
+
+
 ;;;###autoload
 (define-derived-mode perl6-mode prog-mode "Perl6"
   "Major mode for editing Perl 6 code."
@@ -53,7 +112,12 @@
   (setq-local comment-start "#")
   (setq-local comment-start-skip "#+ *")
   (setq-local comment-use-syntax t)
-  (setq-local comment-end ""))
+  (setq-local comment-end "")
+  (smie-setup perl6-smie-grammar #'perl6-smie-rules
+              :forward-token #'perl6-smie--forward-token
+              :backward-token #'perl6-smie--backward-token)
+
+  )
 
 (provide 'perl6-mode)
 
