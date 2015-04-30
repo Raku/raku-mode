@@ -46,9 +46,9 @@
 (define-derived-mode perl6-mode prog-mode "Perl6"
   "Major mode for editing Perl 6 code."
   ;; Syntaxification and font locking
-  (setq-local syntax-propertize-function 'perl6-syntax-propertize)
-  (add-hook 'syntax-propertize-extend-region-functions 'syntax-propertize-multiline nil 'local)
-  (setq-local font-lock-syntactic-face-function 'perl6-font-lock-syntactic-face)
+  (setq-local syntax-propertize-function #'perl6-syntax-propertize)
+  (add-hook 'syntax-propertize-extend-region-functions #'syntax-propertize-multiline nil 'local)
+  (setq-local font-lock-syntactic-face-function #'perl6-font-lock-syntactic-face)
   (setq-local font-lock-defaults '(perl6-font-lock-keywords nil nil))
   ;; Comments
   (setq-local comment-start "#")
