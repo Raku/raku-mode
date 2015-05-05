@@ -291,7 +291,7 @@ Takes arguments START and END which delimit the region to propertize."
       ;; set operators
       ((perl6-rx set-operator)
        (0 (prog1 "." (put-text-property (match-beginning 0) (match-end 0)
-                                        'font-lock-face 'perl6-operator))))
+                                        'face 'perl6-operator))))
       ((rx (1+ (char "<«")))
        (0 (ignore (perl6-syntax-propertize-angles (match-string 0))))))
       start end)))
