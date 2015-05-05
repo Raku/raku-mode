@@ -66,8 +66,12 @@
   "Face for pragmas in Perl 6."
   :group 'perl6-faces)
 
-(defface perl6-type-constraint '((t :inherit font-lock-keyword-face))
+(defface perl6-type-constraint '((t :inherit font-lock-preprocessor-face))
   "Face for type constraint keywords in Perl 6."
+  :group 'perl6-faces)
+
+(defface perl6-type-property '((t :inherit font-lock-builtin-face))
+  "Face for type constraint properties in Perl 6."
   :group 'perl6-faces)
 
 (defface perl6-sigil '((t :inherit font-lock-variable-name-face))
@@ -120,6 +124,14 @@
                          "END" "CATCH" "CONTROL" "TEMP")))
       (exception . ,(rx (or "die" "fail" "try" "warn")))
       (pragma . ,(rx (or "oo" "fatal")))
+      (type-constraint . ,(rx (or "does" "as" "but" "trusts" "of" "returns"
+                                  "handles" "where" "augment" "supersede")))
+      (type-property . ,(rx (or "signature" "context" "also" "shape" "prec"
+                                "irs" "ofs" "ors" "export" "deep" "binary"
+                                "unary" "reparsed" "rw" "parsed" "cached"
+                                "readonly" "defequiv" "will" "ref" "copy"
+                                "inline" "tighter" "looser" "equiv" "assoc"
+                                "required")))
       (operator-word . ,(rx (or "div" "xx" "x" "mod" "also" "leg" "cmp"
                            "before" "after" "eq" "ne" "le" "lt" "not"
                            "gt" "eqv" "ff" "fff" "and" "andthen" "or"
@@ -306,10 +318,64 @@ Takes STATE, the parse state."
      (in-string 'perl6-string)
      (in-comment 'perl6-comment))))
 
+(defun perl6-search-when (regex condition limit)
+  "Search forward for REGEX if the match satisfies CONDITION.
+
+CONDITION should be a lambda that will be called after REGEX
+matches.  If CONDITION returns non-nil, this function will set the
+match data, then move point forward and return its position, like
+`re-search-forward' would.
+
+If CONDITION returns nil, further searches for REGEX will be
+performed until CONDITION returns non-nil or REGEX fails to
+match.
+
+LIMIT can be used to bound the search."
+  (let ((limit (or limit (point-max)))
+        (keep-searching t)
+        (new-match-data))
+    (save-excursion
+      (save-match-data
+        (while keep-searching
+          (if (re-search-forward regex limit t)
+              (when (save-excursion (save-match-data (funcall condition)))
+                (setq new-match-data (match-data)
+                      keep-searching nil))
+            (setq keep-searching nil)))))
+    (when new-match-data
+      (set-match-data new-match-data)
+      (goto-char (match-end 0)))))
+
+(defun perl6-match-type-constraint (limit)
+  (perl6-search-when
+   (perl6-rx (or (group (symbol type-constraint))
+                 (and (group (symbol "is"))
+                      (1+ space)
+                      (opt (group (symbol type-property))))))
+   (lambda ()
+     (goto-char (match-beginning 0))
+     (not (looking-back (rx (or (char ".^")
+                                (and line-start (0+ space)))))))
+   limit))
+
+(defun perl6-fontify (groups)
+  "Fontify the current match.
+
+GROUPS should be a list, each element being a list containing the number
+of a match group and the name of a face.
+
+GROUPS is allowed to reference optional match groups."
+  (dolist (group groups)
+    (let ((group-num (car group))
+          (group-face (cdr group)))
+      (when (match-string group-num)
+        (put-text-property (match-beginning group-num) (match-end group-num)
+                           'face group-face)))))
+
 (defconst perl6-font-lock-keywords
   `(
     (,(perl6-rx (group (any "@$%&")) (0+ space)
-                (or (any ",\)\}")(symbol "where")))
+                (or (any ",\)\}") (symbol "where")))
      1 'perl6-sigil)
     (,(perl6-rx (group (1+ (char "@$%&")))
                 (group (opt (char ".^*?=!~")))
@@ -321,6 +387,11 @@ Takes STATE, the parse state."
      (3 'perl6-var-package)
      (4 'perl6-var-name))
     (,(perl6-rx symbol-start version) 0 'perl6-version)
+    (perl6-match-type-constraint
+     0 (ignore (perl6-fontify
+               '((1 . perl6-type-constraint)
+                 (2 . perl6-type-constraint)
+                 (3 . perl6-type-property)))))
     (,(perl6-rx (group (any ".^")) (group identifier symbol-end))
      (1 'perl6-operator)
      (2 'perl6-identifier))
