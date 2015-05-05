@@ -251,7 +251,7 @@ OPEN-ANGLES is the opening delimiter (e.g. \"«\" or \"<<\")."
            (open-angle (string-to-char (car (split-string open-angles "" t))))
            (close-angle (matching-paren open-angle))
            (quote-beg (- (point) angle-length))
-           (line-beg (save-excursion (and (beginning-of-line) (point)))))
+           (line-beg (point-at-bol)))
       (unless (or (looking-at "[-=]")
                   (looking-back (rx-to-string `(and (char "+~=!") ,open-angle)) 2))
         (when (or (or (not (looking-at "[\s\n]"))
