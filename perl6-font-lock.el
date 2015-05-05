@@ -308,6 +308,8 @@ Takes STATE, the parse state."
 
 (defconst perl6-font-lock-keywords
   `(
+    (,(perl6-rx (group (any "@$%&")) (0+ space) (or (any ",\)\}") (symbol "where")))
+     1 'perl6-sigil)
     (,(perl6-rx (group (1+ (char "@$%&")))
                 (group (opt (char ".^*?=!~")))
                 (group (opt (or (and "::" (0+ (and identifier "::")))
