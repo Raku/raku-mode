@@ -354,8 +354,13 @@ LIMIT can be used to bound the search."
                       (opt (group (symbol type-property))))))
    (lambda ()
      (goto-char (match-beginning 0))
-     (not (looking-back (rx (or (char ".^")
-                                (and line-start (0+ space)))))))
+     (let* ((state (syntax-ppss))
+            (in-string (nth 3 state))
+            (in-comment (nth 4 state)))
+       (not (or in-string
+                in-comment
+                (looking-back (rx (or (char ".^")
+                                      (and line-start (0+ space)))))))))
    limit))
 
 (defun perl6-fontify (groups)
