@@ -10,6 +10,10 @@
   "Face for identifiers in Perl 6."
   :group 'perl6-faces)
 
+(defface perl6-number '((t :inherit font-lock-constant-face))
+  "Face for number literals in Perl 6."
+  :group 'perl6-faces)
+
 (defface perl6-string '((t :inherit font-lock-string-face))
   "Face for strings in Perl 6."
   :group 'perl6-faces)
@@ -181,7 +185,14 @@
                             "Abstraction" "Numeric" "Real" "Nil"
                             "Mu")))
       (identifier . ,(rx alpha (0+ alnum) (0+ (any "-'") alpha (0+ alnum))))
-      (version . ,(rx "v" (1+ digit) (0+ "." (or "*" (1+ digit))) (opt "+")))))
+      (version . ,(rx "v" (1+ digit) (0+ "." (or "*" (1+ digit))) (opt "+")))
+      (base-number
+       . ,(rx symbol-start
+              (group-n 1 "0")
+              (or (and (group-n 2 "o") (group-n 3 (any "0-7") (0+ (any "0-7_"))))
+                  (and (group-n 2 "b") (group-n 3 (any "0-1") (0+ (any "0-1_"))))
+                  (and (group-n 2 "x") (group-n 3 (regex "[[:xdigit:]]") (0+ (regex "[[:xdigit:]_]"))))
+                  (and (group-n 2 "d") (group-n 3 (regex "[[:digit:]]") (0+ (regex "[[:digit:]_]")))))))))
 
   (defmacro perl6-rx (&rest sexps)
     "Specialized `rx' variant for perl6-mode."
@@ -464,7 +475,11 @@ GROUPS is allowed to reference optional match groups."
     (,(perl6-rx (symbol flow-control)) 0 'perl6-flow-control)
     (,(perl6-rx (symbol pragma)) 0 'perl6-pragma)
     (,(perl6-rx (symbol identifier)) 0 'perl6-identifier)
-    (,(perl6-rx operator-char) 0 'perl6-operator))
+    (,(perl6-rx operator-char) 0 'perl6-operator)
+    (,(perl6-rx base-number)
+     (1 'perl6-number)
+     (2 'perl6-operator)
+     (3 'perl6-number)))
   "Font lock keywords for Perl 6.")
 
 (provide 'perl6-font-lock)
