@@ -283,12 +283,19 @@ OPEN-ANGLES is the opening delimiter (e.g. \"«\" or \"<<\")."
             (put-text-property quote-end (1+ quote-end)
                                'syntax-table (string-to-syntax "|"))))))))
 
+(defun perl6-syntax-propertize-match (property &optional group)
+  (let ((beg (match-beginning (or group 1)))
+        context)
+    (put-text-property beg (1+ beg) property
+                       (cons context (match-data)))))
+
 (defun perl6-syntax-propertize (start end)
   "Add context-specific syntax properties to code.
 
 Takes arguments START and END which delimit the region to propertize."
   (let ((case-fold-search nil))
     (goto-char start)
+    (remove-text-properties start end '(perl6-metaoperator))
     (funcall
      (syntax-propertize-rules
       ;; [-'] between identifiers are symbol chars
@@ -302,8 +309,7 @@ Takes arguments START and END which delimit the region to propertize."
        (0 (ignore (perl6-syntax-propertize-embedded-comment))))
       ;; set operators
       ((perl6-rx set-operator)
-       (0 (prog1 "." (put-text-property (match-beginning 0) (match-end 0)
-                                        'face 'perl6-operator))))
+       (0 (prog1 "." (perl6-syntax-propertize-match 'perl6-metaoperator 0))))
       ((rx (1+ (char "<«")))
        (0 (ignore (perl6-syntax-propertize-angles (match-string 0))))))
       start end)))
@@ -377,8 +383,28 @@ GROUPS is allowed to reference optional match groups."
         (put-text-property (match-beginning group-num) (match-end group-num)
                            'face group-face)))))
 
+(defun perl6-match-property (property context limit)
+  (when (symbolp context)
+    (setq context (list context)))
+  (let ((pos (next-single-char-property-change (point) property nil limit)))
+    (when (> pos (point))
+      (let ((pos-with-match-data (if (and (= pos (1+ (point)))
+                                          (= (point) (point-at-bol))
+                                          (not (get-text-property pos property)))
+                                     (point)
+                                   pos)))
+        (goto-char pos)
+        (let ((value (get-text-property pos-with-match-data property)))
+          (if (and value (memq (car value) context))
+              (progn (set-match-data (cdr value)) t)
+            (perl6-match-property property context limit)))))))
+
+(defun perl6-match-metaoperator (limit)
+  (perl6-match-property 'perl6-metaoperator nil limit))
+
 (defconst perl6-font-lock-keywords
   `(
+    (perl6-match-metaoperator 0 'perl6-operator)
     (,(perl6-rx (group (any "@$%&")) (0+ space)
                 (or (any ",\)\}") (symbol "where")))
      1 'perl6-sigil)
