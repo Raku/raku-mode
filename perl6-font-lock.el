@@ -142,6 +142,17 @@
                                                    (opt (char "=+")))
                                               "cont"
                                               "elem") "\)"))
+      (rsxz-operator
+       . ,(rx
+           symbol-start
+           (any "RSXZ")
+           (or (and (or "div" "mod" "gcd" "lcm" "xx" "x" "does" "but" "cmp"
+                        "leg" "eq" "ne" "gt" "ge" "lt" "le" "before" "after"
+                        "eqv" "min" "max" "not" "so" "andthen" "and" "or"
+                        "orelse")
+                    symbol-end)
+               (any ".,")
+               (1+ (regex "[^\[.,[:space:][:alnum:]]")))))
       (low-type . ,(rx (or "int" "int1" "int2" "int4" "int8" "int16"
                            "int32" "int64" "rat" "rat1" "rat2" "rat4"
                            "rat8" "rat16" "rat32" "rat64" "buf" "buf1"
@@ -310,6 +321,9 @@ Takes arguments START and END which delimit the region to propertize."
       ;; set operators
       ((perl6-rx set-operator)
        (0 (prog1 "." (perl6-syntax-propertize-match 'perl6-metaoperator 0))))
+      ;; [RSXZ] metaoperators
+      ((perl6-rx rsxz-operator)
+       (0 (ignore (perl6-syntax-propertize-match 'perl6-metaoperator 0))))
       ((rx (1+ (char "<«")))
        (0 (ignore (perl6-syntax-propertize-angles (match-string 0))))))
       start end)))
