@@ -292,7 +292,7 @@ Takes arguments START and END which delimit the region to propertize."
     (funcall
      (syntax-propertize-rules
       ;; [-'] between identifiers are symbol chars
-      ((rx (any "A-Za-z0-9") (group (any "-'")) (any "A-Za-z"))
+      ((rx alnum (group (any "-'")) alpha)
        (1 "_"))
       ;; same for "::" around identifiers
       ((rx (or (and "::" symbol-start)
