@@ -14,6 +14,10 @@
   "Face for number literals in Perl 6."
   :group 'perl6-faces)
 
+(defface perl6-number-addition '((t :inherit font-lock-type-face))
+  "Face for additional characters attached to numbers."
+  :group 'perl6-faces)
+
 (defface perl6-string '((t :inherit font-lock-string-face))
   "Face for strings in Perl 6."
   :group 'perl6-faces)
@@ -186,6 +190,15 @@
                             "Mu")))
       (identifier . ,(rx alpha (0+ alnum) (0+ (any "-'") alpha (0+ alnum))))
       (version . ,(rx "v" (1+ digit) (0+ "." (or "*" (1+ digit))) (opt "+")))
+      (number
+       . ,(rx
+           (opt (1+ digit) (opt "_" (1+ digit)))
+           (opt ".")
+           (1+ digit)
+           (opt (group-n 1 (any "Ee"))
+                (opt "-")
+                (1+ digit) (opt "_" (1+ digit)))
+           (opt (group-n 2 "i"))))
       (base-number
        . ,(rx symbol-start
               (group-n 1 "0")
@@ -474,11 +487,18 @@ GROUPS is allowed to reference optional match groups."
     (,(perl6-rx (symbol loop)) 0 'perl6-loop)
     (,(perl6-rx (symbol flow-control)) 0 'perl6-flow-control)
     (,(perl6-rx (symbol pragma)) 0 'perl6-pragma)
+    (,(perl6-rx number)
+     0 (ignore (perl6-fontify
+                '((0 . perl6-number)
+                  (1 . perl6-number-addition)
+                  (2 . perl6-number-addition)))))
+    (,(perl6-rx (symbol (or "Inf" "NaN")))
+     0 'perl6-number)
     (,(perl6-rx (symbol identifier)) 0 'perl6-identifier)
     (,(perl6-rx operator-char) 0 'perl6-operator)
     (,(perl6-rx base-number)
      (1 'perl6-number)
-     (2 'perl6-operator)
+     (2 'perl6-number-addition)
      (3 'perl6-number)))
   "Font lock keywords for Perl 6.")
 
