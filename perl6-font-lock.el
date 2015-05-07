@@ -112,44 +112,48 @@
 
   (defconst perl6-rx-constituents
     `((symbol perl6-rx-symbol 0 nil)
-      (routine . ,(rx (or "macro" "sub" "submethod" "method"
-                                  "multi" "proto" "only" "category")))
-      (module . ,(rx (or "module" "class" "role" "package"
-                         "enum" "grammar" "slang" "subset")))
+      (routine
+       . ,(rx (or "macro" "sub" "submethod" "method" "multi" "proto" "only"
+                  "category")))
+      (module
+       . ,(rx (or "module" "class" "role" "package" "enum" "grammar" "slang"
+                  "subset")))
       (rule . ,(rx (or "regex" "rule" "token")))
       (include . ,(rx (or "use" "require")))
       (conditional . ,(rx (or "if" "else" "elsif" "unless")))
-      (scope . ,(rx (or "let" "my" "our" "state" "temp" "has"
-                              "constant")))
-      (loop . ,(rx (or "for" "loop" "repeat" "while" "until" "gather"
-                       "given")))
-      (flow-control . ,(rx (or "take" "do" "when" "next" "last" "redo"
-                               "return" "contend" "maybe" "defer" "start"
-                               "default" "exit" "make" "continue" "break"
-                               "goto" "leave" "async" "lift")))
-      (phaser . ,(rx (or "BEGIN" "CHECK" "INIT" "START" "FIRST" "ENTER"
-                         "LEAVE" "KEEP" "UNDO" "NEXT" "LAST" "PRE" "POST"
-                         "END" "CATCH" "CONTROL" "TEMP")))
+      (scope . ,(rx (or "let" "my" "our" "state" "temp" "has" "constant")))
+      (loop . ,(rx (or "for" "loop" "repeat" "while" "until" "gather" "given")))
+      (flow-control
+       . ,(rx (or "take" "do" "when" "next" "last" "redo" "return" "contend"
+                  "maybe" "defer" "start" "default" "exit" "make" "continue"
+                  "break" "goto" "leave" "async" "lift")))
+      (phaser
+       . ,(rx (or "BEGIN" "CHECK" "INIT" "START" "FIRST" "ENTER" "LEAVE" "KEEP"
+                  "UNDO" "NEXT" "LAST" "PRE" "POST" "END" "CATCH" "CONTROL"
+                  "TEMP")))
       (exception . ,(rx (or "die" "fail" "try" "warn")))
       (pragma . ,(rx (or "oo" "fatal")))
-      (type-constraint . ,(rx (or "does" "as" "but" "trusts" "of" "returns"
-                                  "handles" "where" "augment" "supersede")))
-      (type-property . ,(rx (or "signature" "context" "also" "shape" "prec"
-                                "irs" "ofs" "ors" "export" "deep" "binary"
-                                "unary" "reparsed" "rw" "parsed" "cached"
-                                "readonly" "defequiv" "will" "ref" "copy"
-                                "inline" "tighter" "looser" "equiv" "assoc"
-                                "required")))
-      (operator-word . ,(rx (or "div" "xx" "x" "mod" "also" "leg" "cmp"
-                           "before" "after" "eq" "ne" "le" "lt" "not"
-                           "gt" "eqv" "ff" "fff" "and" "andthen" "or"
-                           "xor" "orelse" "extra" "lcm" "gcd")))
+      (type-constraint
+       . ,(rx (or "does" "as" "but" "trusts" "of" "returns" "handles" "where"
+                  "augment" "supersede")))
+      (type-property
+       . ,(rx (or "signature" "context" "also" "shape" "prec" "irs" "ofs" "ors"
+                  "export" "deep" "binary" "unary" "reparsed" "rw" "parsed"
+                  "cached" "readonly" "defequiv" "will" "ref" "copy" "inline"
+                  "tighter" "looser" "equiv" "assoc" "required")))
+      (operator-word
+       . ,(rx (or "div" "xx" "x" "mod" "also" "leg" "cmp" "before" "after" "eq"
+                  "ne" "le" "lt" "not" "gt" "eqv" "ff" "fff" "and" "andthen"
+                  "or" "xor" "orelse" "extra" "lcm" "gcd")))
       (operator-char . ,(rx (any "-+/*~?|=^!%&,<>».;\\∈∉∋∌∩∪≼≽⊂⊃⊄⊅⊆⊇⊈⊉⊍⊎⊖∅")))
-      (set-operator . ,(rx (opt "R") "\(" (or (char "-^.+|&")
-                                              (and (char "<>")
-                                                   (opt (char "=+")))
-                                              "cont"
-                                              "elem") "\)"))
+      (set-operator
+       . ,(rx (opt "R")
+              "\("
+              (or (char "-^.+|&")
+                  (and (char "<>") (opt (char "=+")))
+                  "cont"
+                  "elem")
+              "\)"))
       (rsxz-operator
        . ,(rx
            symbol-start
@@ -161,33 +165,26 @@
                     symbol-end)
                (any ".,")
                (1+ (regex "[^:\[.,[:space:][:alnum:]]")))))
-      (low-type . ,(rx (or "int" "int1" "int2" "int4" "int8" "int16"
-                           "int32" "int64" "rat" "rat1" "rat2" "rat4"
-                           "rat8" "rat16" "rat32" "rat64" "buf" "buf1"
-                           "buf2" "buf4" "buf8" "buf16" "buf32" "buf64"
-                           "uint" "uint1" "uint2" "uint4" "uint8"
-                           "uint16" "uint32" "uint64" "utf8" "utf16"
-                           "utf32" "bit" "bool" "bag" "set" "mix" "num"
-                           "complex")))
-      (high-type . ,(rx (or "Object" "Any" "Junction" "Whatever"
-                            "Capture" "Match" "Signature" "Proxy"
-                            "Matcher" "Package" "Module" "Class"
-                            "Grammar" "Scalar" "Array" "Hash" "KeyHash"
-                            "KeySet" "KeyBag" "Pair" "List" "Seq"
-                            "Range" "Set" "Bag" "Mapping" "Void" "Undef"
-                            "Failure" "Exception" "Code" "Block"
-                            "Routine" "Sub" "Macro" "Method" "Submethod"
-                            "Regex" "Str" "Blob" "Char" "Byte" "Parcel"
-                            "Codepoint" "Grapheme" "StrPos" "StrLen"
-                            "Version" "Num" "Complex" "Bit" "True"
-                            "False" "Order" "Same" "Less" "More"
-                            "Increasing" "Decreasing" "Ordered"
-                            "Callable" "AnyChar" "Positional"
-                            "Associative" "Ordering" "KeyExtractor"
-                            "Comparator" "OrderingPair" "IO"
-                            "KitchenSink" "Role" "Int" "Rat" "Buf" "UInt"
-                            "Abstraction" "Numeric" "Real" "Nil"
-                            "Mu")))
+      (low-type
+       . ,(rx (or "int" "int1" "int2" "int4" "int8" "int16" "int32" "int64"
+                  "rat" "rat1" "rat2" "rat4" "rat8" "rat16" "rat32" "rat64"
+                  "buf" "buf1" "buf2" "buf4" "buf8" "buf16" "buf32" "buf64"
+                  "uint" "uint1" "uint2" "uint4" "uint8" "uint16" "uint32"
+                  "uint64" "utf8" "utf16" "utf32" "bit" "bool" "bag" "set"
+                  "mix" "num" "complex")))
+      (high-type
+       . ,(rx (or "Object" "Any" "Junction" "Whatever" "Capture" "Match"
+                  "Signature" "Proxy" "Matcher" "Package" "Module" "Class"
+                  "Grammar" "Scalar" "Array" "Hash" "KeyHash" "KeySet" "KeyBag"
+                  "Pair" "List" "Seq" "Range" "Set" "Bag" "Mapping" "Void"
+                  "Undef" "Failure" "Exception" "Code" "Block" "Routine" "Sub"
+                  "Macro" "Method" "Submethod" "Regex" "Str" "Blob" "Char"
+                  "Byte" "Parcel" "Codepoint" "Grapheme" "StrPos" "StrLen"
+                  "Version" "Num" "Complex" "Bit" "True" "False" "Order" "Same"
+                  "Less" "More" "Increasing" "Decreasing" "Ordered" "Callable"
+                  "AnyChar" "Positional" "Associative" "Ordering" "KeyExtractor"
+                  "Comparator" "OrderingPair" "IO" "KitchenSink" "Role" "Int"
+                  "Rat" "Buf" "UInt" "Abstraction" "Numeric" "Real" "Nil" "Mu")))
       (identifier . ,(rx alpha (0+ alnum) (0+ (any "-'") alpha (0+ alnum))))
       (version . ,(rx "v" (1+ digit) (0+ "." (or "*" (1+ digit))) (opt "+")))
       (number
@@ -202,10 +199,18 @@
       (base-number
        . ,(rx symbol-start
               (group-n 1 "0")
-              (or (and (group-n 2 "o") (group-n 3 (any "0-7") (0+ (any "0-7_"))))
-                  (and (group-n 2 "b") (group-n 3 (any "0-1") (0+ (any "0-1_"))))
-                  (and (group-n 2 "x") (group-n 3 (regex "[[:xdigit:]]") (0+ (regex "[[:xdigit:]_]"))))
-                  (and (group-n 2 "d") (group-n 3 (regex "[[:digit:]]") (0+ (regex "[[:digit:]_]")))))))))
+              (or (and
+                   (group-n 2 "o")
+                   (group-n 3 (any "0-7") (0+ (any "0-7_"))))
+                  (and
+                   (group-n 2 "b")
+                   (group-n 3 (any "0-1") (0+ (any "0-1_"))))
+                  (and
+                   (group-n 2 "x")
+                   (group-n 3 (regex "[[:xdigit:]]") (0+ (regex "[[:xdigit:]_]"))))
+                  (and
+                   (group-n 2 "d")
+                   (group-n 3 (regex "[[:digit:]]") (0+ (regex "[[:digit:]_]")))))))))
 
   (defmacro perl6-rx (&rest sexps)
     "Specialized `rx' variant for perl6-mode."
