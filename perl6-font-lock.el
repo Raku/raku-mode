@@ -452,8 +452,11 @@ GROUPS is allowed to reference optional match groups."
 (defconst perl6-font-lock-keywords
   `(
     (perl6-match-metaoperator 0 'perl6-operator)
-    (,(perl6-rx (group (any "@$%&")) (0+ space)
-                (or (any ",\)\}") (symbol "where")))
+    (,(perl6-rx (group (any "@$%&"))
+                (or
+                 "<"
+                 (and (0+ space)
+                      (or (any ",\)\}") (symbol "where")))))
      1 'perl6-sigil)
     (,(perl6-rx (group (1+ (char "@$%&")))
                 (group (opt (char ".^*?=!~")))
