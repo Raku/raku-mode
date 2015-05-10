@@ -102,6 +102,10 @@
   "Face for version literals in Perl 6."
   :group 'perl6-faces)
 
+(defface perl6-label '((t :inherit font-lock-constant-face))
+  "Face for block labels in Perl 6."
+  :group 'perl6-faces)
+
 (eval-when-compile
   (require 'rx)
 
@@ -495,6 +499,8 @@ GROUPS is allowed to reference optional match groups."
                   (2 . perl6-number-addition)))))
     (,(perl6-rx (symbol (or "Inf" "NaN")))
      0 'perl6-number)
+    (,(perl6-rx line-start (0+ space) (group identifier ":") (or space line-end))
+     1 'perl6-label)
     (,(perl6-rx (symbol identifier)) 0 'perl6-identifier)
     (,(perl6-rx operator-char) 0 'perl6-operator)
     (,(perl6-rx base-number)
