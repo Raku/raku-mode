@@ -347,11 +347,7 @@ Takes arguments START and END which delimit the region to propertize."
        (0 "_"))
       ((rx "#" (any "`|="))
        (0 (ignore (perl6-syntax-propertize-embedded-comment))))
-      ;; set operators
-      ((perl6-rx set-operator)
-       (0 (prog1 "." (perl6-syntax-propertize-match 'perl6-metaoperator 0))))
-      ;; [RSXZ] metaoperators
-      ((perl6-rx rsxz-operator)
+      ((perl6-rx (or set-operator rsxz-operator))
        (0 (ignore (perl6-syntax-propertize-match 'perl6-metaoperator 0))))
       ((rx (1+ (char "<«")))
        (0 (ignore (perl6-syntax-propertize-angles (match-string 0))))))
