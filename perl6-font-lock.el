@@ -10,10 +10,6 @@
   "Face for identifiers in Perl 6."
   :group 'perl6-faces)
 
-(defface perl6-package-colons '((t :inherit default))
-  "Face for double colons in Perl 6 package names."
-  :group 'perl6-faces)
-
 (defface perl6-number '((t :inherit font-lock-constant-face))
   "Face for number literals in Perl 6."
   :group 'perl6-faces)
@@ -153,7 +149,7 @@
        . ,(rx (or "div" "xx" "x" "mod" "also" "leg" "cmp" "before" "after" "eq"
                   "ne" "le" "lt" "not" "gt" "eqv" "ff" "fff" "and" "andthen"
                   "or" "xor" "orelse" "extra" "lcm" "gcd")))
-      (operator-char . ,(rx (any "-+/*~?|=^!%&,<>».;\\∈∉∋∌∩∪≼≽⊂⊃⊄⊅⊆⊇⊈⊉⊍⊎⊖∅")))
+      (operator-char . ,(rx (any "-:+/*~?|=^!%&,<>».;\\∈∉∋∌∩∪≼≽⊂⊃⊄⊅⊆⊇⊈⊉⊍⊎⊖∅")))
       (set-operator
        . ,(rx (opt "R")
               "\("
@@ -488,9 +484,6 @@ GROUPS is allowed to reference optional match groups."
     (,(perl6-rx (group symbol-start high-type) "(") 1 'perl6-type)
     (,(perl6-rx (group symbol-start identifier) "(") 1 'perl6-identifier)
     (,(perl6-rx (symbol (or low-type high-type))) 0 'perl6-type)
-    (,(rx (or (and "::" symbol-start)
-              (and symbol-end "::")))
-     0 'perl6-package-colons)
     (,(perl6-rx (group ":") (group (symbol identifier)))
      (1 'perl6-operator)
      (2 'perl6-string))
@@ -518,7 +511,12 @@ GROUPS is allowed to reference optional match groups."
                 (0+ space)
                 (group (symbol identifier)))
      1 'perl6-label)
-    (,(perl6-rx (symbol identifier)) 0 'perl6-identifier)
+    (,(perl6-rx
+       (opt "::")
+       identifier
+       (opt (0+ "::" identifier))
+       (opt "::"))
+     0 'perl6-identifier)
     (,(perl6-rx operator-char) 0 'perl6-operator)
     (,(perl6-rx base-number)
      (1 'perl6-number)
