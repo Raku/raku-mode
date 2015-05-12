@@ -435,8 +435,13 @@ GROUPS is allowed to reference optional match groups."
     (let ((group-num (car group))
           (group-face (cdr group)))
       (when (match-string group-num)
-        (put-text-property (match-beginning group-num) (match-end group-num)
-                           'face group-face)))))
+        (let* ((state (save-excursion
+                        (syntax-ppss (match-beginning group-num))))
+               (in-string (nth 3 state))
+               (in-comment (nth 4 state)))
+          (unless (or in-string in-comment)
+            (put-text-property (match-beginning group-num) (match-end group-num)
+                               'face group-face)))))))
 
 (defun perl6-match-property (property context limit)
   (when (symbolp context)
