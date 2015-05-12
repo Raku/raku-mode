@@ -169,6 +169,18 @@
                     symbol-end)
                (any ".,")
                (1+ (regex "[^:\[.,[:space:][:alnum:]]")))))
+      (reduce-operator
+       . ,(rx (0+ (any "RSXZ\["))
+              (opt (any "RSXZ&"))
+              (1+ "\[")
+              (opt "\(")
+              (or (and (regex "[^[:digit:]@%$]")
+                       (0+ (regex "[^\[\{\('\"[:space:]]")))
+                  (and (any "@%$")
+                       (regex "[^.?^=[:alpha:]]")
+                       (0+ (regex "[^\[\{\('\"[:space:]]"))))
+              (opt "\)")
+              (1+ "\]")))
       (low-type
        . ,(rx (or "int" "int1" "int2" "int4" "int8" "int16" "int32" "int64"
                   "rat" "rat1" "rat2" "rat4" "rat8" "rat16" "rat32" "rat64"
@@ -448,6 +460,7 @@ GROUPS is allowed to reference optional match groups."
 (defconst perl6-font-lock-keywords
   `(
     (perl6-match-metaoperator 0 'perl6-operator)
+    (,(perl6-rx reduce-operator) 0 'perl6-operator)
     (,(perl6-rx (group (any "@$%&"))
                 (or
                  "<"
