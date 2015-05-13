@@ -209,13 +209,13 @@
       (version . ,(rx "v" (1+ digit) (0+ "." (or "*" (1+ digit))) (opt "+")))
       (number
        . ,(rx
-           (opt (1+ digit) (opt "_" (1+ digit)))
-           (opt ".")
-           (1+ digit)
-           (opt (group-n 1 (any "Ee"))
-                (opt "-")
-                (1+ digit) (opt "_" (1+ digit)))
-           (opt (group-n 2 "i"))))
+           (group-n 1
+             (opt (1+ digit) (opt "_" (1+ digit)))
+             (opt ".")
+             (1+ digit))
+           (opt (group-n 2 (any "Ee"))
+                (group-n 3 (opt "-") (1+ digit) (opt "_" (1+ digit))))
+           (opt (group-n 4 "i"))))
       (base-number
        . ,(rx symbol-start
               (group-n 1 "0")
@@ -428,25 +428,6 @@ LIMIT can be used to bound the search."
                                       (and line-start (0+ space)))))))))
    limit))
 
-(defun perl6-fontify (groups)
-  "Fontify the current match.
-
-GROUPS should be a list, each element being a list containing the number
-of a match group and the name of a face.
-
-GROUPS is allowed to reference optional match groups."
-  (dolist (group groups)
-    (let ((group-num (car group))
-          (group-face (cdr group)))
-      (when (match-string group-num)
-        (let* ((state (save-excursion
-                        (syntax-ppss (match-beginning group-num))))
-               (in-string (nth 3 state))
-               (in-comment (nth 4 state)))
-          (unless (or in-string in-comment)
-            (put-text-property (match-beginning group-num) (match-end group-num)
-                               'face group-face)))))))
-
 (defun perl6-match-property (property context limit)
   (when (symbolp context)
     (setq context (list context)))
@@ -487,10 +468,9 @@ GROUPS is allowed to reference optional match groups."
      (4 'perl6-var-name))
     (,(perl6-rx symbol-start version) 0 'perl6-version)
     (perl6-match-type-constraint
-     0 (ignore (perl6-fontify
-               '((1 . perl6-type-constraint)
-                 (2 . perl6-type-constraint)
-                 (3 . perl6-type-property)))))
+     (1 'perl6-type-constraint nil t)
+     (2 'perl6-type-constraint nil t)
+     (3 'perl6-type-property nil t))
     (,(perl6-rx (group (any ".^")) (group identifier symbol-end))
      (1 'perl6-operator)
      (2 'perl6-identifier))
@@ -520,11 +500,6 @@ GROUPS is allowed to reference optional match groups."
     (,(perl6-rx (symbol loop)) 0 'perl6-loop)
     (,(perl6-rx (symbol flow-control)) 0 'perl6-flow-control)
     (,(perl6-rx (symbol pragma)) 0 'perl6-pragma)
-    (,(perl6-rx number)
-     0 (ignore (perl6-fontify
-                '((0 . perl6-number)
-                  (1 . perl6-number-addition)
-                  (2 . perl6-number-addition)))))
     (,(perl6-rx (symbol (or "Inf" "NaN")))
      0 'perl6-number)
     (,(perl6-rx line-start (0+ space) (group identifier ":") (or space line-end))
@@ -534,11 +509,16 @@ GROUPS is allowed to reference optional match groups."
                 (group (symbol identifier)))
      1 'perl6-label)
     (,(perl6-rx
-       (opt "::")
+       (or symbol-start "::")
        identifier
        (opt (0+ "::" identifier))
        (opt "::"))
      0 'perl6-identifier)
+    (,(perl6-rx number)
+     (1 'perl6-number)
+     (2 'perl6-number-addition nil t)
+     (3 'perl6-number nil t)
+     (4 'perl6-number-addition nil t))
     (,(perl6-rx operator-char) 0 'perl6-operator)
     (,(perl6-rx base-number)
      (1 'perl6-number)
