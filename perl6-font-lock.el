@@ -343,6 +343,14 @@ OPEN-ANGLES is the opening delimiter (e.g. \"«\" or \"<<\")."
             (put-text-property quote-end (1+ quote-end)
                                'syntax-table (string-to-syntax "|"))))))))
 
+(defun perl6-syntax-propertize-backslash ()
+  (let* ((state (syntax-ppss))
+            (in-string (nth 3 state))
+            (in-comment (nth 4 state)))
+    (unless (or in-string in-comment)
+      (put-text-property (match-beginning 0) (match-end 0)
+                         'syntax-table (string-to-syntax ".")))))
+
 (defun perl6-add-font-lock-hint (property &optional group)
   (let ((beg (match-beginning (or group 1)))
         context)
@@ -370,7 +378,9 @@ Takes arguments START and END which delimit the region to propertize."
       ((perl6-rx (or set-operator rsxz-operator))
        (0 (ignore (perl6-add-font-lock-hint 'perl6-metaoperator 0))))
       ((rx (1+ (char "<«")))
-       (0 (ignore (perl6-syntax-propertize-angles (match-string 0))))))
+       (0 (ignore (perl6-syntax-propertize-angles (match-string 0)))))
+      ((rx "\\")
+       (0 (ignore (perl6-syntax-propertize-backslash)))))
       start end)))
 
 (defun perl6-font-lock-syntactic-face (state)
