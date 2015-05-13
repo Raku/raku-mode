@@ -486,6 +486,11 @@ LIMIT can be used to bound the search."
      (2 'perl6-var-name))
     (,(perl6-rx (group symbol-start high-type) "(") 1 'perl6-type)
     (,(perl6-rx (group symbol-start identifier) "(") 1 'perl6-identifier)
+    (,(perl6-rx
+       (or (and (group-n 1 (any "$@%&")) "(")
+           (group-n 2 (symbol (or "item" "list" "hash")))))
+     (1 'perl6-operator nil t)
+     (2 'perl6-operator nil t))
     (,(perl6-rx (symbol (or low-type high-type))) 0 'perl6-type)
     (,(perl6-rx (group ":") (group (symbol identifier)))
      (1 'perl6-operator)
