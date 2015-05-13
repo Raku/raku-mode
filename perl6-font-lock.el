@@ -178,7 +178,7 @@
               (or (and (regex "[^[:digit:]@%$]")
                        (0+ (regex "[^\[\{\('\"[:space:]]")))
                   (and (any "@%$")
-                       (regex "[^.?^=_[:alpha:]]")
+                       (regex "[^.?^=_[:alpha:]]\[\{\('\"[:space:]]")
                        (0+ (regex "[^\[\{\('\"[:space:]]"))))
               (opt "\)")
               (1+ "\]")))
