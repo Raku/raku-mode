@@ -177,7 +177,7 @@
               (or (and (regex "[^[:digit:]@%$]")
                        (0+ (regex "[^\[\{\('\"[:space:]]")))
                   (and (any "@%$")
-                       (regex "[^.?^=[:alpha:]]")
+                       (regex "[^.?^=_[:alpha:]]")
                        (0+ (regex "[^\[\{\('\"[:space:]]"))))
               (opt "\)")
               (1+ "\]")))
@@ -201,7 +201,10 @@
                   "AnyChar" "Positional" "Associative" "Ordering" "KeyExtractor"
                   "Comparator" "OrderingPair" "IO" "KitchenSink" "Role" "Int"
                   "Rat" "Buf" "UInt" "Abstraction" "Numeric" "Real" "Nil" "Mu")))
-      (identifier . ,(rx alpha (0+ alnum) (0+ (any "-'") alpha (0+ alnum))))
+      (identifier . ,(rx (regex "[_[:alpha:]]")
+                         (0+ (regex "[_[:alnum:]]"))
+                         (0+ (any "-'")
+                             (regex "[_[:alpha:]]") (0+ (regex "[_[:alnum:]]")))))
       (version . ,(rx "v" (1+ digit) (0+ "." (or "*" (1+ digit))) (opt "+")))
       (number
        . ,(rx
@@ -355,7 +358,7 @@ Takes arguments START and END which delimit the region to propertize."
     (funcall
      (syntax-propertize-rules
       ;; [-'] between identifiers are symbol chars
-      ((rx alnum (group (any "-'")) alpha)
+      ((rx (regex "[_[:alnum:]]") (group (any "-'")) (regex "[_[:alpha:]]"))
        (1 "_"))
       ;; same for "::" around identifiers
       ((rx (or (and "::" symbol-start)
