@@ -396,10 +396,9 @@ Takes arguments START and END which delimit the region to propertize."
   "Specify font lock faces based on syntax table entries.
 
 Takes STATE, the parse state."
-  (let ((context (perl6-syntax-context state)))
-    (cond
-     ((eq context 'string) 'perl6-string)
-     ((eq context 'comment) 'perl6-comment))))
+  (pcase (perl6-syntax-context state)
+    (`string 'perl6-string)
+    (`comment 'perl6-comment)))
 
 (defun perl6-search-when (regex condition limit)
   "Search forward for REGEX if the match satisfies CONDITION.
