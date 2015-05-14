@@ -465,8 +465,8 @@ LIMIT can be used to bound the search."
 
 (defconst perl6-font-lock-keywords
   `(
-    (perl6-match-metaoperator 0 'perl6-operator)
     (,(perl6-rx reduce-operator) 0 'perl6-operator)
+    (perl6-match-metaoperator 0 'perl6-operator)
     (,(perl6-rx (group (any "@$%&"))
                 (or
                  "<"
