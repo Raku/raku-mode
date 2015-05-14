@@ -273,6 +273,18 @@
     table)
   "Syntax table for bracketing constructs.")
 
+(defun perl6-syntax-context (&optional state)
+  "Return the syntactic context at the parse state of STATE.
+
+If STATE is not provided, the return value of `syntax-ppss' will be used."
+    (let* ((state (or state (syntax-ppss)))
+           (in-string (nth 3 state))
+           (in-comment (nth 4 state)))
+      (cond
+       (in-string 'string)
+       (in-comment 'comment)
+       (t nil))))
+
 (defun perl6-forward-brackets (open close length)
   "Move point past the end of a bracketed structure.
 
@@ -344,12 +356,9 @@ OPEN-ANGLES is the opening delimiter (e.g. \"«\" or \"<<\")."
                                'syntax-table (string-to-syntax "|"))))))))
 
 (defun perl6-syntax-propertize-backslash ()
-  (let* ((state (syntax-ppss))
-            (in-string (nth 3 state))
-            (in-comment (nth 4 state)))
-    (unless (or in-string in-comment)
-      (put-text-property (match-beginning 0) (match-end 0)
-                         'syntax-table (string-to-syntax ".")))))
+  (when (eq (perl6-syntax-context) nil)
+    (put-text-property (match-beginning 0) (match-end 0)
+                       'syntax-table (string-to-syntax "."))))
 
 (defun perl6-add-font-lock-hint (property &optional group)
   (let ((beg (match-beginning (or group 1)))
@@ -387,11 +396,10 @@ Takes arguments START and END which delimit the region to propertize."
   "Specify font lock faces based on syntax table entries.
 
 Takes STATE, the parse state."
-  (let ((in-string (nth 3 state))
-        (in-comment (nth 4 state)))
+  (let ((context (perl6-syntax-context state)))
     (cond
-     (in-string 'perl6-string)
-     (in-comment 'perl6-comment))))
+     ((eq context 'string) 'perl6-string)
+     ((eq context 'comment) 'perl6-comment))))
 
 (defun perl6-search-when (regex condition limit)
   "Search forward for REGEX if the match satisfies CONDITION.
@@ -429,13 +437,11 @@ LIMIT can be used to bound the search."
                       (opt (group (symbol type-property))))))
    (lambda ()
      (goto-char (match-beginning 0))
-     (let* ((state (syntax-ppss))
-            (in-string (nth 3 state))
-            (in-comment (nth 4 state)))
-       (not (or in-string
-                in-comment
-                (looking-back (rx (or (char ".^")
-                                      (and line-start (0+ space)))))))))
+     (let ((context (perl6-syntax-context)))
+       (and
+        (eq context nil)
+        (not (looking-back (rx (or (char ".^")
+                                   (and line-start (0+ space)))))))))
    limit))
 
 (defun perl6-match-property (property context limit)
