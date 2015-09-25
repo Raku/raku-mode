@@ -535,7 +535,8 @@ LIMIT can be used to bound the search."
                 (group (symbol identifier)))
      1 'perl6-label)
     (,(perl6-rx
-       (or symbol-start "::")
+       (or symbol-start
+           (and "::" (opt "?")))
        identifier
        (opt (0+ "::" identifier))
        (opt "::"))
