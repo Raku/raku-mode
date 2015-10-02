@@ -389,7 +389,7 @@ Takes arguments START and END which delimit the region to propertize."
        (0 (ignore (perl6-syntax-propertize-embedded-comment))))
       ((rx "#" (0+ not-newline))
        (0 (ignore)))
-      ((perl6-rx (or set-operator rsxz-operator))
+      ((perl6-rx (or set-operator rsxz-operator reduce-operator))
        (0 (ignore (perl6-add-font-lock-hint 'perl6-metaoperator 0))))
       ((rx (1+ (char "<«")))
        (0 (ignore (perl6-syntax-propertize-angles (match-string 0)))))
