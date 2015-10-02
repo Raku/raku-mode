@@ -162,14 +162,14 @@
        . ,(rx
            symbol-start
            (any "RSXZ")
-           (or symbol-end
-               (or (and (or "div" "mod" "gcd" "lcm" "xx" "x" "does" "but" "cmp"
+           (or (or (and (or "div" "mod" "gcd" "lcm" "xx" "x" "does" "but" "cmp"
                             "leg" "eq" "ne" "gt" "ge" "lt" "le" "before" "after"
                             "eqv" "min" "max" "not" "so" "andthen" "and" "or"
                             "orelse")
                         symbol-end)
                    (any ".,")
-                   (1+ (regex "[^:\[.,[:space:][:alnum:]]"))))))
+                   (1+ (regex "[^:\[.,[:space:][:alnum:]]")))
+               symbol-end)))
       (reduce-operator
        . ,(rx (0+ (any "RSXZ\["))
               (opt (any "RSXZ&"))
