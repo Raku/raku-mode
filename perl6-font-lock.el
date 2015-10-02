@@ -382,8 +382,8 @@ Takes arguments START and END which delimit the region to propertize."
       ((rx (regex "[_[:alnum:]]") (group (any "-'")) (regex "[_[:alpha:]]"))
        (1 "_"))
       ;; same for "::" around identifiers
-      ((rx (or (and "::" symbol-start)
-               (and symbol-end "::")))
+      ((perl6-rx (or (and (opt identifier) "::" symbol-start)
+                     (and identifier "::")))
        (0 "_"))
       ((rx "#" (any "`|="))
        (0 (ignore (perl6-syntax-propertize-embedded-comment))))
