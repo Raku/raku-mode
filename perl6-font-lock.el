@@ -499,7 +499,7 @@ LIMIT can be used to bound the search."
                       (or (any ",\)\}") (symbol "where")))))
      1 'perl6-sigil)
     (,(perl6-rx (group (1+ (char "@$%&")))
-                (group (opt (char ".^*?=!~")))
+                (group (opt (char ".^*?=!~:")))
                 (group (opt (or (and "::" (0+ (and identifier "::")))
                                 (1+ identifier "::"))))
                 (group (or (1+ digit)
