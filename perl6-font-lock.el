@@ -273,6 +273,17 @@
     table)
   "Syntax table for bracketing constructs.")
 
+(defconst perl6-string-delimiter-syntax-table
+  (let ((table (make-syntax-table perl6-mode-syntax-table)))
+    (modify-syntax-entry ?‘ "(’" table)
+    (modify-syntax-entry ?’ ")‘" table)
+    (modify-syntax-entry ?｢ "(｣" table)
+    (modify-syntax-entry ?｣ ")｢" table)
+    (modify-syntax-entry ?“ "(”" table)
+    (modify-syntax-entry ?” ")“" table)
+    table)
+  "Syntax table for string delimiters.")
+
 (defun perl6-syntax-context (&optional state)
   "Return the syntactic context at the parse state of STATE.
 
@@ -311,23 +322,27 @@ LENGTH is the length of the brackets (e.g. 2 for a <<foo>>)."
                (when (eq depth 0)
                  (setq found-closing t))))))))
 
-(defun perl6-syntax-propertize-embedded-comment ()
-  "Add syntax properties to embedded comments \(#`<<foo>>\)."
-  (with-syntax-table perl6-bracket-syntax-table
-    (when (and (following-char)
-               (eq ?\( (char-syntax (following-char))))
-      (let* ((comment-beg (- (point) 2))
-             (open-delim (following-char))
-             (close-delim (matching-paren open-delim)))
-        (put-text-property comment-beg (1+ comment-beg)
-                             'syntax-table (string-to-syntax "!"))
-        (re-search-forward (rx-to-string `(1+ ,open-delim)))
-        (let ((delim-length (length (match-string 0))))
-          (perl6-forward-brackets open-delim close-delim delim-length)
-          (let ((comment-end (point)))
-            (put-text-property comment-beg comment-end 'syntax-multiline t)
-            (put-text-property (- comment-end 1) comment-end
-                               'syntax-table (string-to-syntax "!"))))))))
+(defun perl6-syntax-propertize-delimiters (syntax &optional offset)
+  "Add syntax properties to a delimited region.
+
+SYNTAX is the type of syntax to apply to the delimiters \(such as \"!\"\).
+
+OFFSET can be used to shift the starting position (relative to point) of the
+opening delimiter."
+  (when (and (following-char)
+             (eq ?\( (char-syntax (following-char))))
+    (let* ((delim-beg (+ (point) (or offset 0)))
+           (open-delim (following-char))
+           (close-delim (matching-paren open-delim)))
+      (put-text-property delim-beg (1+ delim-beg)
+                           'syntax-table (string-to-syntax syntax))
+      (re-search-forward (rx-to-string `(1+ ,open-delim)))
+      (let ((delim-length (length (match-string 0))))
+        (perl6-forward-brackets open-delim close-delim delim-length)
+        (let ((delim-end (point)))
+          (put-text-property delim-beg delim-end 'syntax-multiline t)
+          (put-text-property (- delim-end 1) delim-end
+                             'syntax-table (string-to-syntax syntax)))))))
 
 (defun perl6-syntax-propertize-angles (open-angles)
   "Add syntax properties to angle-bracketed quotes (e.g. <foo> and «bar»).
@@ -387,7 +402,8 @@ Takes arguments START and END which delimit the region to propertize."
        (1 "_")
        (2 "_"))
       ((rx "#" (any "`|="))
-       (0 (ignore (perl6-syntax-propertize-embedded-comment))))
+       (0 (ignore (with-syntax-table perl6-bracket-syntax-table
+                    (perl6-syntax-propertize-delimiters "!" -2)))))
       ((rx "#" (0+ not-newline))
        (0 (ignore)))
       ((perl6-rx (or set-operator rsxz-operator reduce-operator))
@@ -395,7 +411,11 @@ Takes arguments START and END which delimit the region to propertize."
       ((rx (1+ (char "<«")))
        (0 (ignore (perl6-syntax-propertize-angles (match-string 0)))))
       ((rx "\\")
-       (0 (ignore (perl6-syntax-propertize-backslash)))))
+       (0 (ignore (perl6-syntax-propertize-backslash))))
+      ((rx (any "‘｢“"))
+       (0 (ignore (progn (backward-char)
+                         (with-syntax-table perl6-string-delimiter-syntax-table
+                           (perl6-syntax-propertize-delimiters "|")))))))
       start end)))
 
 (defun perl6-font-lock-syntactic-face (state)
