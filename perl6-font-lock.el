@@ -600,7 +600,9 @@ LIMIT can be used to bound the search."
     (,(perl6-rx base-number)
      (1 'perl6-number)
      (2 'perl6-number-addition)
-     (3 'perl6-number)))
+     (3 'perl6-number))
+    (,(perl6-rx (or (syntax string-quote) (syntax string-delimiter)))
+     0 'perl6-operator t))
   "Font lock keywords for Perl 6.")
 
 (provide 'perl6-font-lock)
