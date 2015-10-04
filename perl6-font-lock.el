@@ -410,24 +410,33 @@ Takes arguments START and END which delimit the region to propertize."
                      (and identifier (group "::"))))
        (1 "_")
        (2 "_"))
+      ;; embedded comments, like #|{ ... }
       ((rx "#" (any "`|="))
        (0 (ignore (with-syntax-table perl6-bracket-syntax-table
                     (perl6-syntax-propertize-delimiters "!" -2)))))
+      ;; regular end-of-line comments
       ((rx "#" (0+ not-newline))
        (0 (ignore)))
+      ;; metaoperators like (-), R=>, [*], X~
       ((perl6-rx (or set-operator rsxz-operator reduce-operator))
        (0 (ignore (perl6-add-font-lock-hint 'perl6-metaoperator 0))))
+      ;; angle-bracketed quoting construct
       ((rx (1+ (char "<«")))
        (0 (ignore (perl6-syntax-propertize-angles (match-string 0)))))
+      ;; backslashes outside strings/comments are punctuation, not escapes
       ((rx "\\")
        (0 (ignore (perl6-syntax-propertize-backslash))))
+      ;; unicode string quotes
       ((rx (any "‘｢“"))
        (0 (ignore (progn (backward-char)
                          (with-syntax-table perl6-string-delimiter-syntax-table
                            (perl6-syntax-propertize-delimiters "|"))))))
+      ;; sigils and twigils are prefix characters
       ((perl6-rx variable)
        (1 ".p")
        (2 ".p")
+       ;; go back if we match a package name (e.g. $?FOO::BAR), so the
+       ;; colons can be syntax-propertized above
        (3 (ignore (goto-char (match-beginning 3))))))
       start end)))
 
