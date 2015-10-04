@@ -117,7 +117,12 @@
   (let ((rx-identifier (rx (regex "[_[:alpha:]]")
                            (0+ (regex "[_[:alnum:]]"))
                            (0+ (any "-'")
-                               (regex "[_[:alpha:]]") (0+ (regex "[_[:alnum:]]"))))))
+                               (regex "[_[:alpha:]]") (0+ (regex "[_[:alnum:]]")))))
+        (rx-metaoperator (rx (or (and (regex "[^[:digit:]@%$]")
+                                      (0+ (regex "[^\[\{\('\"[:space:]]")))
+                                 (and (any "@%$")
+                                      (regex "[^.?^=_[:alpha:]]\[\{\('\"[:space:]]")
+                                      (0+ (regex "[^\[\{\('\"[:space:]]")))))))
     (defconst perl6-rx-constituents
       `((symbol perl6-rx-symbol 0 nil)
         (identifier . ,rx-identifier)
@@ -129,6 +134,15 @@
                                    (1+ (regex ,rx-identifier) "::"))))
                    (group (or (or digit (char "/!¢"))
                               (and (regex ,rx-identifier) symbol-end))))))
+        (reduce-operator
+         . ,(rx-to-string
+             `(and (0+ (any "RSXZ\["))
+                   (opt (any "RSXZ&"))
+                   (1+ "\[")
+                   (opt "\(")
+                   (regex ,rx-metaoperator)
+                   (opt "\)")
+                   (1+ "\]"))))
         (routine
          . ,(rx (or "macro" "sub" "submethod" "method" "multi" "proto" "only"
                     "category")))
@@ -183,18 +197,6 @@
                      (any ".,")
                      (1+ (regex "[^:\[.,[:space:][:alnum:]]")))
                  symbol-end)))
-        (reduce-operator
-         . ,(rx (0+ (any "RSXZ\["))
-                (opt (any "RSXZ&"))
-                (1+ "\[")
-                (opt "\(")
-                (or (and (regex "[^[:digit:]@%$]")
-                         (0+ (regex "[^\[\{\('\"[:space:]]")))
-                    (and (any "@%$")
-                         (regex "[^.?^=_[:alpha:]]\[\{\('\"[:space:]]")
-                         (0+ (regex "[^\[\{\('\"[:space:]]"))))
-                (opt "\)")
-                (1+ "\]")))
         (low-type
          . ,(rx (or "int" "int1" "int2" "int4" "int8" "int16" "int32" "int64"
                     "rat" "rat1" "rat2" "rat4" "rat8" "rat16" "rat32" "rat64"
