@@ -502,7 +502,7 @@ LIMIT can be used to bound the search."
                 (group (opt (char ".^*?=!~:")))
                 (group (opt (or (and "::" (0+ (and identifier "::")))
                                 (1+ identifier "::"))))
-                (group (or (1+ digit)
+                (group (or (or digit (char "/!¢"))
                            (and identifier symbol-end))))
      (1 'perl6-sigil)
      (2 'perl6-twigil)
@@ -523,9 +523,6 @@ LIMIT can be used to bound the search."
      (0 'perl6-routine)
      (,(perl6-rx (1+ space) (group identifier))
       nil nil (1 'perl6-identifier)))
-    (,(rx (group "$") (group (any "0-9/!¢")))
-     (1 'perl6-sigil)
-     (2 'perl6-var-name))
     (,(perl6-rx (group symbol-start high-type) "(") 1 'perl6-type)
     (,(perl6-rx (group symbol-start identifier) "(") 1 'perl6-identifier)
     (,(perl6-rx
