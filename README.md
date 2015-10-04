@@ -68,6 +68,9 @@ hinrik.sig@gmail.com.
 
 Pull requests are welcome.
 
+You might want to install [`cask`][cask] so you can run the test suite
+(with `make test`).
+
 ## License
 
 Perl 6 Mode is free software: you can redistribute it and/or modify it
