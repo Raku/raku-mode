@@ -426,8 +426,8 @@ Takes arguments START and END which delimit the region to propertize."
                          (with-syntax-table perl6-string-delimiter-syntax-table
                            (perl6-syntax-propertize-delimiters "|"))))))
       ((perl6-rx variable)
-       (1 ". p")
-       (2 ". p")
+       (1 ".p")
+       (2 ".p")
        (3 (ignore (goto-char (match-beginning 3))))))
       start end)))
 
