@@ -428,7 +428,10 @@ Takes arguments START and END which delimit the region to propertize."
       ;; regular end-of-line comments
       ((rx "#" (0+ not-newline))
        (0 (ignore)))
-      ;; metaoperators like (-), R=>, [*], X~
+      ;; postfix hyper operators
+      ((perl6-rx (or identifier "]" ")") (group (or "»" ">>")))
+       (0 nil))
+      ;; other metaoperators like (-), R=>, [*], X~
       ((perl6-rx (or set-operator rsxz-operator reduce-operator hyper-operator))
        (0 (ignore (perl6-add-font-lock-hint 'perl6-metaoperator 0))))
       ;; angle-bracketed quoting construct
