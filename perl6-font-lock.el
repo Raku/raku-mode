@@ -449,9 +449,9 @@ Takes arguments START and END which delimit the region to propertize."
       ((perl6-rx variable)
        (1 ".p")
        (2 ".p")
-       ;; go back if we match a package name (e.g. $?FOO::BAR), so the
-       ;; colons can be syntax-propertized above
-       (3 (ignore (goto-char (match-beginning 3))))))
+       ;; go back to the end of the twigils/sigils, so other syntax
+       ;; rules above can be applied to later parts of the variable name
+       (4 (ignore (goto-char (or (match-end 2) (match-end 1)))))))
       start end)))
 
 (defun perl6-font-lock-syntactic-face (state)
