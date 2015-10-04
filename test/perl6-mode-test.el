@@ -68,18 +68,18 @@ POS."
 
 (ert-deftest perl6-syntax-propertize/dq-words ()
   :tags '(syntax-table syntax-properties)
-  (perl6-test-with-temp-buffer "foo «bar» bla <<baz>> quux"
+  (perl6-test-with-temp-buffer "foo «bar1 bar2» bla <<baz1 baz2>> quux"
                                (should (eq (perl6-test-syntax-at 1) 'word))
                                (should (eq (perl6-test-syntax-at 5) 'generic-string))
-                               (should (eq (perl6-test-syntax-at 9) 'generic-string))
                                (should (eq (perl6-test-syntax-at 15) 'generic-string))
-                               (should (eq (perl6-test-syntax-at 16) 'punctuation))
-                               (should (eq (perl6-test-syntax-at 20) 'punctuation))
-                               (should (eq (perl6-test-syntax-at 21) 'generic-string))))
+                               (should (eq (perl6-test-syntax-at 21) 'generic-string))
+                               (should (eq (perl6-test-syntax-at 22) 'punctuation))
+                               (should (eq (perl6-test-syntax-at 32) 'punctuation))
+                               (should (eq (perl6-test-syntax-at 33) 'generic-string))))
 
 (ert-deftest perl6-mode-syntax-table/fontify-dq-string ()
   :tags '(fontification syntax-table)
-  (should (eq (perl6-test-face-at 8 "$foo = \"bar\"") 'perl6-string)))
+  (should (eq (perl6-test-face-at 9 "$foo = \"bar\"") 'perl6-string)))
 
 (ert-deftest perl6-mode-syntax-table/fontify-set-operator ()
   :tags '(fontification syntax-table)
@@ -87,7 +87,7 @@ POS."
 
 (ert-deftest perl6-mode-syntax-table/fontify-sq-string ()
   :tags '(fontification syntax-table)
-  (should (eq (perl6-test-face-at 8 "$foo = 'bar'") 'perl6-string)))
+  (should (eq (perl6-test-face-at 9 "$foo = 'bar'") 'perl6-string)))
 
 (ert-deftest perl6-mode-syntax-table/fontify-line-comment ()
   :tags '(fontification syntax-table)
