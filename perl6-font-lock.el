@@ -143,6 +143,15 @@
                    (regex ,rx-metaoperator)
                    (opt "\)")
                    (1+ "\]"))))
+        (hyper-operator
+         . ,(rx-to-string
+             `(or (and "«" (regex ,rx-metaoperator) (char "«»"))
+                  (and "»" (regex ,rx-metaoperator) (opt (char "«»")))
+                  (and "<<" (regex ,rx-metaoperator) (or "<<" ">>"))
+                  (and ">>" (regex ,rx-metaoperator) (opt (or "<<" ">>")))
+                  (and (regex "[^[:digit:]\[\{\('\",:[:space:]]")
+                       (0+ (regex "[^\[\{\('\",:[:space:]]"))
+                       (or "«" "<<")))))
         (routine
          . ,(rx (or "macro" "sub" "submethod" "method" "multi" "proto" "only"
                     "category")))
@@ -420,7 +429,7 @@ Takes arguments START and END which delimit the region to propertize."
       ((rx "#" (0+ not-newline))
        (0 (ignore)))
       ;; metaoperators like (-), R=>, [*], X~
-      ((perl6-rx (or set-operator rsxz-operator reduce-operator))
+      ((perl6-rx (or set-operator rsxz-operator reduce-operator hyper-operator))
        (0 (ignore (perl6-add-font-lock-hint 'perl6-metaoperator 0))))
       ;; angle-bracketed quoting construct
       ((rx (1+ (char "<«")))
