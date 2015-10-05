@@ -526,63 +526,92 @@ LIMIT can be used to bound the search."
 
 (defconst perl6-font-lock-keywords
   `(
+    ;; (-) R=> [*] X~ »+«
     (perl6-match-metaoperator 0 'perl6-operator)
+    ;; placeholder sigils
     (,(perl6-rx (group (any "@$%&"))
                 (or
                  "<"
                  (and (0+ space)
                       (or (any ",\)\}") (symbol "where")))))
      1 'perl6-sigil)
+    ;; $foo @Bla::Hlagh $.bar $?CLASS
     (,(perl6-rx variable)
      (1 'perl6-sigil)
      (2 'perl6-twigil)
      (3 'perl6-var-package)
      (4 'perl6-var-name))
+    ;; v6.0.0
     (,(perl6-rx symbol-start version) 0 'perl6-version)
+    ;; e.g. $foo is cached
     (perl6-match-type-constraint
      (1 'perl6-type-constraint nil t)
      (2 'perl6-type-constraint nil t)
      (3 'perl6-type-property nil t))
+    ;; method calls like $foo.bar or $hlagh.^methods
     (,(perl6-rx (group (any ".^")) (group identifier symbol-end))
      (1 'perl6-operator)
      (2 'perl6-identifier))
+    ;; autoquoting fat arrow, foo => $bar
     (,(perl6-rx (group (symbol identifier)) (1+ space) (group "=>"))
      (1 'perl6-string)
      (2 'perl6-operator))
+    ;; regex/rule/token keywords
     (,(perl6-rx symbol-start rule)
      (0 'perl6-routine)
+     ;; anything immediately following it (even Q) is just an identifier
      (,(perl6-rx (1+ space) (group identifier))
       nil nil (1 'perl6-identifier)))
+    ;; high-level types (Scalar, Class, Str, etc)
     (,(perl6-rx (group symbol-start high-type) "(") 1 'perl6-type)
+    ;; anything preceding an open-paren is just an identifier
     (,(perl6-rx (group symbol-start identifier) "(") 1 'perl6-identifier)
+    ;; contextualizers
     (,(perl6-rx
        (or (and (group-n 1 (any "$@%&")) "(")
            (group-n 2 (symbol (or "item" "list" "hash")))))
      (1 'perl6-operator nil t)
      (2 'perl6-operator nil t))
+    ;; low-level types (int, bool, complex, etc)
     (,(perl6-rx (symbol (or low-type high-type))) 0 'perl6-type)
+    ;; adverbs like :foo and :!bar
     (,(perl6-rx (group ":" (opt "!")) (group (symbol identifier)))
      (1 'perl6-operator)
      (2 'perl6-string))
+    ;; div, and, eq...
     (,(perl6-rx (symbol operator-word)) 0 'perl6-operator)
+    ;; BEGIN, CHECK, INIT...
     (,(perl6-rx (symbol phaser)) 0 'perl6-phaser)
+    ;; die, fail, try...
     (,(perl6-rx (symbol exception)) 0 'perl6-exception)
+    ;; module, class, role...
     (,(perl6-rx (symbol module)) 0 'perl6-module)
+    ;; let, my, our...
     (,(perl6-rx (symbol scope)) 0 'perl6-scope)
+    ;; if, else, elsif...
     (,(perl6-rx (symbol conditional)) 0 'perl6-conditional)
+    ;; macro, sub, method...
     (,(perl6-rx (symbol routine)) 0 'perl6-routine)
+    ;; use, require...
     (,(perl6-rx (symbol include)) 0 'perl6-include)
+    ;; for, loop, repeat...
     (,(perl6-rx (symbol loop)) 0 'perl6-loop)
+    ;; take, do, when...
     (,(perl6-rx (symbol flow-control)) 0 'perl6-flow-control)
+    ;; oo, fatal...
     (,(perl6-rx (symbol pragma)) 0 'perl6-pragma)
+    ;; special numbers
     (,(perl6-rx (symbol (or "Inf" "NaN")))
      0 'perl6-number)
+    ;; block label declarations
     (,(perl6-rx line-start (0+ space) (group identifier ":") (or space line-end))
      1 'perl6-label)
+    ;; block label references
     (,(perl6-rx (symbol (or "goto" "next" "last" "redo"))
                 (0+ space)
                 (group (symbol identifier)))
      1 'perl6-label)
+    ;; identifiers with colons
     (,(perl6-rx
        (or symbol-start
            (and "::" (opt "?")))
@@ -590,16 +619,20 @@ LIMIT can be used to bound the search."
        (opt (0+ "::" identifier))
        (opt "::"))
      0 'perl6-identifier)
+    ;; numbers
     (,(perl6-rx number)
      (1 'perl6-number)
      (2 'perl6-number-addition nil t)
      (3 'perl6-number nil t)
      (4 'perl6-number-addition nil t))
+    ;; punctuation operators (+ - : / *, etc)
     (,(perl6-rx operator-char) 0 'perl6-operator)
+    ;; number with an explicit base (0b010101, 0x1ef1, etc)
     (,(perl6-rx base-number)
      (1 'perl6-number)
      (2 'perl6-number-addition)
      (3 'perl6-number))
+    ;; highlight string delimiters as operators
     (,(perl6-rx (or (syntax string-quote) (syntax string-delimiter)))
      0 'perl6-operator t))
   "Font lock keywords for Perl 6.")
