@@ -2,10 +2,10 @@
 
 ;;; Commentary:
 
-;; Yes, we are adding to `magic-mode-alist' here. Perl 6 specifies the
-;; same file extensions as Perl 5, so for those files we look at the
-;; first line of code to determine whether to call `perl6-mode'
-;; instead of `perl-mode'.
+;; Yes, we are adding to `magic-mode-alist' here. Perl 6 uses the same
+;; file extensions as Perl 5, and we want the mode to work out of the box.
+;; So for those files we look at the first line of code to determine
+;; whether to call `perl6-mode' instead of `perl-mode'.
 
 ;;; Code:
 
