@@ -264,9 +264,6 @@
 
 (defconst perl6-mode-syntax-table
   (let ((table (make-syntax-table)))
-    ;; single-line comments
-    (modify-syntax-entry ?# "<" table)
-    (modify-syntax-entry ?\n ">" table)
     ;; single-quoted strings
     (modify-syntax-entry ?' "\"" table)
     ;; these are all punctuation chars, not word or symbol chars
@@ -364,6 +361,21 @@ opening delimiter."
           (put-text-property (- delim-end 1) delim-end
                              'syntax-table (string-to-syntax syntax)))))))
 
+(defun perl6-syntax-propertize-comment (limit)
+  "Add syntax properties to comments."
+  (with-syntax-table perl6-bracket-syntax-table
+    (let ((comment-start (1- (point))))
+      (if (and (re-search-forward "\\=[`|=]" (1+ (point)) 'noerror)
+               (eq ?\( (char-syntax (following-char))))
+          ;; embedded/multiline comment
+          (perl6-syntax-propertize-delimiters "!" -2)
+        ;; single-line comment
+        (put-text-property comment-start (1+ comment-start)
+                           'syntax-table (string-to-syntax "<"))
+        (if (re-search-forward "\n" limit 'noerror)
+            (put-text-property (1- (point)) (point)
+                               'syntax-table (string-to-syntax ">")))))))
+
 (defun perl6-syntax-propertize-angles (open-angles)
   "Add syntax properties to angle-bracketed quotes (e.g. <foo> and «bar»).
 
@@ -421,13 +433,10 @@ Takes arguments START and END which delimit the region to propertize."
                      (and identifier (group "::"))))
        (1 "_")
        (2 "_"))
-      ;; embedded comments, like #|{ ... }
-      ((rx "#" (any "`|="))
-       (0 (ignore (with-syntax-table perl6-bracket-syntax-table
-                    (perl6-syntax-propertize-delimiters "!" -2)))))
-      ;; regular end-of-line comments
-      ((rx "#" (0+ not-newline))
-       (0 (ignore)))
+      ;; comments
+      ((rx "#")
+       (0 (ignore (if (eq (perl6-syntax-context) nil)
+                      (perl6-syntax-propertize-comment end)))))
       ;; postfix hyper operators
       ((perl6-rx (or identifier "]" ")") (group (or "»" ">>")))
        (0 nil))
