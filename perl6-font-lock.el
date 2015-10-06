@@ -531,6 +531,12 @@ LIMIT can be used to bound the search."
 (defun perl6-match-metaoperator (limit)
   (perl6-match-property 'perl6-metaoperator nil limit))
 
+(defun perl6-match-string-delimiter (limit)
+  (perl6-search-when
+   (perl6-rx (or (syntax string-quote) (syntax string-delimiter)))
+   (lambda () (not (eq (perl6-syntax-context) `comment)))
+   limit))
+
 (defconst perl6-font-lock-keywords
   `(
     ;; (-) R=> [*] X~ »+«
@@ -640,7 +646,7 @@ LIMIT can be used to bound the search."
      (2 'perl6-number-addition)
      (3 'perl6-number))
     ;; highlight string delimiters as operators
-    (,(perl6-rx (or (syntax string-quote) (syntax string-delimiter)))
+    (perl6-match-string-delimiter
      0 'perl6-operator t))
   "Font lock keywords for Perl 6.")
 
