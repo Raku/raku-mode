@@ -355,7 +355,7 @@ opening delimiter."
            (open-delim (following-char))
            (close-delim (matching-paren open-delim)))
       (put-text-property delim-beg (1+ delim-beg)
-                           'syntax-table (string-to-syntax syntax))
+                         'syntax-table (string-to-syntax syntax))
       (re-search-forward (rx-to-string `(1+ ,open-delim)))
       (let ((delim-length (length (match-string 0))))
         (perl6-forward-brackets open-delim close-delim delim-length)
