@@ -507,11 +507,9 @@ LIMIT can be used to bound the search."
                       (opt (group (symbol type-property))))))
    (lambda ()
      (goto-char (match-beginning 0))
-     (let ((context (perl6-syntax-context)))
-       (and
-        (eq context nil)
-        (not (looking-back (rx (or (char ".^")
-                                   (and line-start (0+ space)))))))))
+     (and (eq (perl6-syntax-context) nil)
+          (not (looking-back (rx (or (char ".^")
+                                     (and line-start (0+ space))))))))
    limit))
 
 (defun perl6-match-property (property context limit)
