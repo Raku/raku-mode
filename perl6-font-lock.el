@@ -412,7 +412,7 @@ OPEN-ANGLES is the opening delimiter (e.g. \"«\" or \"<<\")."
 
 (defun perl6-add-font-lock-hint (property &optional group)
   (let ((beg (match-beginning (or group 1)))
-        context)
+        (context (perl6-syntax-context)))
     (put-text-property beg (1+ beg) property
                        (cons context (match-data)))))
 
