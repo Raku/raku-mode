@@ -230,11 +230,16 @@
         (number
          . ,(rx
              (group-n 1
-               (opt (1+ digit) (opt "_" (1+ digit)))
-               (opt ".")
-               (1+ digit))
+                (or (and (1+ digit)
+                         (0+ (and "_" (1+ digit)))
+                         (opt "."
+                              (1+ digit)
+                              (0+ (and "_" (1+ digit)))))
+                    (and "."
+                         (1+ digit)
+                         (0+ (and "_" (1+ digit))))))
              (opt (group-n 2 (any "Ee"))
-                  (group-n 3 (opt "-") (1+ digit) (opt "_" (1+ digit))))
+                  (group-n 3 (opt "-") (1+ digit) (0+ "_" (1+ digit))))
              (opt (group-n 4 "i"))))
         (base-number
          . ,(rx symbol-start
@@ -626,7 +631,7 @@ LIMIT can be used to bound the search."
        (opt "::"))
      0 'perl6-identifier)
     ;; numbers
-    (,(perl6-rx number)
+    (,(perl6-rx (or bol (regex "[^[:digit:]]")) number)
      (1 'perl6-number)
      (2 'perl6-number-addition nil t)
      (3 'perl6-number nil t)
