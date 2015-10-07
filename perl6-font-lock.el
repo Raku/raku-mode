@@ -433,8 +433,7 @@ Takes arguments START and END which delimit the region to propertize."
        (2 "_"))
       ;; comments
       ((rx "#")
-       (0 (ignore (if (eq (perl6-syntax-context) nil)
-                      (perl6-syntax-propertize-comment end)))))
+       (0 (ignore (perl6-syntax-propertize-comment end))))
       ;; angle-bracketed quoting construct
       ((rx (1+ (char "<«")))
        (0 (ignore (perl6-syntax-propertize-angles (match-string 0)))))
