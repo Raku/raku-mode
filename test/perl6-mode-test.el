@@ -97,8 +97,7 @@ bar #`<foo> baz"
     (should (eq (perl6-test-face-at 7) 'perl6-comment))
     (should (eq (perl6-test-face-at 8) 'perl6-comment))
     (should (eq (perl6-test-face-at 9) 'perl6-identifier))
-    (should (eq (perl6-test-face-at 16) 'perl6-comment))
-    (should (eq (perl6-test-face-at 21) 'perl6-identifier))))
+    (should (eq (perl6-test-face-at 16) 'perl6-comment))))
 
 (ert-deftest perl6-font-lock-keywords/phaser ()
   :tags '(fontification font-lock-keywords)
