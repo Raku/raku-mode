@@ -619,8 +619,8 @@ LIMIT can be used to bound the search."
      1 'perl6-label)
     ;; block label references
     (,(perl6-rx (symbol (or "goto" "next" "last" "redo"))
-                (0+ space)
-                (group (symbol identifier)))
+                (1+ space)
+                (group identifier))
      1 'perl6-label)
     ;; identifiers with colons
     (,(perl6-rx
