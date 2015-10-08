@@ -114,15 +114,16 @@
     (let ((body (cdr form)))
       (rx-to-string `(and symbol-start ,@body symbol-end) 'no-group)))
 
-  (let ((rx-identifier (rx (regex "[_[:alpha:]]")
-                           (0+ (regex "[_[:alnum:]]"))
-                           (0+ (any "-'")
-                               (regex "[_[:alpha:]]") (0+ (regex "[_[:alnum:]]")))))
-        (rx-metaoperator (rx (or (and (regex "[^[:digit:]@%$]")
-                                      (0+ (regex "[^\[\{\('\"[:space:]]")))
-                                 (and (any "@%$")
-                                      (regex "[^.?^=_[:alpha:]]\[\{\('\"[:space:]]")
-                                      (0+ (regex "[^\[\{\('\"[:space:]]")))))))
+  (let ((rx-identifier (rx-to-string
+                        `(and (regex "[_[:alpha:]]")
+                              (0+ (regex "[_[:alnum:]]"))
+                              (0+ (any "-'") (regex "[_[:alpha:]]") (0+ (regex "[_[:alnum:]]"))))))
+        (rx-metaoperator (rx-to-string
+                          `(or (and (regex "[^[:digit:]@%$]")
+                                    (0+ (regex "[^\[\{\('\"[:space:]]")))
+                               (and (any "@%$")
+                                    (regex "[^.?^=_[:alpha:]]\[\{\('\"[:space:]]")
+                                    (0+ (regex "[^\[\{\('\"[:space:]]")))))))
     (defconst perl6-rx-constituents
       `((symbol perl6-rx-symbol 0 nil)
         (identifier . ,rx-identifier)
@@ -585,7 +586,7 @@ LIMIT can be used to bound the search."
     ;; low-level types (int, bool, complex, etc)
     (,(perl6-rx (symbol (or low-type high-type))) 0 'perl6-type)
     ;; adverbs like :foo and :!bar
-    (,(perl6-rx (group ":" (opt "!")) (group (symbol identifier)))
+    (,(perl6-rx (or bol (regex "[^:]")) (group ":" (opt "!")) (group (symbol identifier)))
      (1 'perl6-operator)
      (2 'perl6-string))
     ;; div, and, eq...
