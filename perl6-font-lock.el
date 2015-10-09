@@ -381,7 +381,7 @@ opening delimiter."
 OPEN-ANGLES is the opening delimiter (e.g. \"«\" or \"<<\")."
   (with-syntax-table perl6-bracket-syntax-table
     (let* ((angle-length (length open-angles))
-           (open-angle (string-to-char (car (split-string open-angles "" t))))
+           (open-angle (string-to-char open-angles))
            (close-angle (matching-paren open-angle))
            (quote-beg (- (point) angle-length))
            (line-beg (point-at-bol)))
