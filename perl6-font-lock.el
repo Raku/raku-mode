@@ -436,7 +436,7 @@ Takes arguments START and END which delimit the region to propertize."
       ((rx "#")
        (0 (ignore (perl6-syntax-propertize-comment end))))
       ;; angle-bracketed quoting construct
-      ((rx (1+ (char "<«")))
+      ((rx (or (1+ "<") (1+ "«")))
        (0 (ignore (perl6-syntax-propertize-angles (match-string 0)))))
       ;; postfix hyper operators
       ((perl6-rx (or identifier "]" ")") (group (or "»" ">>")))
