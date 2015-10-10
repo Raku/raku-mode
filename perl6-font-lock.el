@@ -460,7 +460,7 @@ Takes arguments START and END which delimit the region to propertize."
        ;; go back to the end of the twigils/sigils, so other syntax
        ;; rules above can be applied to later parts of the variable name
        (4 (ignore (goto-char (or (match-end 2) (match-end 1)))))))
-      start end)))
+     start end)))
 
 (defun perl6-font-lock-syntactic-face (state)
   "Specify font lock faces based on syntax table entries.
