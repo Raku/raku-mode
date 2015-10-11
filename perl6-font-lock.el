@@ -455,8 +455,8 @@ Takes arguments START and END which delimit the region to propertize."
                     (perl6-syntax-propertize-delimiters "|")))))
       ;; sigils and twigils are prefix characters
       ((perl6-rx variable)
-       (1 ".p")
-       (2 ".p")
+       (1 ". p")
+       (2 ". p")
        ;; go back to the end of the twigils/sigils, so other syntax
        ;; rules above can be applied to later parts of the variable name
        (4 (ignore (goto-char (or (match-end 2) (match-end 1)))))))
