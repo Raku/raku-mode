@@ -626,11 +626,12 @@ LIMIT can be used to bound the search."
     ;; identifiers with colons
     (,(perl6-rx
        (or symbol-start
-           (and "::" (opt "?")))
+           (and "::" (group (opt (regex "[?*]")))))
        identifier
        (opt (0+ "::" identifier))
        (opt "::"))
-     0 'perl6-identifier)
+     (0 'perl6-identifier)
+     (1 'perl6-twigil t t))
     ;; numbers
     (,(perl6-rx (or bol (regex "[^[:digit:]]")) number)
      (1 'perl6-number)
