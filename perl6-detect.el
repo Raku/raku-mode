@@ -19,7 +19,7 @@
 (defconst perl6-magic-pattern
   (rx line-start
       (0+ space)
-      (or (and "use" (0+ space) "v6")
+      (or (and "use" (1+ space) "v6")
           (and (opt (and (or "my" "our") (1+ space)))
                (or "module" "class" "role" "grammar" "enum" "slang" "subset")))))
 
