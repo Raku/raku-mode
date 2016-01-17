@@ -225,7 +225,7 @@
                     "Version" "Num" "Complex" "Bit" "True" "False" "Order" "Same"
                     "Less" "More" "Increasing" "Decreasing" "Ordered" "Callable"
                     "AnyChar" "Positional" "Associative" "Ordering" "KeyExtractor"
-                    "Comparator" "OrderingPair" "IO" "KitchenSink" "Role" "Int"
+                    "Comparator" "OrderingPair" "IO" "KitchenSink" "Role" "Int" "Bool"
                     "Rat" "Buf" "UInt" "Abstraction" "Numeric" "Real" "Nil" "Mu")))
         (version . ,(rx "v" (1+ digit) (0+ "." (or "*" (1+ digit))) (opt "+")))
         (number
