@@ -160,7 +160,7 @@
          . ,(rx (or "module" "class" "role" "package" "enum" "grammar" "slang"
                     "subset")))
         (rule . ,(rx (or "regex" "rule" "token")))
-        (include . ,(rx (or "use" "require")))
+        (include . ,(rx (or "use" "require unit")))
         (conditional . ,(rx (or "if" "else" "elsif" "unless")))
         (scope . ,(rx (or "let" "my" "our" "state" "temp" "has" "constant")))
         (loop . ,(rx (or "for" "loop" "repeat" "while" "until" "gather" "given")))
