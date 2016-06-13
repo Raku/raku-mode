@@ -42,12 +42,8 @@
   "Face for exception keywords in Perl 6."
   :group 'perl6-faces)
 
-(defface perl6-module '((t :inherit font-lock-keyword-face))
-  "Face for module keywords in Perl 6."
-  :group 'perl6-faces)
-
-(defface perl6-routine '((t :inherit font-lock-keyword-face))
-  "Face for routine keywords in Perl 6."
+(defface perl6-declare '((t :inherit font-lock-keyword-face))
+  "Face for declaration keywords in Perl 6."
   :group 'perl6-faces)
 
 (defface perl6-include '((t :inherit font-lock-keyword-face))
@@ -153,12 +149,12 @@
                   (and (regex "[^[:digit:]\[\{\('\",:[:space:]]")
                        (0+ (regex "[^\[\{\('\",:[:space:]]"))
                        (or "«" "<<")))))
-        (routine
-         . ,(rx (or "macro" "sub" "submethod" "method" "multi" "proto" "only"
-                    "category")))
-        (module
-         . ,(rx (or "module" "class" "role" "package" "enum" "grammar" "slang"
-                    "subset")))
+        (pre-declare
+         . ,(rx (or "multi" "proto" "only")))
+        (declare
+         . ,(rx (or "macro" "sub" "submethod" "method" "category"
+                    "module" "class" "role" "package" "enum" "grammar"
+                    "slang" "subset")))
         (rule . ,(rx (or "regex" "rule" "token")))
         (include . ,(rx (or "use" "require unit")))
         (conditional . ,(rx (or "if" "else" "elsif" "unless")))
@@ -568,12 +564,20 @@ LIMIT can be used to bound the search."
     (,(perl6-rx (group (symbol identifier)) (1+ space) (group "=>"))
      (1 'perl6-string)
      (2 'perl6-operator))
-    ;; regex/rule/token keywords
-    (,(perl6-rx symbol-start rule)
-     (0 'perl6-routine)
-     ;; anything immediately following it (even Q) is just an identifier
-     (,(perl6-rx (1+ space) (group identifier))
-      nil nil (1 'perl6-identifier)))
+    ;; "proto foo", "proto sub foo", etc
+    (,(perl6-rx symbol-start
+                (group pre-declare)
+                (opt (1+ space) (group declare))
+                (opt (1+ space) (group identifier)))
+     (1 'perl6-declare)
+     (2 'perl6-declare nil t)
+     (3 'perl6-identifier nil t))
+    ;; "sub foo"
+    (,(perl6-rx symbol-start
+                (group declare)
+                (opt (1+ space) (group identifier)))
+     (1 'perl6-declare)
+     (2 'perl6-identifier nil t))
     ;; high-level types (Scalar, Class, Str, etc)
     (,(perl6-rx (group symbol-start high-type) "(") 1 'perl6-type)
     ;; anything preceding an open-paren is just an identifier
@@ -596,20 +600,35 @@ LIMIT can be used to bound the search."
     (,(perl6-rx (symbol phaser)) 0 'perl6-phaser)
     ;; die, fail, try...
     (,(perl6-rx (symbol exception)) 0 'perl6-exception)
-    ;; module, class, role...
-    (,(perl6-rx (symbol module)) 0 'perl6-module)
     ;; let, my, our...
     (,(perl6-rx (symbol scope)) 0 'perl6-scope)
     ;; if, else, elsif...
     (,(perl6-rx (symbol conditional)) 0 'perl6-conditional)
-    ;; macro, sub, method...
-    (,(perl6-rx (symbol routine)) 0 'perl6-routine)
     ;; use, require...
     (,(perl6-rx (symbol include)) 0 'perl6-include)
     ;; for, loop, repeat...
     (,(perl6-rx (symbol loop)) 0 'perl6-loop)
     ;; take, do, when...
     (,(perl6-rx (symbol flow-control)) 0 'perl6-flow-control)
+    ;;(,(perl6-rx symbol-start
+    ;;            (opt (group pre-declare) (1+ space))
+    ;;            (group declare)
+    ;;            (opt (1+ space) (group identifier)))
+    ;; (0 'perl6-declare nil t)
+    ;; (1 'perl6-declare)
+    ;; (2 'perl6-identifier nil t))
+    ;;(,(perl6-rx symbol-start (group pre-declare) (opt (1+ space) (group identifier)))
+    ;; (0 'perl6-declare)
+    ;; (1 'perl6-identifier nil t))
+
+    ;;(,(perl6-rx symbol-start pre-declare)
+    ;; (0 'perl6-declare)
+    ;; (,(perl6-rx (1+ space) (group declare))
+    ;;  nil nil
+    ;;  (1 'perl6-declare))
+    ;; (,(perl6-rx (1+ space) (group identifier))
+    ;;  nil nil
+    ;;  (1 'perl6-identifier)))
     ;; oo, fatal...
     (,(perl6-rx (symbol pragma)) 0 'perl6-pragma)
     ;; special numbers
