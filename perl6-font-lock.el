@@ -157,7 +157,8 @@
                     "slang" "subset")))
         (rule . ,(rx (or "regex" "rule" "token")))
         (include . ,(rx (or "use" "require unit")))
-        (conditional . ,(rx (or "if" "else" "elsif" "unless")))
+        (conditional . ,(rx (or "if" "else" "elsif" "unless" "with"
+                                "orwith" "without")))
         (scope . ,(rx (or "let" "my" "our" "state" "temp" "has" "constant")))
         (loop . ,(rx (or "for" "loop" "repeat" "while" "until" "gather" "given")))
         (flow-control
