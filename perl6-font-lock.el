@@ -611,25 +611,6 @@ LIMIT can be used to bound the search."
     (,(perl6-rx (symbol loop)) 0 'perl6-loop)
     ;; take, do, when...
     (,(perl6-rx (symbol flow-control)) 0 'perl6-flow-control)
-    ;;(,(perl6-rx symbol-start
-    ;;            (opt (group pre-declare) (1+ space))
-    ;;            (group declare)
-    ;;            (opt (1+ space) (group identifier)))
-    ;; (0 'perl6-declare nil t)
-    ;; (1 'perl6-declare)
-    ;; (2 'perl6-identifier nil t))
-    ;;(,(perl6-rx symbol-start (group pre-declare) (opt (1+ space) (group identifier)))
-    ;; (0 'perl6-declare)
-    ;; (1 'perl6-identifier nil t))
-
-    ;;(,(perl6-rx symbol-start pre-declare)
-    ;; (0 'perl6-declare)
-    ;; (,(perl6-rx (1+ space) (group declare))
-    ;;  nil nil
-    ;;  (1 'perl6-declare))
-    ;; (,(perl6-rx (1+ space) (group identifier))
-    ;;  nil nil
-    ;;  (1 'perl6-identifier)))
     ;; oo, fatal...
     (,(perl6-rx (symbol pragma)) 0 'perl6-pragma)
     ;; special numbers
