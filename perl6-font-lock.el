@@ -566,16 +566,14 @@ LIMIT can be used to bound the search."
      (1 'perl6-string)
      (2 'perl6-operator))
     ;; "proto foo", "proto sub foo", etc
-    (,(perl6-rx symbol-start
-                (group pre-declare)
-                (opt (1+ space) (group declare))
+    (,(perl6-rx (group (symbol pre-declare))
+                (opt (1+ space) (group (symbol declare)))
                 (opt (1+ space) (group identifier)))
      (1 'perl6-declare)
      (2 'perl6-declare nil t)
      (3 'perl6-identifier nil t))
     ;; "sub foo"
-    (,(perl6-rx symbol-start
-                (group declare)
+    (,(perl6-rx (group (symbol declare))
                 (opt (1+ space) (group identifier)))
      (1 'perl6-declare)
      (2 'perl6-identifier nil t))
