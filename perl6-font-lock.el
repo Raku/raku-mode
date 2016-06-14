@@ -558,7 +558,7 @@ LIMIT can be used to bound the search."
      (2 'perl6-type-constraint nil t)
      (3 'perl6-type-property nil t))
     ;; method calls like $foo.bar or $hlagh.^methods
-    (,(perl6-rx (group (any ".^")) (group identifier symbol-end))
+    (,(perl6-rx (group (any ".^?")) (group identifier symbol-end))
      (1 'perl6-operator)
      (2 'perl6-identifier))
     ;; autoquoting fat arrow, foo => $bar
