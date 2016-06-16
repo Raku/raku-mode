@@ -383,7 +383,8 @@ OPEN-ANGLES is the opening delimiter (e.g. \"«\" or \"<<\")."
            (quote-beg (- (point) angle-length))
            (line-beg (point-at-bol)))
       (when
-          (and (not (or (looking-at "[-=]")
+          (and (not (or (looking-at (rx-to-string `(= 2 (char "-=") 2 2)))
+                        (looking-at (rx-to-string `(and (** 1 2 (char "-=")) ">")))
                         (looking-back (rx-to-string `(and (char "+~=!") ,open-angle)) 2)))
                (or (not (looking-at "[\s\n]"))
                    (not (looking-back (rx-to-string `(and (char "\s\n") ,open-angle)) 2))
