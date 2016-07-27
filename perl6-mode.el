@@ -41,6 +41,7 @@
 (require 'perl6-detect)
 (require 'perl6-font-lock)
 (require 'perl6-indent)
+(require 'perl6-imenu)
 
 ;;;###autoload
 (define-derived-mode perl6-mode prog-mode "Perl6"
@@ -55,7 +56,7 @@
   (setq-local comment-start-skip "#+ *")
   (setq-local comment-use-syntax t)
   (setq-local comment-end "")
-  ;; Indentation
+    ;; Indentation
   (smie-setup perl6-smie-grammar #'perl6-smie-rules
               :forward-token #'perl6-smie--forward-token
               :backward-token #'perl6-smie--backward-token))
