@@ -8,7 +8,7 @@
   '(
     ;; the names are in reverse desired order since they are evaluated here last first
     ("Variables" "^\\s-*\\(?:my\\|our\\)\\s-+\\(\\(?:\\$\\|@\\|%\\)\\(?:[_[:alnum:]]+\\)\\)" 1)
-    ("Subs/Methods" "^\\s-*\\(?:my\\|our\\)\\s-+\\(?:sub\\|method\\|multi\\|multi\\s-+sub\\|multi\\s-+method:\\)\\s-+\\(.+)\\)" 1)
+    ("Subs/Methods" "^\\s-*\\(?:my\\s-+\\|our\\s-+\\)?\\(?:multi\\s-+sub\\|multi\\s-+method\\|sub\\|method\\|multi\\)\\s-+\\(.+)\\)" 1)
     )
   "Define interesting points in the Perl 6 buffer for `imenu'.
 
