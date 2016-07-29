@@ -23,7 +23,6 @@ a local variable.")
       imenu-case-fold-search nil)
 
 ;; Imenu support
-(setq imenu-auto-rescan t)
 (add-hook 'perl6-mode-hook 'imenu-add-menubar-index)
 (add-hook 'perl6-mode-hook
 	  (lambda ()
