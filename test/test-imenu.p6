@@ -8,6 +8,9 @@ my $a;
 my @b;
 our %c;
 
+my $a-a;
+my $a'a_3-z;
+
  sub a(){my @ze}
  multi sub x() {}
 method d() {}
@@ -16,6 +19,6 @@ multi c() {}
 
 proto xx() {}
 
-class My-class1
+class My-class1 {}
 class My-class2{
-    class doit (
+    class doit () {}
