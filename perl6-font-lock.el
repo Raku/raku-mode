@@ -434,15 +434,15 @@ Takes arguments START and END which delimit the region to propertize."
       ;; comments
       ((rx "#")
        (0 (ignore (perl6-syntax-propertize-comment end))))
-      ;; angle-bracketed quoting construct
-      ((rx (or (1+ "<") (1+ "«")))
-       (0 (ignore (perl6-syntax-propertize-angles (match-string 0)))))
       ;; postfix hyper operators
       ((perl6-rx (or identifier "]" ")") (group (or "»" ">>")))
        (0 nil))
       ;; other metaoperators like (-), R=>, [*], X~, »+«
       ((perl6-rx (or set-operator rsxz-operator reduce-operator hyper-operator))
        (0 (ignore (perl6-add-font-lock-hint 'perl6-metaoperator 0))))
+      ;; angle-bracketed quoting construct
+      ((rx (or (1+ "<") (1+ "«")))
+       (0 (ignore (perl6-syntax-propertize-angles (match-string 0)))))
       ;; backslashes outside strings/comments are punctuation, not escapes
       ((rx "\\")
        (0 (ignore (perl6-syntax-propertize-backslash))))
