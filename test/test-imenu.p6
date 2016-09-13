@@ -16,8 +16,8 @@ my $a'a_3-z;
 method d() {}
 my multi method z() {}
 multi c() {}
-
 proto xx() {}
+multi method !z-private() {}
 
 class My-class1 {}
 class My-class2{
