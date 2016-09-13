@@ -48,6 +48,7 @@
                                  ; must have one of the five type identifiers
                                  ; followed by at least one space:
    "\\(?:multi\\s-+sub\\|multi\\s-+method\\|sub\\|method\\|multi\\|proto\\)\\s-+"
+   "\\!?"                        ; optional private marker
    "\\("                         ; start capture group 1 for the sub name
    perl6-name-regex
    "\\|"
