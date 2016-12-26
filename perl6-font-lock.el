@@ -217,7 +217,7 @@
                     "Grammar" "Scalar" "Array" "Hash" "KeyHash" "KeySet" "KeyBag"
                     "Pair" "List" "Seq" "Range" "Set" "Bag" "Mapping" "Void"
                     "Undef" "Failure" "Exception" "Code" "Block" "Routine" "Sub"
-                    "Macro" "Method" "Submethod" "Regex" "Str" "Blob" "Char"
+                    "Macro" "Method" "Submethod" "Regex" "Str" "Blob" "Char" "Map"
                     "Byte" "Parcel" "Codepoint" "Grapheme" "StrPos" "StrLen"
                     "Version" "Num" "Complex" "Bit" "True" "False" "Order" "Same"
                     "Less" "More" "Increasing" "Decreasing" "Ordered" "Callable"
