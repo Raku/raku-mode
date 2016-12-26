@@ -14,6 +14,7 @@
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.p[lm]?6\\'" . perl6-mode))
+(add-to-list 'auto-mode-alist '("\\.nqp\\'"     . perl6-mode))
 
 ;;;###autoload
 (defconst perl6-magic-pattern

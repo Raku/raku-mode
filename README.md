@@ -19,7 +19,6 @@ This mode needs GNU Emacs 24.4.
 * Better indentation support
 * Help system
 * REPL interaction
-* imenu support
 * ETags support
 * `find-file-at-point` for module names
 * Electricity (`electric-pair-mode` needs some context-sensitive help)

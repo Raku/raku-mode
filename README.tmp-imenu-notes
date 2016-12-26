@@ -1,0 +1,53 @@
+major modes:
+
+The mode should specify how Imenu should find the definitions or
+sections of a buffer, by setting up a buffer-local value for the
+variable imenu-generic-expression, for the two variables
+imenu-prev-index-position-function and
+imenu-extract-index-name-function, or for the variable
+imenu-create-index-function (see Imenu).
+
+Macro: defvar-local variable value &optional docstring
+
+  This macro defines variable as a variable with initial value value
+  and docstring, and marks it as automatically buffer-local. It is
+  equivalent to calling defvar followed by
+  make-variable-buffer-local. variable should be an unquoted symbol.
+
+22.5 Imenu
+
+Imenu is a feature that lets users select a definition or section in
+the buffer, from a menu which lists all of them, to go directly to
+that location in the buffer. Imenu works by constructing a buffer
+index which lists the names and buffer positions of the definitions,
+or other named portions of the buffer; then the user can choose one of
+them and move point to it. Major modes can add a menu bar item to use
+Imenu using imenu-add-to-menubar.
+
+Command: imenu-add-to-menubar name
+
+  This function defines a local menu bar item named name to run Imenu.
+
+The usual and simplest way is to set the variable imenu-generic-expression:
+
+Variable: imenu-generic-expression
+
+  This variable, if non-nil, is a list that specifies regular
+  expressions for finding definitions for Imenu. Simple elements of
+  imenu-generic-expression look like this:
+
+    (menu-title regexp index)
+
+  Here, if menu-title is non-nil, it says that the matches for this
+  element should go in a submenu of the buffer index; menu-title
+  itself specifies the name for the submenu. If menu-title is nil, the
+  matches for this element go directly in the top level of the buffer
+  index.
+
+  The second item in the list, regexp, is a regular expression (see
+  Regular Expressions); anything in the buffer that it matches is
+  considered a definition, something to mention in the buffer
+  index.
+
+  The third item, index, is a non-negative integer that indicates
+  which subexpression in regexp matches the definition’s name.
