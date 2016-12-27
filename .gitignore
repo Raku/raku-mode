@@ -2,3 +2,4 @@
 /.cask/
 dist/
 perl6-mode-pkg.el
+*~
