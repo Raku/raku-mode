@@ -65,6 +65,11 @@ Pull requests are welcome.
 You might want to install [`cask`][cask] so you can run the test suite
 (with `make test`).
 
+## Original Code
+
+The original version of this code can be found at
+[https://github.com/hinrik/perl6-mode](https://github.com/hinrik/perl6-mode)
+
 ## License
 
 Perl 6 Mode is free software: you can redistribute it and/or modify it
