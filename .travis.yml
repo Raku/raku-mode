@@ -12,7 +12,7 @@ before_install:
   - curl -fsSkL https://raw.github.com/JJ/cask/master/go | python
   - export PATH="${HOME}/.cask/bin:$PATH"
 install:
-  - cask --debug install
+  - cask --debug --verbose install
 script:
   - make compile test
 
