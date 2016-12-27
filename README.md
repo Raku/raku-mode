@@ -58,11 +58,6 @@ with a `.p6`, `.pm6`, or `.pl6` extension. It also applies to any `.pm`,
 
 Use <kbd>M-x customize-group RET perl6</kbd> to customize Perl 6 Mode.
 
-## Support
-
-You can ask a question in the [issue tracker][], or email me at
-hinrik.sig@gmail.com.
-
 ## Contribute
 
 Pull requests are welcome.
