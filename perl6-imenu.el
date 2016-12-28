@@ -30,7 +30,7 @@
 (defvar perl6-vars-regex
   (concat
    "^\\s-*"                 ; leading ws allowed
-   "\\(?:my\\|our\\)\\s-+"  ; scope of var, followed by mandatory ws
+   "\\(?:my\\|our\\|state\\)\\s-+"  ; scope of var, followed by mandatory ws
    "\\("                    ; start capture group 1 for the var name
    "\\(?:\\$\\|@\\|%\\)"    ; sigil for type of var
    "\\(?:"                  ; start shy group for choice of one type name
