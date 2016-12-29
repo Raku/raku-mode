@@ -11,6 +11,7 @@ our %c;
 my $a-a;
 my $a'a_3-z;
 
+ state $ds;
  sub a(){my @ze}
  multi sub x() {}
 method d() {}
