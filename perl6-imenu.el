@@ -17,8 +17,11 @@
 ;; Regex definitions:
 (defvar perl6-name-regex
   (concat
-   "[_[:alpha:]]"                              ; mandatory leading character
-   "\\(?:[-']?[[:alpha:]]\\|[_[:alnum:]]\\)*"  ; rest of the name allowing embedded hyphens or single quotes
+   "[_[:alpha:]]"           ; mandatory leading character
+   "\\(?:[-']?[[:alpha:]]"  ; rest of the name allowing embedded hyphens or single quotes or '::'
+   "\\|[_[:alnum:]]"
+   "\\|\\:\\:[_[:alnum:]]"
+   "\\)*"
    ))
 
 (defvar nqp-name-regex
@@ -68,9 +71,61 @@
    "\\)"              ; end of capture group 1
    ))
 
+(defvar perl6-regexes-regex
+  (concat
+   "^\\s-*"           ; leading ws allowed
+                      ; must have an identifier followed by at least one space:
+   "regex\\s-+"
+   "\\("              ; start capture group 1 of the regex name
+   perl6-name-regex
+   "\\|"
+   nqp-name-regex
+   "\\)"              ; end of capture group 1
+   ))
+
+(defvar perl6-tokens-regex
+  (concat
+   "^\\s-*"           ; leading ws allowed
+                      ; must have an identifier followed by at least one space:
+   "token\\s-+"
+   "\\("              ; start capture group 1 of the regex name
+   perl6-name-regex
+   "\\|"
+   nqp-name-regex
+   "\\)"              ; end of capture group 1
+   ))
+
+(defvar perl6-rules-regex
+  (concat
+   "^\\s-*"           ; leading ws allowed
+                      ; must have an identifier followed by at least one space:
+   "rule\\s-+"
+   "\\("              ; start capture group 1 of the regex name
+   perl6-name-regex
+   "\\|"
+   nqp-name-regex
+   "\\)"              ; end of capture group 1
+   ))
+
+(defvar perl6-grammars-regex
+  (concat
+   "^\\s-*"           ; leading ws allowed
+                      ; must have an identifier followed by at least one space:
+   "grammar\\s-+"
+   "\\("              ; start capture group 1 of the regex name
+   perl6-name-regex
+   "\\|"
+   nqp-name-regex
+   "\\)"              ; end of capture group 1
+   ))
+
 (defvar perl6-imenu-generic-expression
   `(
     ;; the names are in reverse desired order since they are evaluated here last first
+    ("Rules" ,perl6-rules-regex 1)
+    ("Tokens" ,perl6-tokens-regex 1)
+    ("Regexes" ,perl6-regexes-regex 1)
+    ("Grammars" ,perl6-grammars-regex 1)
     ("Classes" ,perl6-classes-regex 1)
     ("Variables" ,perl6-vars-regex 1)
     ("Subs/Methods" ,perl6-subs-regex 1)
