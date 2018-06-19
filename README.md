@@ -17,7 +17,7 @@ This mode needs GNU Emacs 24.4.
 #### Planned
 
 * Complete syntax highlighting
-* Better indentation support
+* Better indentation support (uses Emacs SMIE grammar, see the Emacs manual)
 * Help system
 * REPL interaction
 * ETags support
