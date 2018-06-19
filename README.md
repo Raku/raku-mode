@@ -12,6 +12,7 @@ This mode needs GNU Emacs 24.4.
 
 * Basic syntax highlighting
 * Basic indentation
+* Identifier index menu (variables, subs, classes, etc.)
 
 #### Planned
 
@@ -22,6 +23,7 @@ This mode needs GNU Emacs 24.4.
 * ETags support
 * `find-file-at-point` for module names
 * Electricity (`electric-pair-mode` needs some context-sensitive help)
+* Unicode character map
 
 #### Not planned
 
