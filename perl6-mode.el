@@ -38,10 +38,14 @@
   :prefix "perl6-"
   :group 'language)
 
+(defvar perl6-mode-map nil "Keymap for `perl6-mode'")
+
+
 (require 'perl6-detect)
 (require 'perl6-font-lock)
 (require 'perl6-indent)
 (require 'perl6-imenu)
+(require 'perl6-repl)
 
 ;;;###autoload
 (define-derived-mode perl6-mode prog-mode "Perl6"
@@ -54,6 +58,7 @@
   ;; Add imenu support for perl6-mode.  Note that imenu-generic-expression
   ;; is buffer-local, so we don't need a local-variable for it.
   (add-hook 'perl6-mode-hook 'imenu-add-menubar-index)
+  (add-hook 'perl6-mode-hook 'perl6-repl--initialize-menu)
   (setq imenu-generic-expression perl6-imenu-generic-expression
       imenu-case-fold-search nil)
   ;; Comments
@@ -65,7 +70,10 @@
   ;; TODO add rules for HEREDOC indentation
   (smie-setup perl6-smie-grammar #'perl6-smie-rules
               :forward-token #'perl6-smie--forward-token
-              :backward-token #'perl6-smie--backward-token))
+              :backward-token #'perl6-smie--backward-token)
+  (use-local-map perl6-mode-map))
+
+
 
 (provide 'perl6-mode)
 
