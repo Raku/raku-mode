@@ -38,14 +38,26 @@
   :prefix "perl6-"
   :group 'language)
 
-(defvar perl6-mode-map nil "Keymap for `perl6-mode'")
-
-
 (require 'perl6-detect)
 (require 'perl6-font-lock)
 (require 'perl6-indent)
 (require 'perl6-imenu)
 (require 'perl6-repl)
+
+(defvar perl6-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "C-c C-c") 'perl6-send-line-to-repl)
+    (define-key map (kbd "C-c C-r") 'perl6-send-region-to-repl)
+    (define-key map (kbd "C-c C-h") 'perl6-send-buffer-to-repl)
+    map)
+  "Keymap for `perl6-mode'")
+
+(easy-menu-define perl6-mode-menu perl6-mode-map
+  "Menu for `perl6-mode'"
+  '("Raku"
+    ["Send line to repl" perl6-send-line-to-repl]
+    ["Send region to repl" perl6-send-region-to-repl]
+    ["Send buffer to repl" perl6-send-buffer-to-repl]))
 
 ;;;###autoload
 (define-derived-mode perl6-mode prog-mode "Perl6"
@@ -58,7 +70,6 @@
   ;; Add imenu support for perl6-mode.  Note that imenu-generic-expression
   ;; is buffer-local, so we don't need a local-variable for it.
   (add-hook 'perl6-mode-hook 'imenu-add-menubar-index)
-  (add-hook 'perl6-mode-hook 'perl6-repl--initialize-menu)
   (setq imenu-generic-expression perl6-imenu-generic-expression
       imenu-case-fold-search nil)
   ;; Comments

@@ -92,25 +92,5 @@
     (select-window cwin)
     (switch-to-buffer cbuf)))
 
-;; Menu for evaluation
-(defun perl6-repl--initialize-menu ()
-  (interactive)
-  (define-key-after
-    perl6-mode-map
-    [menu-bar perl6-interaction]
-    (cons "Raku Interaction" (make-sparse-keymap "Perl6 Interaction"))
-    'tools)
-  (define-key
-    perl6-mode-map
-    [menu-bar perl6-interaction eval-line]
-    '("Evaluate line" . perl6-send-line-to-repl))
-  (define-key
-    perl6-mode-map
-    [menu-bar perl6-interaction eval-region]
-    '("Evaluate region" . perl6-send-region-to-repl))
-  (define-key
-    perl6-mode-map
-    [menu-bar perl6-interaction eval-buffer]
-    '("Evaluate buffer" . perl6-send-buffer-to-repl)))
 
 (provide 'perl6-repl)
