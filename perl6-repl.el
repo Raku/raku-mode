@@ -24,7 +24,7 @@
   (or (file-executable-p perl6-exec-path)
       (executable-find perl6-exec-path)))
 
-(defun perl6-repl-other-window ()
+(defun perl6-repl ()
   "Runs Perl6 in a `term' buffer in another window."
   (interactive)
   (let ((termbuf (apply 'make-term perl6-repl--buffer-name perl6-exec-path nil)))
@@ -42,7 +42,7 @@
                   "> "))))
 
 (defun perl6-create-new-repl ()
-  (progn (perl6-repl-other-window)
+  (progn (perl6-repl)
          (while (perl6-repl-ready-p)
            (sit-for 0.1))))
 
