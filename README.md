@@ -13,13 +13,13 @@ This mode needs GNU Emacs 24.4.
 * Basic syntax highlighting
 * Basic indentation
 * Identifier index menu (variables, subs, classes, etc.)
+* REPL interaction
 
 #### Planned
 
 * Complete syntax highlighting
 * Better indentation support (uses Emacs SMIE grammar, see the Emacs manual)
 * Help system
-* REPL interaction
 * ETags support
 * `find-file-at-point` for module names
 * Electricity (`electric-pair-mode` needs some context-sensitive help)
@@ -57,6 +57,15 @@ The major mode will be autoloaded whenever a Perl 6 file is visited.
 This includes any file with `perl6` in the shebang, as well as any file
 with a `.p6`, `.pm6`, or `.pl6` extension. It also applies to any `.pm`,
 `.pl`, and `.t` files whose first line of code looks like Perl 6.
+
+Start the REPL with <kbd>M-x perl6-repl RET</kbd>. The following
+keybindings are available to interact with the REPL:
+
+* <kbd>C-c C-c</kbd>: Send the current line to the REPL
+* <kbd>C-c C-r</kbd>: Send the selected region to the REPL
+* <kbd>C-c C-h</kbd>: Send the whole buffer to the REPL
+
+The REPL will start if needed with this keybindings.
 
 Use <kbd>M-x customize-group RET perl6</kbd> to customize Perl 6 Mode.
 
