@@ -17,6 +17,10 @@
 (defun perl6-repl--buffer-name-earmuf ()
   (concat "*" perl6-repl--buffer-name "*"))
 
+(defcustom perl6-exec-path "raku"
+  "Raku executable path."
+  :type 'string
+  :group 'perl6)
 
 (defun perl6-repl-other-window ()
   "Runs Perl6 in a `term' buffer in another window."
