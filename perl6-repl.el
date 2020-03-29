@@ -1,108 +1,73 @@
-(require 'term)
+;;; perl6-repl -- Repl for support Raku
 
-(defun perl6-repl-send-line (astring)
-  ;;send home if we have a regular perl6 prompt this line
-  ;;otherwise, simulate "C-b" until we get to the beginning
-  (if (equal (buffer-substring (- (line-beginning-position) 2) (line-beginning-position)) "> ") (term-send-home)
-    (progn (while (> (- (point) (line-beginning-position)) 2) (term-send-string "\^b"))))
-  (term-send-raw-string astring) ;send the argument as perl6 input
-  (term-send-raw-string "\^M") ;sends a return to execute astring
-  ;;(term-send-raw-string "\^y") ;sends a C-y, which yanks the killed line
-  )
+;;; Commentary:
+;; Basic repl support for Raku
 
-(setq perl6-repl--buffer-name "Raku REPL")
-
-(defun perl6-repl--buffer-name-earmuf ()
-  (concat "*" perl6-repl--buffer-name "*"))
+;;; Code:
+(require 'comint)
 
 (defcustom perl6-exec-path "raku"
   "Raku executable path."
   :type 'string
   :group 'perl6)
 
-(defun perl6-exec-path-exists-p ()
-  (or (file-executable-p perl6-exec-path)
-      (executable-find perl6-exec-path)))
+(defcustom perl6-exec-arguments ""
+  "Raku command line arguments."
+  :type 'string
+  :group 'perl6)
 
-(defun perl6-repl ()
-  "Runs Perl6 in a `term' buffer in another window."
+(defvar perl6-prompt-regexp "^> "
+  "Prompt for `run-perl6'.")
+
+(defvar perl6-buffer-name "Raku REPL"
+  "Buffer name for `run-perl6.")
+
+(defun run-perl6 ()
+  "Run an inferior instance of `raku' inside Emacs."
   (interactive)
-  (let ((termbuf (apply 'make-term perl6-repl--buffer-name perl6-exec-path nil)))
-    (set-buffer termbuf)
-    (term-mode)
-    (term-set-escape-char 24) ;this sets the escape char to C-x instead of C-c
-    (term-char-mode)
-    (switch-to-buffer-other-window termbuf)))
+  (let* ((perl6-program perl6-exec-path)
+         (check-proc (comint-check-proc perl6-buffer-name))
+         (buffer (apply 'make-comint-in-buffer
+                        perl6-buffer-name
+                        check-proc
+                        perl6-exec-path
+                        '()
+                        (split-string perl6-exec-arguments))))
+    (display-buffer buffer)))
 
+(defun perl6-comint-get-process ()
+  "Raku process name."
+  (get-process perl6-buffer-name))
 
-(defun perl6-repl-ready-p ()
-  (or (< (point) 2)
-      (not (equal (buffer-substring (- (point)2)
-                                    (point))
-                  "> "))))
+(defun perl6-send-string-to-repl (str)
+  "Send STR to the repl."
+  (comint-send-string (perl6-comint-get-process)
+                      (concat str "\n")))
 
-(defun perl6-create-new-repl ()
-  (progn (perl6-repl)
-         (while (perl6-repl-ready-p)
-           (sit-for 0.1))))
-
-(defun perl6-send-line-to-repl (&optional line)
+(defun perl6-send-line-to-repl ()
+  "Send a line to the repl."
   (interactive)
+  (run-perl6)
+  (let ((str (buffer-substring-no-properties (line-beginning-position) (line-end-position))))
+    (perl6-send-string-to-repl str)))
 
-  (if (perl6-exec-path-exists-p)
-      (let ((jbuf (get-buffer (perl6-repl--buffer-name-earmuf)))
-            (cbuf (current-buffer))
-            (cwin (selected-window))
-            (pos (point))
-            (linecontents
-             (progn (when line ;if a line is passed to the function, go there
-                      (goto-char (point-min))
-                      (forward-line (- line 1)))
-                    (buffer-substring (line-beginning-position) (line-end-position))))
-            ) ;save pos of start of next line
-        (if jbuf (switch-to-buffer jbuf)
-          ;;if there is not a perl6 REPl open, open it and wait for prompt
-
-          (perl6-create-new-repl))
-        (perl6-repl-send-line linecontents)
-        (select-window cwin)
-        (switch-to-buffer cbuf)
-        (goto-char pos))
-    (message "Cannot execute %s" perl6-exec-path)))
-
-(defun perl6-send-region-to-repl (begin end)
-  (interactive (if (use-region-p)
-                   (list (region-beginning)
-                         (region-end))
-                 (list nil nil)))
-  (if (and begin end (perl6-exec-path-exists-p))
-      (let ((jbuf (get-buffer (perl6-repl--buffer-name-earmuf)))
-            (cbuf (current-buffer))
-            (cwin (selected-window))
-            (pos (mark))
-            (contents (buffer-substring-no-properties begin end)))
-        (if jbuf (switch-to-buffer jbuf)
-          ;;if there is not a perl6 REPl open, open it and wait for prompt
-          (perl6-create-new-repl))
-        (mapc 'perl6-repl-send-line (split-string contents "\n+"))
-        (select-window cwin)
-        (switch-to-buffer cbuf))
-    (message "Cannot execute %s" perl6-exec-path)))
+(defun perl6-send-region-to-repl ()
+  "Send a region to the repl."
+  (interactive)
+  (run-perl6)
+  (if (region-active-p)
+      (let ((buf (buffer-substring-no-properties (region-beginning)
+                                                 (region-end))))
+        (perl6-send-string-to-repl buf))
+    (message "No region selected")))
 
 (defun perl6-send-buffer-to-repl ()
+  "Send a buffer to the repl."
   (interactive)
-  (if (perl6-exec-path-exists-p)
-      (let ((jbuf (get-buffer (perl6-repl--buffer-name-earmuf)))
-            (cbuf (current-buffer))
-            (cwin (selected-window))
-            (contents (buffer-string)))
-        (if jbuf (switch-to-buffer jbuf)
-          (perl6-create-new-repl))
-        ;; Send te line to the repl
-        (set-text-properties 0 (length contents) nil contents)
-        (mapc 'perl6-repl-send-line (split-string contents "\n+"))
-        (select-window cwin)
-        (switch-to-buffer cbuf))
-    (message "Cannot execute %s" perl6-exec-path)))
+  (run-perl6)
+  (let ((buf (buffer-substring-no-properties (point-min)
+                                             (point-max))))
+    (perl6-send-string-to-repl buf)))
 
 (provide 'perl6-repl)
+;;; perl6-repl.el ends here
