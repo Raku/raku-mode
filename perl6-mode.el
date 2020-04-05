@@ -80,8 +80,6 @@
    ;; REPL
   (setq comint-prompt-regexp perl6-prompt-regexp)
   (setq comint-prompt-read-only t)
-  ;; this makes it so commands like M-{ and M-} work.
-  (set (make-local-variable 'paragraph-separate) "\\'")
   (set (make-local-variable 'paragraph-start) perl6-prompt-regexp)
   ;; Indentation (see SMIE in the Emacs manual)
   ;; TODO add rules for HEREDOC indentation
