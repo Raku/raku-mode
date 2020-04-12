@@ -17,6 +17,7 @@
 (add-to-list 'auto-mode-alist '("\\.nqp\\'"     . perl6-mode))
 (add-to-list 'auto-mode-alist '("\\.raku\\'"    . perl6-mode))
 (add-to-list 'auto-mode-alist '("\\.rakumod\\'" . perl6-mode))
+(add-to-list 'auto-mode-alist '("\\.rakutest\\'" . perl6-mode))
 
 ;;;###autoload
 (defconst perl6-magic-pattern
