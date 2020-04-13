@@ -58,7 +58,7 @@ This includes any file with `perl6` in the shebang, as well as any file
 with a `.p6`, `.pm6`, or `.pl6` extension. It also applies to any `.pm`,
 `.pl`, and `.t` files whose first line of code looks like Perl 6.
 
-Start the REPL with <kbd>M-x perl6-repl RET</kbd>. The following
+Start the REPL with <kbd>M-x run-perl6 RET</kbd>. The following
 keybindings are available to interact with the REPL:
 
 * <kbd>C-c C-c</kbd>: Send the current line to the REPL
