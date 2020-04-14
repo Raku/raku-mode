@@ -1,4 +1,4 @@
-;;; perl6-font-lock.el --- Font locking and syntax propertizing for Perl 6 -*- lexical-binding: t; -*-
+;;; raku-font-lock.el --- Font locking and syntax propertizing for Raku -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
@@ -6,106 +6,106 @@
 
 ;;; Code:
 
-(defface perl6-identifier '((t :inherit default))
-  "Face for identifiers in Perl 6."
-  :group 'perl6-faces)
+(defface raku-identifier '((t :inherit default))
+  "Face for identifiers in Raku."
+  :group 'raku-faces)
 
-(defface perl6-number '((t :inherit font-lock-constant-face))
-  "Face for number literals in Perl 6."
-  :group 'perl6-faces)
+(defface raku-number '((t :inherit font-lock-constant-face))
+  "Face for number literals in Raku."
+  :group 'raku-faces)
 
-(defface perl6-number-addition '((t :inherit font-lock-type-face))
+(defface raku-number-addition '((t :inherit font-lock-type-face))
   "Face for additional characters attached to numbers."
-  :group 'perl6-faces)
+  :group 'raku-faces)
 
-(defface perl6-string '((t :inherit font-lock-string-face))
-  "Face for strings in Perl 6."
-  :group 'perl6-faces)
+(defface raku-string '((t :inherit font-lock-string-face))
+  "Face for strings in Raku."
+  :group 'raku-faces)
 
-(defface perl6-comment '((t :inherit font-lock-comment-face))
-  "Face for comments in Perl 6."
-  :group 'perl6-faces)
+(defface raku-comment '((t :inherit font-lock-comment-face))
+  "Face for comments in Raku."
+  :group 'raku-faces)
 
-(defface perl6-operator '((t :inherit font-lock-builtin-face))
-  "Face for operators in Perl 6."
-  :group 'perl6-faces)
+(defface raku-operator '((t :inherit font-lock-builtin-face))
+  "Face for operators in Raku."
+  :group 'raku-faces)
 
-(defface perl6-type '((t :inherit font-lock-type-face))
-  "Face for types in Perl 6."
-  :group 'perl6-faces)
+(defface raku-type '((t :inherit font-lock-type-face))
+  "Face for types in Raku."
+  :group 'raku-faces)
 
-(defface perl6-phaser '((t :inherit font-lock-preprocessor-face))
-  "Face for phasers in Perl 6."
-  :group 'perl6-faces)
+(defface raku-phaser '((t :inherit font-lock-preprocessor-face))
+  "Face for phasers in Raku."
+  :group 'raku-faces)
 
-(defface perl6-exception '((t :inherit font-lock-keyword-face))
-  "Face for exception keywords in Perl 6."
-  :group 'perl6-faces)
+(defface raku-exception '((t :inherit font-lock-keyword-face))
+  "Face for exception keywords in Raku."
+  :group 'raku-faces)
 
-(defface perl6-declare '((t :inherit font-lock-keyword-face))
-  "Face for declaration keywords in Perl 6."
-  :group 'perl6-faces)
+(defface raku-declare '((t :inherit font-lock-keyword-face))
+  "Face for declaration keywords in Raku."
+  :group 'raku-faces)
 
-(defface perl6-include '((t :inherit font-lock-keyword-face))
-  "Face for include keywords in Perl 6."
-  :group 'perl6-faces)
+(defface raku-include '((t :inherit font-lock-keyword-face))
+  "Face for include keywords in Raku."
+  :group 'raku-faces)
 
-(defface perl6-conditional '((t :inherit font-lock-keyword-face))
-  "Face for conditional keywords in Perl 6."
-  :group 'perl6-faces)
+(defface raku-conditional '((t :inherit font-lock-keyword-face))
+  "Face for conditional keywords in Raku."
+  :group 'raku-faces)
 
-(defface perl6-scope '((t :inherit font-lock-keyword-face))
-  "Face for scope keywords in Perl 6."
-  :group 'perl6-faces)
+(defface raku-scope '((t :inherit font-lock-keyword-face))
+  "Face for scope keywords in Raku."
+  :group 'raku-faces)
 
-(defface perl6-loop '((t :inherit font-lock-keyword-face))
-  "Face for loop keywords in Perl 6."
-  :group 'perl6-faces)
+(defface raku-loop '((t :inherit font-lock-keyword-face))
+  "Face for loop keywords in Raku."
+  :group 'raku-faces)
 
-(defface perl6-flow-control '((t :inherit font-lock-keyword-face))
-  "Face for flow control keywords in Perl 6."
-  :group 'perl6-faces)
+(defface raku-flow-control '((t :inherit font-lock-keyword-face))
+  "Face for flow control keywords in Raku."
+  :group 'raku-faces)
 
-(defface perl6-pragma '((t :inherit font-lock-keyword-face))
-  "Face for pragmas in Perl 6."
-  :group 'perl6-faces)
+(defface raku-pragma '((t :inherit font-lock-keyword-face))
+  "Face for pragmas in Raku."
+  :group 'raku-faces)
 
-(defface perl6-type-constraint '((t :inherit font-lock-preprocessor-face))
-  "Face for type constraint keywords in Perl 6."
-  :group 'perl6-faces)
+(defface raku-type-constraint '((t :inherit font-lock-preprocessor-face))
+  "Face for type constraint keywords in Raku."
+  :group 'raku-faces)
 
-(defface perl6-type-property '((t :inherit font-lock-builtin-face))
-  "Face for type constraint properties in Perl 6."
-  :group 'perl6-faces)
+(defface raku-type-property '((t :inherit font-lock-builtin-face))
+  "Face for type constraint properties in Raku."
+  :group 'raku-faces)
 
-(defface perl6-sigil '((t :inherit font-lock-variable-name-face))
-  "Face for variable sigils in Perl 6."
-  :group 'perl6-faces)
+(defface raku-sigil '((t :inherit font-lock-variable-name-face))
+  "Face for variable sigils in Raku."
+  :group 'raku-faces)
 
-(defface perl6-twigil '((t :inherit font-lock-type-face))
-  "Face for variable twigils in Perl 6."
-  :group 'perl6-faces)
+(defface raku-twigil '((t :inherit font-lock-type-face))
+  "Face for variable twigils in Raku."
+  :group 'raku-faces)
 
-(defface perl6-var-package '((t :inherit font-lock-constant-face))
-  "Face for variable names in Perl 6."
-  :group 'perl6-faces)
+(defface raku-var-package '((t :inherit font-lock-constant-face))
+  "Face for variable names in Raku."
+  :group 'raku-faces)
 
-(defface perl6-var-name '((t :inherit font-lock-variable-name-face))
-  "Face for variable names in Perl 6."
-  :group 'perl6-faces)
+(defface raku-var-name '((t :inherit font-lock-variable-name-face))
+  "Face for variable names in Raku."
+  :group 'raku-faces)
 
-(defface perl6-version '((t :inherit font-lock-constant-face))
-  "Face for version literals in Perl 6."
-  :group 'perl6-faces)
+(defface raku-version '((t :inherit font-lock-constant-face))
+  "Face for version literals in Raku."
+  :group 'raku-faces)
 
-(defface perl6-label '((t :inherit font-lock-constant-face))
-  "Face for block labels in Perl 6."
-  :group 'perl6-faces)
+(defface raku-label '((t :inherit font-lock-constant-face))
+  "Face for block labels in Raku."
+  :group 'raku-faces)
 
 (eval-when-compile
   (require 'rx)
 
-  (defun perl6-rx-symbol (form)
+  (defun raku-rx-symbol (form)
     "Translate FORM into a regular expression."
     (let ((body (cdr form)))
       (rx-to-string `(and symbol-start ,@body symbol-end) 'no-group)))
@@ -120,8 +120,8 @@
                                (and (any "@%$")
                                     (regex "[^.?^=_[:alpha:]]\[\{\('\"[:space:]]")
                                     (0+ (regex "[^\[\{\('\"[:space:]]")))))))
-    (defconst perl6-rx-constituents
-      `((symbol perl6-rx-symbol 0 nil)
+    (defconst raku-rx-constituents
+      `((symbol raku-rx-symbol 0 nil)
         (identifier . ,rx-identifier)
         (variable
          . ,(rx-to-string
@@ -255,9 +255,9 @@
                      (group-n 2 "d")
                      (group-n 3 (regex "[[:digit:]]") (0+ (regex "[[:digit:]_]"))))))))))
 
-  (defmacro perl6-rx (&rest sexps)
-    "Specialized `rx' variant for perl6-mode."
-    (let ((rx-constituents (append perl6-rx-constituents rx-constituents)))
+  (defmacro raku-rx (&rest sexps)
+    "Specialized `rx' variant for raku-mode."
+    (let ((rx-constituents (append raku-rx-constituents rx-constituents)))
       (cond ((null sexps)
              (error "No regexp"))
             ((cdr sexps)
@@ -265,7 +265,7 @@
             (t
              (rx-to-string (car sexps) t))))))
 
-(defconst perl6-mode-syntax-table
+(defconst raku-mode-syntax-table
   (let ((table (make-syntax-table)))
     ;; single-quoted strings
     (modify-syntax-entry ?' "\"" table)
@@ -282,10 +282,10 @@
     (modify-syntax-entry ?> "." table)
     (modify-syntax-entry ?| "." table)
     table)
-  "The top level syntax table for Perl 6.")
+  "The top level syntax table for Raku.")
 
-(defconst perl6-bracket-syntax-table
-  (let ((table (make-syntax-table perl6-mode-syntax-table)))
+(defconst raku-bracket-syntax-table
+  (let ((table (make-syntax-table raku-mode-syntax-table)))
     (modify-syntax-entry ?< "(>" table)
     (modify-syntax-entry ?> ")<" table)
     (modify-syntax-entry ?« "(»" table)
@@ -297,7 +297,7 @@
     table)
   "Syntax table for bracketing constructs.")
 
-(defun perl6-syntax-context (&optional state)
+(defun raku-syntax-context (&optional state)
   "Return the syntactic context at the parse state of STATE.
 
 If STATE is not provided, the return value of `syntax-ppss' will be used."
@@ -309,7 +309,7 @@ If STATE is not provided, the return value of `syntax-ppss' will be used."
        (in-comment 'comment)
        (t nil))))
 
-(defun perl6-forward-brackets (open close length)
+(defun raku-forward-brackets (open close length)
   "Move point past the end of a bracketed structure.
 
 Skips over any nested balanced brackets.
@@ -335,14 +335,14 @@ LENGTH is the length of the brackets (e.g. 2 for a <<foo>>)."
                (when (eq depth 0)
                  (setq found-closing t))))))))
 
-(defun perl6-syntax-propertize-delimiters (syntax &optional offset)
+(defun raku-syntax-propertize-delimiters (syntax &optional offset)
   "Add syntax properties to a delimited region.
 
 SYNTAX is the type of syntax to apply to the delimiters \(such as \"!\"\).
 
 OFFSET can be used to shift the starting position (relative to point) of the
 opening delimiter."
-  (with-syntax-table perl6-bracket-syntax-table
+  (with-syntax-table raku-bracket-syntax-table
     (when (and (following-char)
                (eq ?\( (char-syntax (following-char))))
       (let* ((delim-beg (+ (point) (or offset 0)))
@@ -352,19 +352,19 @@ opening delimiter."
                            'syntax-table (string-to-syntax syntax))
         (re-search-forward (rx-to-string `(1+ ,open-delim)))
         (let ((delim-length (length (match-string 0))))
-          (perl6-forward-brackets open-delim close-delim delim-length)
+          (raku-forward-brackets open-delim close-delim delim-length)
           (let ((delim-end (point)))
             (put-text-property delim-beg delim-end 'syntax-multiline t)
             (put-text-property (- delim-end 1) delim-end
                                'syntax-table (string-to-syntax syntax)))))
       t)))
 
-(defun perl6-syntax-propertize-comment (limit)
+(defun raku-syntax-propertize-comment (limit)
   "Add syntax properties to comments."
   (unless (save-excursion
             (and (re-search-forward "\\=[`|=]" (1+ (point)) t)
                   ;; embedded/multiline comment
-                 (perl6-syntax-propertize-delimiters "!" -2)))
+                 (raku-syntax-propertize-delimiters "!" -2)))
     ;; single-line comment
     (put-text-property (1- (point)) (point)
                        'syntax-table (string-to-syntax "<"))
@@ -372,11 +372,11 @@ opening delimiter."
         (put-text-property (1- (point)) (point)
                            'syntax-table (string-to-syntax ">")))))
 
-(defun perl6-syntax-propertize-angles (open-angles)
+(defun raku-syntax-propertize-angles (open-angles)
   "Add syntax properties to angle-bracketed quotes (e.g. <foo> and «bar»).
 
 OPEN-ANGLES is the opening delimiter (e.g. \"«\" or \"<<\")."
-  (with-syntax-table perl6-bracket-syntax-table
+  (with-syntax-table raku-bracket-syntax-table
     (let* ((angle-length (length open-angles))
            (open-angle (string-to-char open-angles))
            (close-angle (matching-paren open-angle))
@@ -397,62 +397,62 @@ OPEN-ANGLES is the opening delimiter (e.g. \"«\" or \"<<\")."
                                                      (0+ space) (opt "\)") (0+ space) ,open-angle)) line-beg)))
           (put-text-property quote-beg (1+ quote-beg)
                              'syntax-table (string-to-syntax "|"))
-          (perl6-forward-brackets open-angle close-angle angle-length)
+          (raku-forward-brackets open-angle close-angle angle-length)
           (let ((quote-end (- (point) 1)))
             (put-text-property quote-beg quote-end 'syntax-multiline t)
             (put-text-property quote-end (1+ quote-end)
                                'syntax-table (string-to-syntax "|")))))))
 
-(defun perl6-syntax-propertize-backslash ()
-  (when (eq (perl6-syntax-context) nil)
+(defun raku-syntax-propertize-backslash ()
+  (when (eq (raku-syntax-context) nil)
     (put-text-property (match-beginning 0) (match-end 0)
                        'syntax-table (string-to-syntax "."))))
 
-(defun perl6-add-font-lock-hint (property &optional group)
+(defun raku-add-font-lock-hint (property &optional group)
   (let ((beg (match-beginning (or group 1)))
-        (context (perl6-syntax-context)))
+        (context (raku-syntax-context)))
     (put-text-property beg (1+ beg) property
                        (cons context (match-data)))))
 
-(defun perl6-syntax-propertize (start end)
+(defun raku-syntax-propertize (start end)
   "Add context-specific syntax properties to code.
 
 Takes arguments START and END which delimit the region to propertize."
   (let ((case-fold-search nil))
     (goto-char start)
-    (remove-text-properties start end '(perl6-metaoperator))
+    (remove-text-properties start end '(raku-metaoperator))
     (funcall
      (syntax-propertize-rules
       ;; [-'] between identifiers are symbol chars
       ((rx (regex "[_[:alnum:]]") (group (any "-'")) (regex "[_[:alpha:]]"))
        (1 "_"))
       ;; same for "::" around identifiers
-      ((perl6-rx (or (and (opt identifier) (group "::") symbol-start)
+      ((raku-rx (or (and (opt identifier) (group "::") symbol-start)
                      (and identifier (group "::"))))
        (1 "_")
        (2 "_"))
       ;; comments
       ((rx "#")
-       (0 (ignore (perl6-syntax-propertize-comment end))))
+       (0 (ignore (raku-syntax-propertize-comment end))))
       ;; postfix hyper operators
-      ((perl6-rx (or identifier "]" ")") (group (or "»" ">>")))
+      ((raku-rx (or identifier "]" ")") (group (or "»" ">>")))
        (0 nil))
       ;; other metaoperators like (-), R=>, [*], X~, »+«
-      ((perl6-rx (or set-operator rsxz-operator reduce-operator hyper-operator))
-       (0 (ignore (perl6-add-font-lock-hint 'perl6-metaoperator 0))))
+      ((raku-rx (or set-operator rsxz-operator reduce-operator hyper-operator))
+       (0 (ignore (raku-add-font-lock-hint 'raku-metaoperator 0))))
       ;; angle-bracketed quoting construct
       ((rx (or (1+ "<") (1+ "«")))
-       (0 (ignore (perl6-syntax-propertize-angles (match-string 0)))))
+       (0 (ignore (raku-syntax-propertize-angles (match-string 0)))))
       ;; backslashes outside strings/comments are punctuation, not escapes
       ((rx "\\")
-       (0 (ignore (perl6-syntax-propertize-backslash))))
+       (0 (ignore (raku-syntax-propertize-backslash))))
       ;; unicode string quotes
       ((rx (any "‘｢“"))
-       (0 (ignore (when (eq (perl6-syntax-context) nil)
+       (0 (ignore (when (eq (raku-syntax-context) nil)
                     (backward-char)
-                    (perl6-syntax-propertize-delimiters "|")))))
+                    (raku-syntax-propertize-delimiters "|")))))
       ;; sigils and twigils are prefix characters
-      ((perl6-rx variable)
+      ((raku-rx variable)
        (1 ". p")
        (2 ". p")
        ;; go back to the end of the twigils/sigils, so other syntax
@@ -460,15 +460,15 @@ Takes arguments START and END which delimit the region to propertize."
        (4 (ignore (goto-char (or (match-end 2) (match-end 1)))))))
      start end)))
 
-(defun perl6-font-lock-syntactic-face (state)
+(defun raku-font-lock-syntactic-face (state)
   "Specify font lock faces based on syntax table entries.
 
 Takes STATE, the parse state."
-  (pcase (perl6-syntax-context state)
-    (`string 'perl6-string)
-    (`comment 'perl6-comment)))
+  (pcase (raku-syntax-context state)
+    (`string 'raku-string)
+    (`comment 'raku-comment)))
 
-(defun perl6-search-when (regex condition limit)
+(defun raku-search-when (regex condition limit)
   "Search forward for REGEX if the match satisfies CONDITION.
 
 CONDITION should be a lambda that will be called after REGEX
@@ -496,20 +496,20 @@ LIMIT can be used to bound the search."
       (set-match-data new-match-data)
       (goto-char (match-end 0)))))
 
-(defun perl6-match-type-constraint (limit)
-  (perl6-search-when
-   (perl6-rx (or (group (symbol type-constraint))
+(defun raku-match-type-constraint (limit)
+  (raku-search-when
+   (raku-rx (or (group (symbol type-constraint))
                  (and (group (symbol "is"))
                       (1+ space)
                       (opt (group (symbol type-property))))))
    (lambda ()
      (goto-char (match-beginning 0))
-     (and (eq (perl6-syntax-context) nil)
+     (and (eq (raku-syntax-context) nil)
           (not (looking-back (rx (or (char ".^")
                                      (and line-start (0+ space))))))))
    limit))
 
-(defun perl6-match-property (property context limit)
+(defun raku-match-property (property context limit)
   (when (symbolp context)
     (setq context (list context)))
   (let ((pos (next-single-char-property-change (point) property nil limit)))
@@ -523,138 +523,138 @@ LIMIT can be used to bound the search."
         (let ((value (get-text-property pos-with-match-data property)))
           (if (and value (memq (car value) context))
               (progn (set-match-data (cdr value)) t)
-            (perl6-match-property property context limit)))))))
+            (raku-match-property property context limit)))))))
 
-(defun perl6-match-metaoperator (limit)
-  (perl6-match-property 'perl6-metaoperator nil limit))
+(defun raku-match-metaoperator (limit)
+  (raku-match-property 'raku-metaoperator nil limit))
 
-(defun perl6-match-string-delimiter (limit)
-  (perl6-search-when
-   (perl6-rx (or (syntax string-quote) (syntax string-delimiter)))
-   (lambda () (not (eq (perl6-syntax-context) `comment)))
+(defun raku-match-string-delimiter (limit)
+  (raku-search-when
+   (raku-rx (or (syntax string-quote) (syntax string-delimiter)))
+   (lambda () (not (eq (raku-syntax-context) `comment)))
    limit))
 
-(defconst perl6-font-lock-keywords
+(defconst raku-font-lock-keywords
   `(
     ;; (-) R=> [*] X~ »+«
-    (perl6-match-metaoperator 0 'perl6-operator)
+    (raku-match-metaoperator 0 'raku-operator)
     ;; placeholder sigils
-    (,(perl6-rx (group (any "@$%&"))
+    (,(raku-rx (group (any "@$%&"))
                 (or
                  "<"
                  (and (0+ space)
                       (or (any ",\)\}") (symbol "where")))))
-     1 'perl6-sigil)
+     1 'raku-sigil)
     ;; $foo @Bla::Hlagh $.bar $?CLASS
-    (,(perl6-rx variable)
-     (1 'perl6-sigil)
-     (2 'perl6-twigil)
-     (3 'perl6-var-package)
-     (4 'perl6-var-name))
+    (,(raku-rx variable)
+     (1 'raku-sigil)
+     (2 'raku-twigil)
+     (3 'raku-var-package)
+     (4 'raku-var-name))
     ;; v6.0.0
-    (,(perl6-rx symbol-start version) 0 'perl6-version)
+    (,(raku-rx symbol-start version) 0 'raku-version)
     ;; e.g. $foo is cached
-    (perl6-match-type-constraint
-     (1 'perl6-type-constraint nil t)
-     (2 'perl6-type-constraint nil t)
-     (3 'perl6-type-property nil t))
+    (raku-match-type-constraint
+     (1 'raku-type-constraint nil t)
+     (2 'raku-type-constraint nil t)
+     (3 'raku-type-property nil t))
     ;; method calls like $foo.bar or $hlagh.^methods
-    (,(perl6-rx (group (any ".^?")) (group identifier symbol-end))
-     (1 'perl6-operator)
-     (2 'perl6-identifier))
+    (,(raku-rx (group (any ".^?")) (group identifier symbol-end))
+     (1 'raku-operator)
+     (2 'raku-identifier))
     ;; autoquoting fat arrow, foo => $bar
-    (,(perl6-rx (group (symbol identifier)) (1+ space) (group "=>"))
-     (1 'perl6-string)
-     (2 'perl6-operator))
+    (,(raku-rx (group (symbol identifier)) (1+ space) (group "=>"))
+     (1 'raku-string)
+     (2 'raku-operator))
     ;; "proto foo", "proto sub foo", etc
-    (,(perl6-rx (group (symbol pre-declare))
+    (,(raku-rx (group (symbol pre-declare))
                 (opt (1+ space) (group (symbol declare)))
                 (opt (1+ space) (group identifier)))
-     (1 'perl6-declare)
-     (2 'perl6-declare nil t)
-     (3 'perl6-identifier nil t))
+     (1 'raku-declare)
+     (2 'raku-declare nil t)
+     (3 'raku-identifier nil t))
     ;; "sub foo"
-    (,(perl6-rx (group (symbol declare))
+    (,(raku-rx (group (symbol declare))
                 (opt (1+ space) (group identifier)))
-     (1 'perl6-declare)
-     (2 'perl6-identifier nil t))
+     (1 'raku-declare)
+     (2 'raku-identifier nil t))
     ;; high-level types (Scalar, Class, Str, etc)
-    (,(perl6-rx (group symbol-start high-type) "(") 1 'perl6-type)
+    (,(raku-rx (group symbol-start high-type) "(") 1 'raku-type)
     ;; anything preceding an open-paren is just an identifier
-    (,(perl6-rx (group symbol-start identifier) "(") 1 'perl6-identifier)
+    (,(raku-rx (group symbol-start identifier) "(") 1 'raku-identifier)
     ;; contextualizers
-    (,(perl6-rx
+    (,(raku-rx
        (or (and (group-n 1 (any "$@%&")) "(")
            (group-n 2 (symbol (or "item" "list" "hash")))))
-     (1 'perl6-operator nil t)
-     (2 'perl6-operator nil t))
+     (1 'raku-operator nil t)
+     (2 'raku-operator nil t))
     ;; low-level types (int, bool, complex, etc)
-    (,(perl6-rx (symbol (or low-type high-type))) 0 'perl6-type)
+    (,(raku-rx (symbol (or low-type high-type))) 0 'raku-type)
     ;; adverbs like :foo and :!bar
-    (,(perl6-rx (or bol (regex "[^:]")) (group ":" (opt "!")) (group (symbol identifier)))
-     (1 'perl6-operator)
-     (2 'perl6-string))
+    (,(raku-rx (or bol (regex "[^:]")) (group ":" (opt "!")) (group (symbol identifier)))
+     (1 'raku-operator)
+     (2 'raku-string))
     ;; div, and, eq...
-    (,(perl6-rx (symbol operator-word)) 0 'perl6-operator)
+    (,(raku-rx (symbol operator-word)) 0 'raku-operator)
     ;; BEGIN, CHECK, INIT...
-    (,(perl6-rx (symbol phaser)) 0 'perl6-phaser)
+    (,(raku-rx (symbol phaser)) 0 'raku-phaser)
     ;; die, fail, try...
-    (,(perl6-rx (symbol exception)) 0 'perl6-exception)
+    (,(raku-rx (symbol exception)) 0 'raku-exception)
     ;; let, my, our...
-    (,(perl6-rx (symbol scope)) 0 'perl6-scope)
+    (,(raku-rx (symbol scope)) 0 'raku-scope)
     ;; if, else, elsif...
-    (,(perl6-rx (symbol conditional)) 0 'perl6-conditional)
+    (,(raku-rx (symbol conditional)) 0 'raku-conditional)
     ;; use, require...
-    (,(perl6-rx (symbol include)) 0 'perl6-include)
+    (,(raku-rx (symbol include)) 0 'raku-include)
     ;; for, loop, repeat...
-    (,(perl6-rx (symbol loop)) 0 'perl6-loop)
+    (,(raku-rx (symbol loop)) 0 'raku-loop)
     ;; take, do, when...
-    (,(perl6-rx (symbol flow-control)) 0 'perl6-flow-control)
+    (,(raku-rx (symbol flow-control)) 0 'raku-flow-control)
     ;; oo, fatal...
-    (,(perl6-rx (symbol pragma)) 0 'perl6-pragma)
+    (,(raku-rx (symbol pragma)) 0 'raku-pragma)
     ;; special numbers
-    (,(perl6-rx (symbol (or "Inf" "NaN")))
-     0 'perl6-number)
+    (,(raku-rx (symbol (or "Inf" "NaN")))
+     0 'raku-number)
     ;; block label declarations
-    (,(perl6-rx line-start (0+ space) (group identifier ":") (or space line-end))
-     1 'perl6-label)
+    (,(raku-rx line-start (0+ space) (group identifier ":") (or space line-end))
+     1 'raku-label)
     ;; block label references
-    (,(perl6-rx (symbol (or "goto" "next" "last" "redo"))
+    (,(raku-rx (symbol (or "goto" "next" "last" "redo"))
                 (1+ space)
                 (group identifier))
-     1 'perl6-label)
+     1 'raku-label)
     ;; identifiers with colons
-    (,(perl6-rx
+    (,(raku-rx
        (or symbol-start
            (and "::" (group (opt (regex "[?*]")))))
        identifier
        (opt (0+ "::" identifier))
        (opt "::"))
-     (0 'perl6-identifier)
-     (1 'perl6-twigil t t))
+     (0 'raku-identifier)
+     (1 'raku-twigil t t))
     ;; numbers
-    (,(perl6-rx (or bol (regex "[^[:digit:]]")) number)
-     (1 'perl6-number)
-     (2 'perl6-number-addition nil t)
-     (3 'perl6-number nil t)
-     (4 'perl6-number-addition nil t))
+    (,(raku-rx (or bol (regex "[^[:digit:]]")) number)
+     (1 'raku-number)
+     (2 'raku-number-addition nil t)
+     (3 'raku-number nil t)
+     (4 'raku-number-addition nil t))
     ;; punctuation operators (+ - : / *, etc)
-    (,(perl6-rx operator-char) 0 'perl6-operator)
+    (,(raku-rx operator-char) 0 'raku-operator)
     ;; number with an explicit base (0b010101, 0x1ef1, etc)
-    (,(perl6-rx base-number)
-     (1 'perl6-number)
-     (2 'perl6-number-addition)
-     (3 'perl6-number))
+    (,(raku-rx base-number)
+     (1 'raku-number)
+     (2 'raku-number-addition)
+     (3 'raku-number))
     ;; highlight string delimiters as operators
-    (perl6-match-string-delimiter
-     0 'perl6-operator t))
-  "Font lock keywords for Perl 6.")
+    (raku-match-string-delimiter
+     0 'raku-operator t))
+  "Font lock keywords for Raku.")
 
-(provide 'perl6-font-lock)
+(provide 'raku-font-lock)
 
 ;; Local Variables:
 ;; coding: utf-8
 ;; indent-tabs-mode: nil
 ;; End:
 
-;;; perl6-font-lock.el ends here
+;;; raku-font-lock.el ends here

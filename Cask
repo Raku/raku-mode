@@ -1,7 +1,7 @@
 (source gnu)
 (source melpa)
 
-(package-file "perl6-mode.el")
+(package-file "raku-mode.el")
 
 (files "*.el")
 

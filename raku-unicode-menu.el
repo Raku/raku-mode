@@ -20,11 +20,11 @@
 
 
 ;;===========================
-(provide 'perl6-unicode-menu)
+(provide 'raku-unicode-menu)
 
 ;; Local Variables:
 ;; coding: utf-8
 ;; indent-tabs-mode: nil
 ;; End:
 
-;;; perl6-imenu.el ends here
+;;; raku-imenu.el ends here
