@@ -42,6 +42,22 @@
 (require 'perl6-font-lock)
 (require 'perl6-indent)
 (require 'perl6-imenu)
+(require 'perl6-repl)
+
+(defvar perl6-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "C-c C-c") 'perl6-send-line-to-repl)
+    (define-key map (kbd "C-c C-r") 'perl6-send-region-to-repl)
+    (define-key map (kbd "C-c C-h") 'perl6-send-buffer-to-repl)
+    map)
+  "Keymap for `perl6-mode'.")
+
+(easy-menu-define perl6-mode-menu perl6-mode-map
+  "Menu for `perl6-mode'"
+  '("Raku"
+    ["Send line to repl" perl6-send-line-to-repl]
+    ["Send region to repl" perl6-send-region-to-repl]
+    ["Send buffer to repl" perl6-send-buffer-to-repl]))
 
 ;;;###autoload
 (define-derived-mode perl6-mode prog-mode "Perl6"
@@ -61,11 +77,18 @@
   (setq-local comment-start-skip "#+ *")
   (setq-local comment-use-syntax t)
   (setq-local comment-end "")
+   ;; REPL
+  (setq comint-prompt-regexp perl6-prompt-regexp)
+  (setq comint-prompt-read-only t)
+  (set (make-local-variable 'paragraph-start) perl6-prompt-regexp)
   ;; Indentation (see SMIE in the Emacs manual)
   ;; TODO add rules for HEREDOC indentation
   (smie-setup perl6-smie-grammar #'perl6-smie-rules
               :forward-token #'perl6-smie--forward-token
-              :backward-token #'perl6-smie--backward-token))
+              :backward-token #'perl6-smie--backward-token)
+  (use-local-map perl6-mode-map))
+
+
 
 (provide 'perl6-mode)
 
