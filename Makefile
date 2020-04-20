@@ -15,7 +15,7 @@ OBJS = $(SRCS:.el=.elc)
 compile: $(OBJS)
 
 clean:
-	rm -rf $(OBJS) dist perl6-mode-pkg.el
+	rm -rf $(OBJS) dist raku-mode-pkg.el
 
 test: $(PKGDIR)
 	$(CASK) exec ert-runner $(TESTFLAGS)

@@ -1,10 +1,10 @@
-# Perl 6 Mode
+# Raku Mode
 
 [![License GPL 3][badge-license]][copying]
 [![MELPA Status](http://melpa.org/packages/perl6-mode-badge.svg)](http://melpa.org/#/perl6-mode)
 [![travis][badge-travis]][travis]
 
-Perl 6 mode lets you edit Perl 6 code with [GNU Emacs][] 24.
+Raku mode lets you edit Raku code with [GNU Emacs][] 24.
 
 This mode needs GNU Emacs 24.4.
 
@@ -34,7 +34,7 @@ This mode needs GNU Emacs 24.4.
 With [`use-package`][use-package] in your init file:
 
 ```el
-(use-package perl6-mode
+(use-package raku-mode
   :ensure t
   :defer t)
 ```
@@ -44,21 +44,21 @@ Or in your [`Cask`][cask] file:
 ```el
 (source melpa)
 
-(depends-on "perl6-mode")
+(depends-on "raku-mode")
 ```
 Or manually from [MELPA][] with <kbd>M-x package-refresh-contents</kbd>
-and <kbd>M-x package-install RET perl6-mode</kbd>.
+and <kbd>M-x package-install RET raku-mode</kbd>.
 
 ## Usage
 
-Just visit Perl 6 files.
+Just visit Raku files.
 
-The major mode will be autoloaded whenever a Perl 6 file is visited.
-This includes any file with `perl6` in the shebang, as well as any file
+The major mode will be autoloaded whenever a Raku file is visited.
+This includes any file with `raku` in the shebang, as well as any file
 with a `.p6`, `.pm6`, or `.pl6` extension. It also applies to any `.pm`,
-`.pl`, and `.t` files whose first line of code looks like Perl 6.
+`.pl`, and `.t` files whose first line of code looks like Raku.
 
-Start the REPL with <kbd>M-x run-perl6 RET</kbd>. The following
+Start the REPL with <kbd>M-x run-raku RET</kbd>. The following
 keybindings are available to interact with the REPL:
 
 * <kbd>C-c C-c</kbd>: Send the current line to the REPL
@@ -67,7 +67,7 @@ keybindings are available to interact with the REPL:
 
 The REPL will start if needed with this keybindings.
 
-Use <kbd>M-x customize-group RET perl6</kbd> to customize Perl 6 Mode.
+Use <kbd>M-x customize-group RET raku</kbd> to customize Raku Mode.
 
 ## Contribute
 
@@ -83,12 +83,12 @@ The original version of this code can be found at
 
 ## License
 
-Perl 6 Mode is free software: you can redistribute it and/or modify it
+Raku Mode is free software: you can redistribute it and/or modify it
 under the terms of the GNU General Public License as published by the
 Free Software Foundation, either version 3 of the License, or (at your
 option) any later version.
 
-Perl 6 Mode is distributed in the hope that it will be useful, but
+Raku Mode is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
 Public License for more details.

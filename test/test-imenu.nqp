@@ -1,8 +1,8 @@
 # file: test-imenu.p6
 
-# Perl 6 syntax file for testing perl6-mode with imenu support, which is located at:
+# Raku syntax file for testing raku-mode with imenu support, which is located at:
 #
-#   https://github.com/tbrowder/perl6-mode [branch: "my-branch"]
+#   https://github.com/tbrowder/raku-mode [branch: "my-branch"]
 
 my $a;
 my @b;

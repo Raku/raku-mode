@@ -1,4 +1,4 @@
-;;; perl6-repl -- Repl for support Raku
+;;; raku-repl -- Repl for support Raku
 
 ;;; Commentary:
 ;; Basic repl support for Raku
@@ -6,68 +6,68 @@
 ;;; Code:
 (require 'comint)
 
-(defcustom perl6-exec-path "raku"
+(defcustom raku-exec-path "raku"
   "Raku executable path."
   :type 'string
-  :group 'perl6)
+  :group 'raku)
 
-(defcustom perl6-exec-arguments ""
+(defcustom raku-exec-arguments ""
   "Raku command line arguments."
   :type 'string
-  :group 'perl6)
+  :group 'raku)
 
-(defvar perl6-prompt-regexp "^> "
-  "Prompt for `run-perl6'.")
+(defvar raku-prompt-regexp "^> "
+  "Prompt for `run-raku'.")
 
-(defvar perl6-buffer-name "Raku REPL"
-  "Buffer name for `run-perl6.")
+(defvar raku-buffer-name "Raku REPL"
+  "Buffer name for `run-raku.")
 
-(defun run-perl6 ()
+(defun run-raku ()
   "Run an inferior instance of `raku' inside Emacs."
   (interactive)
-  (let* ((perl6-program perl6-exec-path)
-         (check-proc (comint-check-proc perl6-buffer-name))
+  (let* ((raku-program raku-exec-path)
+         (check-proc (comint-check-proc raku-buffer-name))
          (buffer (apply 'make-comint-in-buffer
-                        perl6-buffer-name
+                        raku-buffer-name
                         check-proc
-                        perl6-exec-path
+                        raku-exec-path
                         '()
-                        (split-string perl6-exec-arguments))))
+                        (split-string raku-exec-arguments))))
     (display-buffer buffer)))
 
-(defun perl6-comint-get-process ()
+(defun raku-comint-get-process ()
   "Raku process name."
-  (get-process perl6-buffer-name))
+  (get-process raku-buffer-name))
 
-(defun perl6-send-string-to-repl (str)
+(defun raku-send-string-to-repl (str)
   "Send STR to the repl."
-  (comint-send-string (perl6-comint-get-process)
+  (comint-send-string (raku-comint-get-process)
                       (concat str "\n")))
 
-(defun perl6-send-line-to-repl ()
+(defun raku-send-line-to-repl ()
   "Send a line to the repl."
   (interactive)
-  (run-perl6)
+  (run-raku)
   (let ((str (buffer-substring-no-properties (line-beginning-position) (line-end-position))))
-    (perl6-send-string-to-repl str)))
+    (raku-send-string-to-repl str)))
 
-(defun perl6-send-region-to-repl ()
+(defun raku-send-region-to-repl ()
   "Send a region to the repl."
   (interactive)
-  (run-perl6)
+  (run-raku)
   (if (region-active-p)
       (let ((buf (buffer-substring-no-properties (region-beginning)
                                                  (region-end))))
-        (perl6-send-string-to-repl buf))
+        (raku-send-string-to-repl buf))
     (message "No region selected")))
 
-(defun perl6-send-buffer-to-repl ()
+(defun raku-send-buffer-to-repl ()
   "Send a buffer to the repl."
   (interactive)
-  (run-perl6)
+  (run-raku)
   (let ((buf (buffer-substring-no-properties (point-min)
                                              (point-max))))
-    (perl6-send-string-to-repl buf)))
+    (raku-send-string-to-repl buf)))
 
-(provide 'perl6-repl)
-;;; perl6-repl.el ends here
+(provide 'raku-repl)
+;;; raku-repl.el ends here

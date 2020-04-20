@@ -1,4 +1,4 @@
-;;; perl6-mode.el --- Major mode for editing Perl 6 code -*- lexical-binding: t; -*-
+;;; raku-mode.el --- Major mode for editing Raku code -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2015  Hinrik Örn Sigurðsson <hinrik.sig@gmail.com>
 
@@ -25,7 +25,7 @@
 
 ;;; Commentary:
 
-;; GNU Emacs 24 major mode for editing Perl 6 code.
+;; GNU Emacs 24 major mode for editing Raku code.
 
 ;; Currently only provides very basic syntax highlighting.
 
@@ -33,28 +33,28 @@
 
 (declare-function pkg-info-version-info "pkg-info" (library))
 
-(defgroup perl6 nil
-  "Major mode for editing Perl 6 code."
-  :prefix "perl6-"
+(defgroup raku nil
+  "Major mode for editing Raku code."
+  :prefix "raku-"
   :group 'language)
 
-(require 'perl6-detect)
-(require 'perl6-font-lock)
-(require 'perl6-indent)
-(require 'perl6-imenu)
+(require 'raku-detect)
+(require 'raku-font-lock)
+(require 'raku-indent)
+(require 'raku-imenu)
 
 ;;;###autoload
-(define-derived-mode perl6-mode prog-mode "Perl6"
-  "Major mode for editing Perl 6 code."
+(define-derived-mode raku-mode prog-mode "Raku"
+  "Major mode for editing Raku code."
   ;; Syntaxification and font locking
-  (setq-local syntax-propertize-function #'perl6-syntax-propertize)
+  (setq-local syntax-propertize-function #'raku-syntax-propertize)
   (add-hook 'syntax-propertize-extend-region-functions #'syntax-propertize-multiline nil 'local)
-  (setq-local font-lock-syntactic-face-function #'perl6-font-lock-syntactic-face)
-  (setq-local font-lock-defaults '(perl6-font-lock-keywords nil nil))
-  ;; Add imenu support for perl6-mode.  Note that imenu-generic-expression
+  (setq-local font-lock-syntactic-face-function #'raku-font-lock-syntactic-face)
+  (setq-local font-lock-defaults '(raku-font-lock-keywords nil nil))
+  ;; Add imenu support for raku-mode.  Note that imenu-generic-expression
   ;; is buffer-local, so we don't need a local-variable for it.
-  (add-hook 'perl6-mode-hook 'imenu-add-menubar-index)
-  (setq imenu-generic-expression perl6-imenu-generic-expression
+  (add-hook 'raku-mode-hook 'imenu-add-menubar-index)
+  (setq imenu-generic-expression raku-imenu-generic-expression
       imenu-case-fold-search nil)
   ;; Comments
   (setq-local comment-start "#")
@@ -62,15 +62,15 @@
   (setq-local comment-use-syntax t)
   (setq-local comment-end "")
   ;; Indentation
-  (smie-setup perl6-smie-grammar #'perl6-smie-rules
-              :forward-token #'perl6-smie--forward-token
-              :backward-token #'perl6-smie--backward-token))
+  (smie-setup raku-smie-grammar #'raku-smie-rules
+              :forward-token #'raku-smie--forward-token
+              :backward-token #'raku-smie--backward-token))
 
-(provide 'perl6-mode)
+(provide 'raku-mode)
 
 ;; Local Variables:
 ;; coding: utf-8
 ;; indent-tabs-mode: nil
 ;; End:
 
-;;; perl6-mode.el ends here
+;;; raku-mode.el ends here
