@@ -88,7 +88,7 @@
               :backward-token #'raku-smie--backward-token)
   (use-local-map raku-mode-map))
 
-
+(defalias 'perl6-mode 'raku-mode)
 
 (provide 'raku-mode)
 
