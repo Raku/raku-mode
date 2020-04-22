@@ -77,10 +77,6 @@
   (setq-local comment-start-skip "#+ *")
   (setq-local comment-use-syntax t)
   (setq-local comment-end "")
-   ;; REPL
-  (setq comint-prompt-regexp raku-prompt-regexp)
-  (setq comint-prompt-read-only t)
-  (set (make-local-variable 'paragraph-start) raku-prompt-regexp)
   ;; Indentation (see SMIE in the Emacs manual)
   ;; TODO add rules for HEREDOC indentation
   (smie-setup raku-smie-grammar #'raku-smie-rules
