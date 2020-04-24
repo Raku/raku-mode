@@ -32,13 +32,15 @@
   :prefix "raku-skeleton-"
   :group 'raku)
 
+;; Need the full path for the #!. Simply setting it to `raku' may not be ideal.
 (defcustom full-raku-path "/usr/bin/raku"
   "Path to the Raku executable."
   :type 'string
   :group 'raku-skeletons)
 
+;; A string for `:auth<auth-id>';
 (defcustom auth-id user-login-name
-  "Author information."
+  "Module author information."
   :type 'string
   :group 'raku-skeletons)
 
@@ -92,6 +94,8 @@
   "you can redistribute it and/or modify it under the Artistic License 2.0."
   "\n\n"
   "=end pod" \n)
+
+;; TODO: Maybe META6.json and .t/.rakutest skeletons?
 
 (provide 'raku-skeletons)
 ;;; raku-skeletons.el ends here
