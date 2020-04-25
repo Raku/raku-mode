@@ -33,7 +33,7 @@
   :group 'raku)
 
 ;; Need the full path for the #!. Simply setting it to `raku' may not be ideal.
-(defcustom full-raku-path "/usr/bin/raku"
+(defcustom full-raku-path "/usr/bin/env raku"
   "Path to the Raku executable."
   :type 'string
   :group 'raku-skeletons)
