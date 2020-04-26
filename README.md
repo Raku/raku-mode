@@ -83,8 +83,8 @@ auto-insert-alist`) with the conditions of your choice.
 To insert them when you create a new file with the `.raku` or `.rakumod`
 extension, use the following matching regular expressions:
 
-* For `raku-script-skeleton`: `/.raku/'`.
-* For `raku-module-skeleton`: `/.rakumod/`.
+* For `raku-script-skeleton`: `\.raku\'`.
+* For `raku-module-skeleton`: `\.rakumod\`.
 
 Alternatively you can add them in your .emacs using `define-auto-insert`:
 
