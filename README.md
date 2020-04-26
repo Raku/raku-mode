@@ -70,6 +70,38 @@ The REPL will start if needed with this keybindings.
 
 Use <kbd>M-x customize-group RET raku</kbd> to customize Raku Mode.
 
+## Template skeletons
+
+Included are two skeletons (file templates) that can be auto-inserted with
+auto-insert-mode:
+
+* `raku-script-skeleton`, and
+* `raku-module-skeleton`.
+
+To use them, add them to your auto-insert-alist (`M-x customize-option RET
+auto-insert-alist`) with the conditions of your choice.
+
+To insert them when you create a new file with the `.raku` or `.rakumod`
+extension, use the following matching regular expressions:
+
+* For `raku-script-skeleton`: `\.raku\'`.
+* For `raku-module-skeleton`: `\.rakumod\`.
+
+Alternatively you can add them in your .emacs using `define-auto-insert`:
+
+```Emacs Lisp
+(define-auto-insert
+	'("\\.rakumod\\'" . "Raku module skeleton")
+	'raku-module-skeleton)
+(define-auto-insert
+	'("\\.raku\\'" . "Raku script skeleton")
+	'raku-script-skeleton)
+```
+
+The full path to the Raku executable for the shebang, as well as the default
+auth information for a module can be defined in the Raku Skeleton customization
+group, `M-x customize-group RET raku-skeleton`.
+
 ## Contribute
 
 Pull requests are welcome.
