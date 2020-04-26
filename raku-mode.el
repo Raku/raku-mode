@@ -36,7 +36,7 @@
 (defgroup raku nil
   "Major mode for editing Raku code."
   :prefix "raku-"
-  :group 'language)
+  :group 'languages)
 
 (require 'raku-detect)
 (require 'raku-font-lock)
