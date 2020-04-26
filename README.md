@@ -24,6 +24,7 @@ This mode needs GNU Emacs 24.4.
 * `find-file-at-point` for module names
 * Electricity (`electric-pair-mode` needs some context-sensitive help)
 * Unicode character map
+* Better HEREDOC support (currently not very stable)
 
 #### Not planned
 
