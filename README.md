@@ -28,7 +28,7 @@ This mode needs GNU Emacs 24.4.
 
 #### Not planned
 
-* Syntax checking (use [flycheck-perl6][])
+* Syntax checking (use [flycheck-raku][])
 
 ## Installation
 
@@ -133,7 +133,7 @@ See [`COPYING`][copying] for the complete license.
 [travis]: https://travis-ci.org/hinrik/perl6-mode
 [badge-travis]: https://travis-ci.org/hinrik/perl6-mode.svg?branch=master
 [GNU Emacs]: https://www.gnu.org/software/emacs/
-[flycheck-perl6]: https://github.com/hinrik/flycheck-perl6
+[flycheck-raku]: https://github.com/widefox/flycheck-raku
 [MELPA]: http://melpa.milkbox.net/
 [use-package]: https://github.com/jwiegley/use-package
 [Cask]: http://cask.github.io/
