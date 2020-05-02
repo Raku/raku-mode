@@ -10,15 +10,14 @@
 ;;; Code:
 
 ;;;###autoload
-(add-to-list 'interpreter-mode-alist '("perl6" . raku-mode))
-(add-to-list 'interpreter-mode-alist '("raku" . raku-mode))
+(add-to-list 'interpreter-mode-alist '("perl6\\|raku" . raku-mode))
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.p[lm]?6\\'" . raku-mode))
-(add-to-list 'auto-mode-alist '("\\.nqp\\'"     . raku-mode))
-(add-to-list 'auto-mode-alist '("\\.raku\\'"    . raku-mode))
-(add-to-list 'auto-mode-alist '("\\.rakumod\\'" . raku-mode))
-(add-to-list 'auto-mode-alist '("\\.rakutest\\'" . raku-mode))
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.nqp\\'" . raku-mode))
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.raku\\(?:mod\\|test\\)?\\'" . raku-mode))
 
 ;;;###autoload
 (defconst raku-magic-pattern
