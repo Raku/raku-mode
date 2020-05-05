@@ -372,16 +372,31 @@ opening delimiter."
         (put-text-property (1- (point)) (point)
                            'syntax-table (string-to-syntax ">")))))
 
+(defun raku-syntax-propertize-pod-code-blocks (limit)
+  "Add syntax properties to code blocks in POD."
+  (while (search-forward "=begin code" limit t)
+    (let ((code-beg (point))
+          (code-end (- (search-forward "=end code" limit t)
+                       (length "=end code"))))
+      (put-text-property code-beg (1+ code-beg)
+                         'syntax-table (string-to-syntax ">"))
+      (put-text-property (1- code-end) code-end
+                         'syntax-table (string-to-syntax "<"))
+      (remove-text-properties code-beg code-end '(syntax-multiline nil)))))
+
 (defun raku-syntax-propertize-pod (limit)
   "Add syntax properties to POD."
-  (let ((pod-beg (- (point) (length "=begin pod"))))
-    (put-text-property pod-beg (1+ pod-beg)
-                       'syntax-table (string-to-syntax "<"))
-    (if (re-search-forward "=end pod" limit 'noerror)
-        (let ((pod-end (point)))
-          (put-text-property pod-beg pod-end 'syntax-multiline t)
-          (put-text-property (1- pod-end) pod-end
-                             'syntax-table (string-to-syntax ">"))))))
+  (let ((pod-beg (- (point) (length "=begin pod")))
+        (pod-end (search-forward "=end pod" limit t)))
+    (save-excursion
+      (put-text-property (1- pod-beg) pod-beg
+                         'syntax-table (string-to-syntax "<"))
+      (put-text-property pod-end (1+ pod-end)
+                         'syntax-table (string-to-syntax ">"))
+      (put-text-property pod-beg pod-end
+                         'syntax-multiline t)
+      (goto-char pod-beg)
+      (raku-syntax-propertize-pod-code-blocks pod-end))))
 
 (defun raku-syntax-propertize-angles (open-angles)
   "Add syntax properties to angle-bracketed quotes (e.g. <foo> and «bar»).
