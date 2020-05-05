@@ -372,6 +372,17 @@ opening delimiter."
         (put-text-property (1- (point)) (point)
                            'syntax-table (string-to-syntax ">")))))
 
+(defun raku-syntax-propertize-pod (limit)
+  "Add syntax properties to POD."
+  (let ((pod-beg (- (point) (length "=begin pod"))))
+    (put-text-property pod-beg (1+ pod-beg)
+                       'syntax-table (string-to-syntax "<"))
+    (if (re-search-forward "=end pod" limit 'noerror)
+        (let ((pod-end (point)))
+          (put-text-property pod-beg pod-end 'syntax-multiline t)
+          (put-text-property (1- pod-end) pod-end
+                             'syntax-table (string-to-syntax ">"))))))
+
 (defun raku-syntax-propertize-angles (open-angles)
   "Add syntax properties to angle-bracketed quotes (e.g. <foo> and «bar»).
 
@@ -434,6 +445,9 @@ Takes arguments START and END which delimit the region to propertize."
       ;; comments
       ((rx "#")
        (0 (ignore (raku-syntax-propertize-comment end))))
+      ;; pod
+      ((rx "=begin pod")
+       (0 (ignore (raku-syntax-propertize-pod end))))
       ;; postfix hyper operators
       ((raku-rx (or identifier "]" ")") (group (or "»" ">>")))
        (0 nil))
