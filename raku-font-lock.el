@@ -536,8 +536,6 @@ LIMIT can be used to bound the search."
 
 (defconst raku-font-lock-keywords
   `(
-    ;; (-) R=> [*] X~ »+«
-    (raku-match-metaoperator 0 'raku-operator)
     ;; placeholder sigils
     (,(raku-rx (group (any "@$%&"))
                 (or
@@ -551,6 +549,8 @@ LIMIT can be used to bound the search."
      (2 'raku-twigil)
      (3 'raku-var-package)
      (4 'raku-var-name))
+    ;; (-) R=> [*] X~ »+«
+    (raku-match-metaoperator 0 'raku-operator)
     ;; v6.0.0
     (,(raku-rx symbol-start version) 0 'raku-version)
     ;; e.g. $foo is cached
