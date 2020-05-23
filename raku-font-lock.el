@@ -382,7 +382,8 @@ opening delimiter."
                          'syntax-table (string-to-syntax ">"))
       (put-text-property (1- code-end) code-end
                          'syntax-table (string-to-syntax "<"))
-      (remove-text-properties code-beg code-end '(syntax-multiline nil)))))
+      (remove-text-properties code-beg code-end '(syntax-multiline nil))
+      (raku-syntax-propertize code-beg code-end))))
 
 (defun raku-syntax-propertize-pod-inline-code (limit)
   "Add syntax properties to inline code blocks in POD."
@@ -399,7 +400,8 @@ opening delimiter."
                            'syntax-table (string-to-syntax ">"))
         (put-text-property (point) (1+ (point))
                            'syntax-table (string-to-syntax "<"))
-        (remove-text-properties code-beg (point) '(syntax-multiline nil))))))
+        (remove-text-properties code-beg (point) '(syntax-multiline nil))
+        (raku-syntax-propertize code-beg (point))))))
 
 (defun raku-syntax-propertize-pod (limit)
   "Add syntax properties to POD."
@@ -476,12 +478,12 @@ Takes arguments START and END which delimit the region to propertize."
                      (and identifier (group "::"))))
        (1 "_")
        (2 "_"))
-      ;; comments
-      ((rx "#")
-       (0 (ignore (raku-syntax-propertize-comment end))))
       ;; pod
       ((rx "=begin pod")
        (0 (ignore (raku-syntax-propertize-pod end))))
+      ;; comments
+      ((rx "#")
+       (0 (ignore (raku-syntax-propertize-comment end))))
       ;; postfix hyper operators
       ((raku-rx (or identifier "]" ")") (group (or "»" ">>")))
        (0 nil))
