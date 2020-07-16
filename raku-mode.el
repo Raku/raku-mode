@@ -49,7 +49,7 @@
     (define-key map (kbd "C-c C-c") 'raku-send-line-to-repl)
     (define-key map (kbd "C-c C-r") 'raku-send-region-to-repl)
     (define-key map (kbd "C-c C-h") 'raku-send-buffer-to-repl)
-    (define-key map (kbd "C-c C-m") 'raku-reload-repl-with-module)
+    (define-key map (kbd "C-c C-l") 'raku-reload-repl-with-module)
     map)
   "Keymap for `raku-mode'.")
 
