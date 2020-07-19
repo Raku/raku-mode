@@ -84,6 +84,19 @@
         (raku-send-string-to-repl buf))
     (message "No region selected")))
 
+(defun raku-reload-repl-with-module()
+  "Reloads the Raku REPL with the module with the name of the current file."
+  (interactive)
+  (let ((raku-exec-arguments (concat "-I "
+                                     (file-name-directory buffer-file-name)
+                                     " -M "
+                                     (file-name-base))))
+    (when (raku-comint-get-process)
+      (interrupt-process (raku-comint-get-process))
+      (sleep-for .01))    
+    (run-raku)
+    (raku-send-string-to-repl "")))
+
 (defun raku-send-buffer-to-repl ()
   "Send a buffer to the repl."
   (interactive)

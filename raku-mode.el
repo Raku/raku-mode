@@ -49,6 +49,7 @@
     (define-key map (kbd "C-c C-c") 'raku-send-line-to-repl)
     (define-key map (kbd "C-c C-r") 'raku-send-region-to-repl)
     (define-key map (kbd "C-c C-h") 'raku-send-buffer-to-repl)
+    (define-key map (kbd "C-c C-l") 'raku-reload-repl-with-module)
     map)
   "Keymap for `raku-mode'.")
 
@@ -57,7 +58,8 @@
   '("Raku"
     ["Send line to repl" raku-send-line-to-repl]
     ["Send region to repl" raku-send-region-to-repl]
-    ["Send buffer to repl" raku-send-buffer-to-repl]))
+    ["Send buffer to repl" raku-send-buffer-to-repl]
+    ["Reload repl with module" raku-reload-repl-with-module]))
 
 ;;;###autoload
 (define-derived-mode raku-mode prog-mode "Raku"
