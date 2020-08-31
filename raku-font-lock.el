@@ -166,9 +166,9 @@
                     "maybe" "defer" "start" "default" "exit" "make" "continue"
                     "break" "goto" "leave" "async" "lift")))
         (phaser
-         . ,(rx (or "BEGIN" "CHECK" "INIT" "START" "FIRST" "ENTER" "LEAVE" "KEEP"
+         . ,(rx (or "BEGIN" "CHECK" "INIT" "FIRST" "ENTER" "LEAVE" "KEEP"
                     "UNDO" "NEXT" "LAST" "PRE" "POST" "END" "CATCH" "CONTROL"
-                    "TEMP")))
+                    "TEMP" "QUIT" "DOC" "CLOSE")))
         (exception . ,(rx (or "die" "fail" "try" "warn")))
         (pragma . ,(rx (or "oo" "fatal")))
         (type-constraint
