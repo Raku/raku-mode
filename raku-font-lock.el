@@ -181,7 +181,7 @@
                     "tighter" "looser" "equiv" "assoc" "required")))
         (operator-word
          . ,(rx (or "div" "xx" "x" "mod" "also" "leg" "cmp" "before" "after" "eq"
-                    "ne" "le" "lt" "not" "gt" "eqv" "ff" "fff" "and" "andthen"
+                    "ne" "le" "lt" "not" "gt" "ge" "eqv" "ff" "fff" "and" "andthen"
                     "or" "xor" "orelse" "extra" "lcm" "gcd" "o")))
         (operator-char . ,(rx (any "-:+/*~?|=^!%&,<>».;\\∈∉∋∌∩∪≼≽⊂⊃⊄⊅⊆⊇⊈⊉⊍⊎⊖∅∘")))
         (set-operator
