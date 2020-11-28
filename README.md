@@ -19,6 +19,8 @@ This mode needs GNU Emacs 24.4.
 
 * Complete syntax highlighting
 * Better indentation support (uses Emacs SMIE grammar, see the Emacs manual)
+* Autocompletion
+* Possible integration with Raku language server
 * Help system
 * ETags support
 * `find-file-at-point` for module names
