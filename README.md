@@ -64,9 +64,9 @@ with a `.p6`, `.pm6`, or `.pl6` extension. It also applies to any `.pm`,
 Start the REPL with <kbd>M-x run-raku RET</kbd>. The following
 keybindings are available to interact with the REPL:
 
-* <kbd>C-c C-l</kbd>: Send the current line to the REPL
-* <kbd>C-c C-r</kbd>: Send the selected region to the REPL
-* <kbd>C-c C-b</kbd>: Send the whole buffer to the REPL
+* <kbd>C-c C-l</kbd>: Send the current **l**ine to the REPL
+* <kbd>C-c C-r</kbd>: Send the selected **r**egion to the REPL
+* <kbd>C-c C-b</kbd>: Send the whole **b**uffer to the REPL
 
 The REPL will start if needed with this keybindings.
 
