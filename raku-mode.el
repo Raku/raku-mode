@@ -46,9 +46,9 @@
 
 (defvar raku-mode-map
   (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "C-c C-c") 'raku-send-line-to-repl)
+    (define-key map (kbd "C-c C-l") 'raku-send-line-to-repl)
     (define-key map (kbd "C-c C-r") 'raku-send-region-to-repl)
-    (define-key map (kbd "C-c C-h") 'raku-send-buffer-to-repl)
+    (define-key map (kbd "C-c C-b") 'raku-send-buffer-to-repl)
     map)
   "Keymap for `raku-mode'.")
 
