@@ -35,10 +35,6 @@
 
 (defun raku-smie--forward-token ()
   (cond
-   ((progn
-      ;; (message "frwd char-before=`%c` char-after=`%c` point=%s" (char-before) (char-after) (point))
-      nil) nil)
-
    ;; Return `;` to fudge end-of-block indentation (I think), as ; is optional after a block
    ((and (eq (char-before) ?\})                 ;; Character immediately prior to point is `}`
          (raku-smie--not-interpolation-p)       ;; And, not in an interpolation
@@ -48,8 +44,6 @@
 
     (if (memq (char-after) '(?\s ?\t ?\n))      ;; If the above is true, and point is followed by /[\s\t\n]/
         (forward-char 1) (forward-comment 1))   ;; Then, advance by one character, and one whole comment
-
-    (message "forward cond#1")
     ";")
 
    ((eq (char-after) ?\=)                       ;; Spit out '=' to kick off proper indentation for hanging assignment
@@ -67,7 +61,6 @@
 (defun raku-smie--backward-token ()
   (let ((pos (point)))
     (forward-comment (- (point)))               ;; Retreate past ALL comments up to point
-    ;; (message "back char-before=`%c` char-after=`%c` point=%s" (char-before) (char-after) (point))
     (cond
      ;; FIXME: If the next char is not whitespace, what should we do?
      ;; Cond #1 - Same end-of-block hack, I think
@@ -90,7 +83,6 @@
 
 (defun raku-smie-rules (kind token)
   (progn
-    ;; (message "%S (point: %s)" (cons kind token) (point))
     (pcase (cons kind token)
       ;; Basic indent offset
       (`(:elem . basic) raku-indent-offset)
