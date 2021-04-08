@@ -82,29 +82,28 @@
      (t (smie-default-backward-token)))))       ;; If none of the above matched, defer to SMIE default search
 
 (defun raku-smie-rules (kind token)
-  (progn
-    (pcase (cons kind token)
-      ;; Basic indent offset
-      (`(:elem . basic) raku-indent-offset)
+  (pcase (cons kind token)
+    ;; Basic indent offset
+    (`(:elem . basic) raku-indent-offset)
 
-      ;; Indent offset for function args
-      (`(:elem . arg) 0)
+    ;; Indent offset for function args
+    (`(:elem . arg) 0)
 
-      (`(:list-intro . ,(or `";" `"")) t) ;"" stands for BOB (bug#15467).
+    (`(:list-intro . ,(or `";" `"")) t) ;"" stands for BOB (bug#15467).
 
-      ;; Make sure that hanging assignment gets indented
-      (`(:before . "=")
-       (if (smie-rule-hanging-p)
-           (smie-rule-parent raku-indent-offset)))
+    ;; Make sure that hanging assignment gets indented
+    (`(:before . "=")
+     (if (smie-rule-hanging-p)
+         (smie-rule-parent raku-indent-offset)))
 
-      (`(:before . "{")
-       (when (smie-rule-hanging-p) ; is `{` the last thing on this line?
-         (smie-backward-sexp ";")  ; y tho
-         (smie-indent-virtual)))
+    (`(:before . "{")
+     (when (smie-rule-hanging-p) ; is `{` the last thing on this line?
+       (smie-backward-sexp ";")  ; y tho
+       (smie-indent-virtual)))
 
-      (`(:before . ,(or "{" "("))
-       (if (smie-rule-hanging-p)
-           (smie-rule-parent 0))))))
+    (`(:before . ,(or "{" "("))
+     (if (smie-rule-hanging-p)
+         (smie-rule-parent 0)))))
 
 (provide 'raku-indent)
 
