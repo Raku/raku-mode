@@ -5,7 +5,7 @@
 ;; Author: Hinrik Örn Sigurðsson <hinrik.sig@gmail.com>
 ;; URL: https://github.com/hinrik/perl6-mode
 ;; Keywords: languages
-;; Version: 0.1-git
+;; Version: 0.2.0
 ;; Package-Requires: ((emacs "24.4") (pkg-info "0.1"))
 
 ;; This file is not part of GNU Emacs.
@@ -46,9 +46,9 @@
 
 (defvar raku-mode-map
   (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "C-c C-c") 'raku-send-line-to-repl)
+    (define-key map (kbd "C-c C-l") 'raku-send-line-to-repl)
     (define-key map (kbd "C-c C-r") 'raku-send-region-to-repl)
-    (define-key map (kbd "C-c C-h") 'raku-send-buffer-to-repl)
+    (define-key map (kbd "C-c C-b") 'raku-send-buffer-to-repl)
     map)
   "Keymap for `raku-mode'.")
 
