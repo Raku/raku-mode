@@ -92,5 +92,14 @@
                                              (point-max))))
     (raku-send-string-to-repl buf)))
 
+(defun raku-send-file-to-repl (filename)
+  "Send the file to the repl."
+  (interactive (list
+		(read-file-name "Load file: " nil nil
+				nil (buffer-file-name))))
+  (run-raku)
+  (let ((str (concat "EVALFILE \"" (expand-file-name filename) "\";")))
+    (raku-send-string-to-repl str)))
+
 (provide 'raku-repl)
 ;;; raku-repl.el ends here
