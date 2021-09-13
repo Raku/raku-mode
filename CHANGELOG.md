@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [0.2.1] - 2021-09-12
 ### Removed
-- 'pkg-info' (PR 53)
+- 'pkg-info' dependency (PR 53)
 
 
 ## [0.2.0] - 2021-04-12
