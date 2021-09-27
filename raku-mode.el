@@ -5,7 +5,7 @@
 ;; Author: Hinrik Örn Sigurðsson <hinrik.sig@gmail.com>
 ;; URL: https://github.com/hinrik/perl6-mode
 ;; Keywords: languages
-;; Version: 0.2.0
+;; Version: 0.2.1
 ;; Package-Requires: ((emacs "24.4"))
 
 ;; This file is not part of GNU Emacs.
