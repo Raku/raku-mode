@@ -135,7 +135,7 @@ See [`COPYING`][copying] for the complete license.
 [travis]: https://travis-ci.org/hinrik/perl6-mode
 [badge-travis]: https://travis-ci.org/hinrik/perl6-mode.svg?branch=master
 [GNU Emacs]: https://www.gnu.org/software/emacs/
-[flycheck-raku]: https://github.com/widefox/flycheck-raku
+[flycheck-raku]: https://github.com/Raku/flycheck-raku
 [MELPA]: http://melpa.milkbox.net/
 [use-package]: https://github.com/jwiegley/use-package
 [Cask]: http://cask.github.io/
