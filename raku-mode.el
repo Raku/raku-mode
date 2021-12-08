@@ -5,8 +5,8 @@
 ;; Author: Hinrik Örn Sigurðsson <hinrik.sig@gmail.com>
 ;; URL: https://github.com/hinrik/perl6-mode
 ;; Keywords: languages
-;; Version: 0.2.0
-;; Package-Requires: ((emacs "24.4") (pkg-info "0.1"))
+;; Version: 0.2.1
+;; Package-Requires: ((emacs "24.4"))
 
 ;; This file is not part of GNU Emacs.
 
@@ -30,8 +30,6 @@
 ;; Currently only provides very basic syntax highlighting.
 
 ;;; Code:
-
-(declare-function pkg-info-version-info "pkg-info" (library))
 
 (defgroup raku nil
   "Major mode for editing Raku code."
