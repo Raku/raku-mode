@@ -94,6 +94,22 @@
   "Face for variable names in Raku."
   :group 'raku-faces)
 
+(defface raku-var-name-mu '((t :inherit font-lock-variable-name-face))
+  "Face for mu variable names in Raku."
+  :group 'raku-faces)
+
+(defface raku-var-name-positional '((t :inherit font-lock-variable-name-face))
+  "Face for positional variable names in Raku."
+  :group 'raku-faces)
+
+(defface raku-var-name-associative '((t :inherit font-lock-variable-name-face))
+  "Face for associative variable names in Raku."
+  :group 'raku-faces)
+
+(defface raku-var-name-callable '((t :inherit font-lock-variable-name-face))
+  "Face for callable variable names in Raku."
+  :group 'raku-faces)
+
 (defface raku-version '((t :inherit font-lock-constant-face))
   "Face for version literals in Raku."
   :group 'raku-faces)
@@ -126,6 +142,38 @@
         (variable
          . ,(rx-to-string
              `(and (group (1+ (char "@$%&")))
+                   (group (opt (char ".^*?=!~:")))
+                   (group (opt (or (and "::" (0+ (regex ,rx-identifier) "::"))
+                                   (1+ (regex ,rx-identifier) "::"))))
+                   (group (or (or digit (char "/!¢"))
+                              (and (regex ,rx-identifier) symbol-end))))))
+        (variable-mu
+         . ,(rx-to-string
+             `(and (group (1+ (char "$")))
+                   (group (opt (char ".^*?=!~:")))
+                   (group (opt (or (and "::" (0+ (regex ,rx-identifier) "::"))
+                                   (1+ (regex ,rx-identifier) "::"))))
+                   (group (or (or digit (char "/!¢"))
+                              (and (regex ,rx-identifier) symbol-end))))))
+        (variable-positional
+         . ,(rx-to-string
+             `(and (group (1+ (char "@")))
+                   (group (opt (char ".^*?=!~:")))
+                   (group (opt (or (and "::" (0+ (regex ,rx-identifier) "::"))
+                                   (1+ (regex ,rx-identifier) "::"))))
+                   (group (or (or digit (char "/!¢"))
+                              (and (regex ,rx-identifier) symbol-end))))))
+        (variable-associative
+         . ,(rx-to-string
+             `(and (group (1+ (char "%")))
+                   (group (opt (char ".^*?=!~:")))
+                   (group (opt (or (and "::" (0+ (regex ,rx-identifier) "::"))
+                                   (1+ (regex ,rx-identifier) "::"))))
+                   (group (or (or digit (char "/!¢"))
+                              (and (regex ,rx-identifier) symbol-end))))))
+        (variable-callable
+         . ,(rx-to-string
+             `(and (group (1+ (char "&")))
                    (group (opt (char ".^*?=!~:")))
                    (group (opt (or (and "::" (0+ (regex ,rx-identifier) "::"))
                                    (1+ (regex ,rx-identifier) "::"))))
@@ -594,11 +642,26 @@ LIMIT can be used to bound the search."
                       (or (any ",\)\}") (symbol "where")))))
      1 'raku-sigil)
     ;; $foo @Bla::Hlagh $.bar $?CLASS
-    (,(raku-rx variable)
+    (,(raku-rx variable-mu)
      (1 'raku-sigil)
      (2 'raku-twigil)
      (3 'raku-var-package)
-     (4 'raku-var-name))
+     (4 'raku-var-name-mu))
+    (,(raku-rx variable-positional)
+     (1 'raku-sigil)
+     (2 'raku-twigil)
+     (3 'raku-var-package)
+     (4 'raku-var-name-positional))
+    (,(raku-rx variable-associative)
+     (1 'raku-sigil)
+     (2 'raku-twigil)
+     (3 'raku-var-package)
+     (4 'raku-var-name-associative))
+    (,(raku-rx variable-callable)
+     (1 'raku-sigil)
+     (2 'raku-twigil)
+     (3 'raku-var-package)
+     (4 'raku-var-name-callable))
     ;; (-) R=> [*] X~ »+«
     (raku-match-metaoperator 0 'raku-operator)
     ;; v6.0.0
