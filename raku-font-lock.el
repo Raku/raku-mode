@@ -539,7 +539,7 @@ Takes arguments START and END which delimit the region to propertize."
       ((raku-rx (or set-operator rsxz-operator reduce-operator hyper-operator))
        (0 (ignore (raku-add-font-lock-hint 'raku-metaoperator 0))))
       ;; angle-bracketed quoting construct
-      ((rx (or (1+ "<") (1+ "«")))
+      ((rx (1+ "«"))
        (0 (ignore (raku-syntax-propertize-angles (match-string 0)))))
       ;; backslashes outside strings/comments are punctuation, not escapes
       ((rx "\\")
