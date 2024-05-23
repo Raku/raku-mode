@@ -96,11 +96,6 @@
      (if (smie-rule-hanging-p)
          (smie-rule-parent raku-indent-offset)))
 
-    (`(:before . "{")
-     (when (smie-rule-hanging-p) ; is `{` the last thing on this line?
-       (smie-backward-sexp ";")  ; y tho
-       (smie-indent-virtual)))
-
     (`(:before . ,(or "{" "("))
      (if (smie-rule-hanging-p)
          (smie-rule-parent 0)))))
