@@ -12,7 +12,7 @@
 (defconst raku-smie-grammar
   (smie-prec2->grammar
    (smie-precs->prec2
-    '((assoc ";") (assoc "=") (assoc ",") (left ":")))))
+    '((assoc ";") (assoc "=") (assoc ",") (left ":") (left ".")))))
 
 (defcustom raku-indent-offset 4
   "Basic size of one indentation step."
@@ -33,8 +33,33 @@
      ;; if this does NOT match, we are not in an interpolation
      (not (looking-back "#{\\$" (- (point) 3))))))
 
+(defun raku-smie--method-chain-p ()
+  "Check if current line starts with a method call (dot operator)."
+  (save-excursion
+    (beginning-of-line)
+    (skip-chars-forward " \t")
+    (eq (char-after) ?\.)))
+
+(defun raku-smie--find-chain-root-indentation ()
+  "Find the indentation of the root line in a method chain."
+  (save-excursion
+    ;; Move to previous line and scan backward to find the chain root
+    (forward-line -1)
+    (end-of-line)
+    ;; Keep going back while we see lines starting with dots
+    (while (and (not (bobp))
+                (save-excursion
+                  (beginning-of-line)
+                  (skip-chars-forward " \t")
+                  (eq (char-after) ?\.)))
+      (forward-line -1)
+      (end-of-line))
+    ;; Now we're at the root line, return its indentation
+    (beginning-of-line)
+    (current-indentation)))
+
 (defun raku-smie--forward-token ()
-  (cond
+   (cond
    ;; Return `;` to fudge end-of-block indentation (I think), as ; is optional after a block
    ((and (eq (char-before) ?\})                 ;; Character immediately prior to point is `}`
          (raku-smie--not-interpolation-p)       ;; And, not in an interpolation
@@ -51,7 +76,7 @@
     "=")
 
    ((progn (forward-comment (point-max))        ;; Read past ALL comments
-           (looking-at "[;,:]"))                ;; Are we looking at ; , or :
+           (looking-at "[;,:.])"))              ;; Are we looking at ; , : or .
 
     (forward-char 1)                            ;; If so, advance one character
     (match-string 0))                           ;; And then return whatever looking-at found (?)
@@ -74,8 +99,8 @@
       (forward-char -1)
       "=")
 
-     ;; Cond #2 - Get whatever precedes [,:;]
-     ((memq (char-before) '(?\; ?\, ?\:))       ;; Point is preceded immediately by `;`, `,`, or `:`
+     ;; Cond #2 - Get whatever precedes [,:;.]
+     ((memq (char-before) '(?\; ?\, ?\: ?\.))   ;; Point is preceded immediately by `;`, `,`, `:`, or `.`
       (forward-char -1)                         ;; Retreat one char
       (string (char-after)))                    ;; Return char after point (the char we just retreated past)
 
@@ -103,7 +128,12 @@
 
     (`(:before . ,(or "{" "("))
      (if (smie-rule-hanging-p)
-         (smie-rule-parent 0)))))
+         (smie-rule-parent 0)))
+
+    ;; Method chaining indentation
+    (`(:before . ".")
+     (when (raku-smie--method-chain-p)
+       (+ (raku-smie--find-chain-root-indentation) raku-indent-offset)))))
 
 (provide 'raku-indent)
 
