@@ -477,21 +477,51 @@ OPEN-ANGLES is the opening delimiter (e.g. \"«\" or \"<<\")."
            (open-angle (string-to-char open-angles))
            (close-angle (matching-paren open-angle))
            (quote-beg (- (point) angle-length))
-           (line-beg (point-at-bol)))
+           (line-beg (line-beginning-position)))
       (when
-          (and (not (or (looking-at (rx-to-string `(or "=" (= 2 (char "-=")))))
-                        (looking-at (rx-to-string `(and (** 1 2 "-") ,close-angle)))
-                        (looking-back (rx-to-string `(and (char "+~=!") ,open-angle)) (- (point) 2))))
-               (or (not (looking-at "[[:space:]]"))
-                   (not (looking-back (rx-to-string `(and space ,open-angle)) (- (point) 2)))
-                   (looking-at (rx-to-string `(and ,open-angle (1+ space) ,close-angle)))
-                   (looking-back (rx-to-string `(and "=" (1+ space) ,open-angle)) line-beg)
-                   (looking-back (rx-to-string `(and "(" (0+ space) ,open-angle)) line-beg)
-                   (looking-at "[[:blank:]]*$")
-                   (looking-back (rx-to-string `(and line-start (0+ space) ,open-angle)) line-beg)
-                   (looking-back (rx-to-string `(and symbol-start (or "enum" "for" "any" "all" "none")
-                                                     (0+ space) (opt ")") (0+ space) ,open-angle))
-                                 line-beg)))
+          ;; Figure out when our angle bracket is really starting quoted text.
+          ;; In the descriptive comments below, <> also represent «» when those
+          ;; are the angles we're dealing with. First we check for things that
+          ;; never start quotes.
+          (and (not (or
+                     ;; Don't quotify if we're right after another quote
+                     ;; character (either inside a string, or next to one in a
+                     ;; way that can't mean a quote list)
+                     (looking-back (rx-to-string
+                                    `(and (any "\"'“‘’”｢｣") (0+ space) ,open-angle))
+                                   line-beg)
+                     ;; Don't quotify <=, <==, <--, <-=, or <=-
+                     (looking-at (rx-to-string `(or "=" (= 2 (char "-=")))))
+                     ;; Also don't quotify <-> or <-->
+                     (looking-at (rx-to-string `(and (** 1 2 "-") ,close-angle)))
+                     ;; And certainly not +<, ~<, =<, or !< (operators), or \<
+                     ;; (escaped angle bracket, occurs in regexes and quotes)
+                     (looking-back (rx-to-string `(and (char "+~=!\\") ,open-angle)) (- (point) 2))))
+               ;; Now that we've cleared the disqualifiers, check for any one of
+               ;; these acceptable quote scenarios
+               (or
+                ;; < followed by whitespace always starts a quote
+                (not (looking-at "[[:space:]]"))
+                ;; < preceded by whitespace also always starts a quote
+                (not (looking-back (rx-to-string `(and space ,open-angle)) (- (point) 2)))
+                ;; The first < in situations like <<   > count as a quote starter
+                (looking-at (rx-to-string `(and ,open-angle (1+ space) ,close-angle)))
+                ;; Things like '= <' count as quote starting (assigning list to
+                ;; something)
+                (looking-back (rx-to-string `(and "=" (1+ space) ,open-angle)) line-beg)
+                ;; Things like '(<' count as quote starting (first thing inside
+                ;; parens must be term, thus must be quote list)
+                (looking-back (rx-to-string `(and "(" (0+ space) ,open-angle)) line-beg)
+                ;; < as the last non-whitespace character on a line presumed to
+                ;; start quote
+                (looking-at "[[:blank:]]*$")
+                ;; < as the first non-whitespace character on a line also
+                ;; presumed to start quote
+                (looking-back (rx-to-string `(and line-start (0+ space) ,open-angle)) line-beg)
+                ;; < after certain keywords must start a quote list.
+                (looking-back (rx-to-string `(and symbol-start (or "enum" "for" "any" "all" "none")
+                                                  (0+ space) ,open-angle))
+                              line-beg)))
           (put-text-property quote-beg (1+ quote-beg)
                              'syntax-table (string-to-syntax "|"))
           (raku-forward-brackets open-angle close-angle angle-length)
