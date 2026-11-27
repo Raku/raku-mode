@@ -46,10 +46,6 @@
   "Face for declaration keywords in Raku."
   :group 'raku-faces)
 
-(defface raku-rule '((t :inherit font-lock-keyword-face))
-  "Face for include keywords in Raku."
-  :group 'raku-faces)
-
 (defface raku-include '((t :inherit font-lock-keyword-face))
   "Face for include keywords in Raku."
   :group 'raku-faces)
@@ -206,8 +202,7 @@
         (declare
          . ,(rx (or "macro" "sub" "submethod" "method" "category"
                     "module" "class" "role" "package" "enum" "grammar"
-                    "slang" "subset")))
-        (rule . ,(rx (or "regex" "rule" "token")))
+                    "slang" "subset" "regex" "rule" "token")))
         (include . ,(rx (or "use" "require unit")))
         (conditional . ,(rx (or "if" "else" "elsif" "unless" "with"
                                 "orwith" "without")))
@@ -721,8 +716,6 @@ LIMIT can be used to bound the search."
     (,(raku-rx (symbol scope)) 0 'raku-scope)
     ;; if, else, elsif...
     (,(raku-rx (symbol conditional)) 0 'raku-conditional)
-    ;; regex, rule, token
-    (,(raku-rx (symbol rule)) 0 'raku-rule)
     ;; use, require...
     (,(raku-rx (symbol include)) 0 'raku-include)
     ;; for, loop, repeat...
