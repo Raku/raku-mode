@@ -127,15 +127,17 @@
       (rx-to-string `(and symbol-start ,@body symbol-end) 'no-group)))
 
   (let ((rx-identifier (rx-to-string
-                        `(and (regex "[_[:alpha:]]")
-                              (0+ (regex "[_[:alnum:]]"))
-                              (0+ (any "-'") (regex "[_[:alpha:]]") (0+ (regex "[_[:alnum:]]"))))))
+                        `(and (any ?_ alpha)
+                              (0+ (any ?_ alphanumeric))
+                              (0+ (any ?- ?') ; hyphens special in (any) strings, so single out as char
+                                  (any ?_ alpha)
+                                  (0+ (any ?_ alphanumeric))))))
         (rx-metaoperator (rx-to-string
-                          `(or (and (regex "[^[:digit:]@%$]")
-                                    (0+ (regex "[^\[\{\('\"[:space:]]")))
+                          `(or (and (not (any digit "@%$"))
+                                    (0+ (not (any "[{('\"" space))))
                                (and (any "@%$")
-                                    (regex "[^.?^=_[:alpha:]]\[\{\('\"[:space:]]")
-                                    (0+ (regex "[^\[\{\('\"[:space:]]")))))))
+                                    (not (any ".?^=_[{('\"" alpha space))
+                                    (0+ (not (any "[{('\"" space))))))))
     (defconst raku-rx-constituents
       `((symbol raku-rx-symbol 0 nil)
         (identifier . ,rx-identifier)
@@ -181,21 +183,21 @@
                               (and (regex ,rx-identifier) symbol-end))))))
         (reduce-operator
          . ,(rx-to-string
-             `(and (0+ (any "RSXZ\["))
+             `(and (0+ (any "RSXZ["))
                    (opt (any "RSXZ&"))
-                   (1+ "\[")
-                   (opt "\(")
+                   (1+ "[")
+                   (opt "(")
                    (regex ,rx-metaoperator)
-                   (opt "\)")
-                   (1+ "\]"))))
+                   (opt ")")
+                   (1+ "]"))))
         (hyper-operator
          . ,(rx-to-string
              `(or (and "«" (regex ,rx-metaoperator) (char "«»"))
                   (and "»" (regex ,rx-metaoperator) (opt (char "«»")))
                   (and "<<" (regex ,rx-metaoperator) (or "<<" ">>"))
                   (and ">>" (regex ,rx-metaoperator) (opt (or "<<" ">>")))
-                  (and (regex "[^[:digit:]\[\{\('\",:[:space:]]")
-                       (0+ (regex "[^\[\{\('\",:[:space:]]"))
+                  (and (not (any digit "[{('\",:" space))
+                       (0+ (not (any "[{('\",:" space)))
                        (or "«" "<<")))))
         (pre-declare
          . ,(rx (or "multi" "proto" "only")))
@@ -233,12 +235,12 @@
         (operator-char . ,(rx (any "-:+/*~?|=^!%&,<>».;\\∈∉∋∌∩∪≼≽⊂⊃⊄⊅⊆⊇⊈⊉⊍⊎⊖∅∘")))
         (set-operator
          . ,(rx (opt "R")
-                "\("
+                "("
                 (or (char "-^.+|&")
                     (and (char "<>") (opt (char "=+")))
                     "cont"
                     "elem")
-                "\)"))
+                ")"))
         (rsxz-operator
          . ,(rx
              symbol-start
@@ -249,7 +251,7 @@
                               "orelse")
                           symbol-end)
                      (any ".,")
-                     (1+ (regex "[^:\[.,[:space:][:alnum:]]")))
+                     (1+ (not (any ":[.," space alphanumeric))))
                  symbol-end)))
         (low-type
          . ,(rx (or "int" "int1" "int2" "int4" "int8" "int16" "int32" "int64"
@@ -297,10 +299,10 @@
                      (group-n 3 (any "0-1") (0+ (any "0-1_"))))
                     (and
                      (group-n 2 "x")
-                     (group-n 3 (regex "[[:xdigit:]]") (0+ (regex "[[:xdigit:]_]"))))
+                     (group-n 3 xdigit (0+ (any xdigit ?_))))
                     (and
                      (group-n 2 "d")
-                     (group-n 3 (regex "[[:digit:]]") (0+ (regex "[[:digit:]_]"))))))))))
+                     (group-n 3 digit (0+ (any digit ?_))))))))))
 
   (defmacro raku-rx (&rest sexps)
     "Specialized `rx' variant for raku-mode."
@@ -337,10 +339,10 @@
     (modify-syntax-entry ?> ")<" table)
     (modify-syntax-entry ?« "(»" table)
     (modify-syntax-entry ?» ")«" table)
-    (modify-syntax-entry ?‘ "(’" table)
-    (modify-syntax-entry ?’ ")‘" table)
-    (modify-syntax-entry ?“ "(”" table)
-    (modify-syntax-entry ?” ")“" table)
+    (modify-syntax-entry ?\‘ "(’" table)
+    (modify-syntax-entry ?\’ ")‘" table)
+    (modify-syntax-entry ?\“ "(”" table)
+    (modify-syntax-entry ?\” ")“" table)
     table)
   "Syntax table for bracketing constructs.")
 
@@ -385,7 +387,7 @@ LENGTH is the length of the brackets (e.g. 2 for a <<foo>>)."
 (defun raku-syntax-propertize-delimiters (syntax &optional offset)
   "Add syntax properties to a delimited region.
 
-SYNTAX is the type of syntax to apply to the delimiters \(such as \"!\"\).
+SYNTAX is the type of syntax to apply to the delimiters (such as \"!\").
 
 OFFSET can be used to shift the starting position (relative to point) of the
 opening delimiter."
@@ -409,7 +411,7 @@ opening delimiter."
 (defun raku-syntax-propertize-comment (limit)
   "Add syntax properties to comments."
   (unless (save-excursion
-            (and (re-search-forward "\\=[`|=]" (1+ (point)) t)
+            (and (re-search-forward "\\=[`|=]" nil t)
                   ;; embedded/multiline comment
                  (raku-syntax-propertize-delimiters "!" -2)))
     ;; single-line comment
@@ -437,7 +439,7 @@ opening delimiter."
   (while (and
           (re-search-forward "^\s*\n\s+[^\s]" limit t))
     (backward-char)
-    (unless (looking-at "=\(begin\|end\|head\|for\|para\|item\|defn\|comment\)")
+    (unless (looking-at "=\\(begin\\|end\\|head\\|for\\|para\\|item\\|defn\\|comment\\)")
       (let ((code-beg (1- (point))))
         (re-search-forward "^[^\s]" limit t)
         (when (looking-back "^[^\s]" code-beg)
@@ -479,16 +481,17 @@ OPEN-ANGLES is the opening delimiter (e.g. \"«\" or \"<<\")."
       (when
           (and (not (or (looking-at (rx-to-string `(or "=" (= 2 (char "-=")))))
                         (looking-at (rx-to-string `(and (** 1 2 "-") ,close-angle)))
-                        (looking-back (rx-to-string `(and (char "+~=!") ,open-angle)) 2)))
-               (or (not (looking-at "[\s\n]"))
-                   (not (looking-back (rx-to-string `(and (char "\s\n") ,open-angle)) 2))
-                   (looking-at (rx-to-string `(and ,open-angle (1+ (char "\s\n")) ,close-angle)))
+                        (looking-back (rx-to-string `(and (char "+~=!") ,open-angle)) (- (point) 2))))
+               (or (not (looking-at "[[:space:]]"))
+                   (not (looking-back (rx-to-string `(and space ,open-angle)) (- (point) 2)))
+                   (looking-at (rx-to-string `(and ,open-angle (1+ space) ,close-angle)))
                    (looking-back (rx-to-string `(and "=" (1+ space) ,open-angle)) line-beg)
-                   (looking-back (rx-to-string `(and "\(" (0+ space) ,open-angle)) line-beg)
-                   (looking-at "\s*$")
+                   (looking-back (rx-to-string `(and "(" (0+ space) ,open-angle)) line-beg)
+                   (looking-at "[[:blank:]]*$")
                    (looking-back (rx-to-string `(and line-start (0+ space) ,open-angle)) line-beg)
                    (looking-back (rx-to-string `(and symbol-start (or "enum" "for" "any" "all" "none")
-                                                     (0+ space) (opt "\)") (0+ space) ,open-angle)) line-beg)))
+                                                     (0+ space) (opt ")") (0+ space) ,open-angle))
+                                 line-beg)))
           (put-text-property quote-beg (1+ quote-beg)
                              'syntax-table (string-to-syntax "|"))
           (raku-forward-brackets open-angle close-angle angle-length)
@@ -518,7 +521,7 @@ Takes arguments START and END which delimit the region to propertize."
     (funcall
      (syntax-propertize-rules
       ;; [-'] between identifiers are symbol chars
-      ((rx (regex "[_[:alnum:]]") (group (any "-'")) (regex "[_[:alpha:]]"))
+      ((rx (any ?_ alphanumeric) (group (any ?- ?')) (any ?_ alpha))
        (1 "_"))
       ;; same for "::" around identifiers
       ((raku-rx (or (and (opt identifier) (group "::") symbol-start)
@@ -638,7 +641,7 @@ LIMIT can be used to bound the search."
                 (or
                  "<"
                  (and (0+ space)
-                      (or (any ",\)\}") (symbol "where")))))
+                      (or (any ",)}") (symbol "where")))))
      1 'raku-sigil)
     ;; $foo @Bla::Hlagh $.bar $?CLASS
     (,(raku-rx variable-mu)
@@ -703,7 +706,7 @@ LIMIT can be used to bound the search."
     ;; low-level types (int, bool, complex, etc)
     (,(raku-rx (symbol (or low-type high-type))) 0 'raku-type)
     ;; adverbs like :foo and :!bar
-    (,(raku-rx (or bol (regex "[^:]")) (group ":" (opt "!")) (group (symbol identifier)))
+    (,(raku-rx (or bol (not ?:)) (group ":" (opt "!")) (group (symbol identifier)))
      (1 'raku-operator)
      (2 'raku-string))
     ;; div, and, eq...
@@ -738,14 +741,14 @@ LIMIT can be used to bound the search."
     ;; identifiers with colons
     (,(raku-rx
        (or symbol-start
-           (and "::" (group (opt (regex "[?*]")))))
+           (and "::" (group (opt (any "?*")))))
        identifier
        (opt (0+ "::" identifier))
        (opt "::"))
      (0 'raku-identifier)
      (1 'raku-twigil t t))
     ;; numbers
-    (,(raku-rx (or bol (regex "[^[:digit:]]")) number)
+    (,(raku-rx (or bol (not (any digit))) number)
      (1 'raku-number)
      (2 'raku-number-addition nil t)
      (3 'raku-number nil t)
