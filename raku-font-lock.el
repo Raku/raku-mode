@@ -480,9 +480,9 @@ OPEN-ANGLES is the opening delimiter (e.g. \"«\" or \"<<\")."
            (line-beg (line-beginning-position)))
       (when
           ;; Figure out when our angle bracket is really starting quoted text.
-          ;; In the descriptive comments below, <> also represent «» when those
-          ;; are the angles we're dealing with. First we check for things that
-          ;; never start quotes.
+          ;; In the descriptive comments below, and unless otherwise noted, <>
+          ;; also represent «» when those are the angles we're dealing with.
+          ;; First we check for things that never start quotes.
           (and (not (or
                      ;; Don't quotify if we're right after another quote
                      ;; character (either inside a string, or next to one in a
@@ -496,7 +496,12 @@ OPEN-ANGLES is the opening delimiter (e.g. \"«\" or \"<<\")."
                      (looking-at (rx-to-string `(and (** 1 2 "-") ,close-angle)))
                      ;; And certainly not +<, ~<, =<, or !< (operators), or \<
                      ;; (escaped angle bracket, occurs in regexes and quotes)
-                     (looking-back (rx-to-string `(and (char "+~=!\\") ,open-angle)) (- (point) 2))))
+                     (looking-back (rx-to-string `(and (char "+~=!\\") ,open-angle)) (- (point) 2))
+                     ;; for < and not «, don't quotify regex assertions or
+                     ;; character classes.
+                     (and (string-equal open-angles "<")
+                          (looking-at (rx-to-string `(or (and (opt (any ".!?")) "{")
+                                                         (and (opt (any ?- ".+!?")) "[")))))))
                ;; Now that we've cleared the disqualifiers, check for any one of
                ;; these acceptable quote scenarios
                (or
