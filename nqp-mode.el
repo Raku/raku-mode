@@ -3,7 +3,7 @@
 ;; Copyright (C) 2015  Hinrik Örn Sigurðsson <hinrik.sig@gmail.com>
 
 ;; Author: Hinrik Örn Sigurðsson <hinrik.sig@gmail.com>
-;; URL: https://github.com/hinrik/perl6-mode
+;; URL: https://github.com/Raku/raku-mode
 ;; Keywords: languages
 ;; Version: 0.1-git
 ;; Package-Requires: ((emacs "24.4"))
