@@ -43,6 +43,8 @@
   ;; Don't jump beyond the prompt with M-{ or M-}.
   (setq-local paragraph-start raku-prompt-regexp))
 
+(define-key raku-repl-mode-map (kbd "C-c C-z") #'switch-to-raku)
+
 (defun run-raku ()
   "Run an inferior instance of `raku' inside Emacs."
   (interactive)
@@ -61,6 +63,23 @@
 (defun raku-comint-get-process ()
   "Raku process name."
   (get-process raku-buffer-name))
+
+(defun switch-to-raku (eob-p)
+  "Switch to the Raku REPL buffer, starting one if necessary."
+  (interactive "P")
+  (let* ((buf-name (format "*%s*" raku-buffer-name))
+         (buf (get-buffer-create buf-name))
+         (win (get-buffer-window buf)))
+    (if (eq (selected-window) win)
+        (other-window -1)
+      (if win
+          (select-window win)
+        (switch-to-buffer-other-window buf))))
+  (unless (process-live-p (raku-comint-get-process))
+    (run-raku))
+  (when eob-p
+    (push-mark)
+    (goto-char (point-max))))
 
 (defun raku-send-string-to-repl (str)
   "Send STR to the repl."

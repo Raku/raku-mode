@@ -67,6 +67,7 @@ keybindings are available to interact with the REPL:
 * <kbd>C-c C-l</kbd>: Send the current **l**ine to the REPL
 * <kbd>C-c C-r</kbd>: Send the selected **r**egion to the REPL
 * <kbd>C-c C-b</kbd>: Send the whole **b**uffer to the REPL
+* <kbd>C-c C-z</kbd>: Switch to the REPL buffer
 
 The REPL will start if needed with this keybindings.
 
